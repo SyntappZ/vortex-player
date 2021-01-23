@@ -3,23 +3,18 @@ import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from '../views/splash/SplashScreen';
 import SwipeNavigator from './SwipeNavigator';
 import {View, Text} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 const Stack = createStackNavigator();
 
-const Home = () => {
-  return (
-    <View style={{flex: 1}}>
-      <Text>hello world</Text>
-    </View>
-  );
-};
 
 const StackNavigator = () => {
+  const {background} = useSelector((state) => state.themeReducer.theme);
   return (
     <Stack.Navigator
       headerMode="none"
       initialRouteName="Splash"
       screenOptions={{
-        cardStyle: {backgroundColor: '#222'},
+        cardStyle: {backgroundColor: background},
       }}>
       <Stack.Screen name="Splash" component={SplashScreen} />
       <Stack.Screen name="SwipeNavigator" component={SwipeNavigator} />

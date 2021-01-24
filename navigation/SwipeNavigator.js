@@ -5,7 +5,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import AlbumsView from '../views/swipeable/AlbumsView'
 import FoldersView from '../views/swipeable/FoldersView'
 import TracksView from '../views/swipeable/TracksView'
-import FavoritesView from '../views/swipeable/AlbumsView'
+import FavoritesView from '../views/swipeable/FavoritesView'
 import {useSelector} from 'react-redux'
 const Tab = createMaterialTopTabNavigator();
 const SwipeNavigator = () => {

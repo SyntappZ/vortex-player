@@ -19,10 +19,10 @@ const SwipeHeader = ({navigation}) => {
   );
 
   const openMenu = () => {
-    navigation.navigate('Settings');
+    // navigation.navigate('Settings');
   };
   const search = () => {
-    navigation.navigate('Search');
+    // navigation.navigate('Search');
   };
 
   const wipeStorage = async () => {
@@ -37,7 +37,7 @@ const SwipeHeader = ({navigation}) => {
   return (
     <View style={{...styles.header, backgroundColor: background}}>
     <TouchableOpacity onPress={openMenu} style={styles.hamburger}>
-      <Icon size={40} name="navicon" type="evilicon" color="#fff" />
+      <Icon size={38} name="navicon" type="evilicon" color="#fff" />
     </TouchableOpacity>
     <TouchableOpacity onPress={wipeStorage} style={styles.title}>
       <Text style={styles.titleText}>
@@ -45,13 +45,15 @@ const SwipeHeader = ({navigation}) => {
       </Text>
     </TouchableOpacity>
     <TouchableOpacity onPress={search} style={styles.search}>
-      {/* icon */}
+    <Icon size={34} name="search" type="evilicon" color="#fff" />
+
     </TouchableOpacity>
   
     <TouchableOpacity
       // onPress={isSearching ? null : showMenu}
       style={styles.more}>
-      {/* icon */}
+          <Icon size={30} name="more-vert" color="#fff" />
+
     </TouchableOpacity>
   </View>
   

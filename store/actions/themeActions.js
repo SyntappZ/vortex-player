@@ -27,4 +27,4 @@ const storeTheme = () => ({
   payload: null,
 });
 
-export {changeTheme, fetchThemeFromStorage, storeTheme};
+export {changeTheme, storeTheme};

@@ -1,12 +1,13 @@
-import {fetchTracks} from './globalActions.js';
+import {fetchTracks, fetchAlbums} from './globalActions.js';
 
 import {changeTheme, fetchThemeFromStorage, storeTheme} from './themeActions';
 
-const allActions = {
+const AllActions = {
   fetchTracks,
+  fetchAlbums,
   changeTheme,
   fetchThemeFromStorage,
   storeTheme,
 };
 
-export default allActions;
+export default AllActions;

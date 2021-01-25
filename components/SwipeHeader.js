@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Icon, Header} from 'react-native-elements';
+import {Icon} from 'react-native-elements';
 // import {clearAllStorage} from '../data/AsyncStorage.js';
 import {useSelector} from 'react-redux';
 import {

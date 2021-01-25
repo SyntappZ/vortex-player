@@ -15,9 +15,9 @@ const renderItem = ({item}) => (
   />
 );
 
-// const getItemLayout = (data, index) => (
-//   {length: 230, offset: 230 * index, index}
-// )
+const getItemLayout = (data, index) => (
+  {length: 240, offset: 240 * index, index}
+)
 
 const AlbumView = () => {
   const {albums} = useSelector((state) => state.globalReducer);
@@ -31,10 +31,10 @@ const AlbumView = () => {
       <FlatList
         data={albums}
         renderItem={renderItem}
-        // getItemLayout={getItemLayout}
+        getItemLayout={getItemLayout}
         horizontal={false}
         numColumns={2}
-        keyExtractor={(item) => `item-id${item.id}004`}
+        keyExtractor={(item) => `item-id${item.id}`}
       />
     </View>
   );

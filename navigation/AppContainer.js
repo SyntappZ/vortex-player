@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import 'react-native-gesture-handler';
-import {StatusBar, View, Text, StyleSheet} from 'react-native';
+import {StatusBar, View, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {requestPermission} from '../store/functions/askPermission.js';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
@@ -10,7 +10,7 @@ import AllActions from '../store/actions';
 
 const AppContainer = () => {
   const dispatch = useDispatch();
-  const {secondaryBackground, background} = useSelector(
+  const {lightBackground, background} = useSelector(
     (state) => state.themeReducer.theme,
   );
 
@@ -31,7 +31,7 @@ const AppContainer = () => {
     dark: true,
     colors: {
       ...DefaultTheme.colors,
-      background: secondaryBackground,
+      background: lightBackground,
     },
   };
   return (

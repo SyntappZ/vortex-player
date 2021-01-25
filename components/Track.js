@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -6,119 +6,49 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-
-import Menu, {MenuItem} from 'react-native-material-menu';
-import {PlayerContext} from '../player/PlayerFunctions';
-
-import IonIcon from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
+// import { TouchableOpacity } from "react-native-gesture-handler";
+// import IonIcon from 'react-native-vector-icons/Ionicons';
+// import Entypo from 'react-native-vector-icons/Entypo';
+import {Icon} from 'react-native-elements';
+import {useSelector} from 'react-redux';
+import useIsMounted from 'ismounted';
 const colorBlack = '#0D0D0D';
 
-class Track extends PureComponent {
-  _isMounted = false;
+const Track = ({author, title, displayDuration, id}) => {
+  const {primary} = useSelector((state) => state.themeReducer.theme);
 
-  constructor(props) {
-    super(props);
+  const getPlaylist = () => {};
 
-    this.state = {
-      currentTrackId: '',
-    };
-  }
+  return (
+    <View
+      style={{
+        ...styles.container,
+      }}>
+      <View style={styles.iconWrap}>
+        <Icon name="note" size={30} color={primary} type="entypo" />
+      </View>
 
-  componentDidMount() {
-    this._isMounted = true;
-  }
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
+      <View style={styles.textWrap}>
+        <TouchableOpacity style={styles.Touchable} onPress={getPlaylist}>
+          <Text numberOfLines={1}>{title}</Text>
+          <Text numberOfLines={1} style={styles.author}>
+            {author}
+          </Text>
+        </TouchableOpacity>
+      </View>
 
-  _menu = null;
+      <TouchableOpacity style={styles.moreWrap}>
+        <View style={styles.timeWrap}>
+          <Text style={styles.trackTime}>{displayDuration}</Text>
 
-  setMenuRef = ref => {
-    this._menu = ref;
-  };
-
-  showMenu = () => this._menu.show();
-
-  render() {
-    const {artist, title, duration, trackId, getPlaylist} = this.props;
-
-    const colorBlue = '#2A56B9';
-
-    return (
-      <PlayerContext.Consumer>
-        {({favorites, setFavorites, currentTrack}) => {
-          const addToFavs = () => {
-            if (!favorites.includes(trackId)) {
-              if (this._isMounted) {
-                setFavorites([...favorites, trackId]);
-                ToastAndroid.show('Added to favorites', ToastAndroid.SHORT);
-              }
-            }
-
-            this._menu.hide();
-          };
-         
-          return (
-            <View
-              style={[
-                styles.container,
-                currentTrack === trackId ? {backgroundColor: '#1a1a1a'} : null,
-              ]}>
-              <View style={styles.iconWrap}>
-                <Entypo
-                  name={'note'}
-                  size={30}
-                  color={currentTrack === trackId ? 'white' : colorBlue}
-                />
-              </View>
-
-              <View style={styles.textWrap}>
-                <TouchableOpacity
-                  style={styles.Touchable}
-                  onPress={() => getPlaylist(trackId, this.props.track)}>
-                  <Text
-                    numberOfLines={1}
-                    style={[
-                      styles.title,
-                      currentTrack === trackId ? {color: '#666'} : null,
-                    ]}>
-                    {title}
-                  </Text>
-                  <Text numberOfLines={1} style={styles.author}>
-                    {artist}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-
-              <TouchableOpacity onPress={this.showMenu} style={styles.moreWrap}>
-                <View style={styles.timeWrap}>
-                  <Text style={styles.trackTime}>{duration}</Text>
-
-                  <Menu
-                    style={{backgroundColor: colorBlack}}
-                    button={
-                      <IonIcon
-                        style={styles.menu}
-                        name="md-more"
-                        size={30}
-                        color="white"
-                      />
-                    }
-                    ref={this.setMenuRef}>
-                    <MenuItem textStyle={{color: 'white'}} onPress={addToFavs}>
-                      add to favorites
-                    </MenuItem>
-                  </Menu>
-                </View>
-              </TouchableOpacity>
-            </View>
-          );
-        }}
-      </PlayerContext.Consumer>
-    );
-  }
-}
+          <View>
+            <Icon size={30} name="more-vert" color="#fff" />
+          </View>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -144,17 +74,18 @@ const styles = StyleSheet.create({
   textWrap: {
     flex: 4,
     justifyContent: 'center',
+  
   },
   moreWrap: {
-    flex: 2,
+    flex: 3,
     justifyContent: 'center',
+    alignItems: 'flex-end'
   },
   timeWrap: {
     flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-    paddingRight: 5,
+    justifyContent: 'center',
   },
   trackTime: {
     color: '#aaa',
@@ -166,6 +97,7 @@ const styles = StyleSheet.create({
   author: {
     fontSize: 12,
     color: '#aaa',
+    paddingTop: 1
   },
   title: {
     fontSize: 14,

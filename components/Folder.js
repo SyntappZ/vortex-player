@@ -1,62 +1,51 @@
-import React, {PureComponent} from 'react';
+import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
-import IonIcon from 'react-native-vector-icons/Ionicons';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
 
-class Folder extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
+import {Icon} from 'react-native-elements';
 
-  modalHandler = () => {
-    const {folderId, openModal} = this.props;
-
-    openModal(folderId);
-  };
-
-  render() {
-    const {folderName, tracksAmount} = this.props;
-
-    const folderIcon = (
-      <EntypoIcon name={'folder-music'} size={35} color="#074DD9" />
-    );
-
+import {useSelector} from 'react-redux';
+// import { TouchableOpacity } from "react-native-gesture-handler";
+const Folder = ({folderName, author, id, numberOfSongs}) => {
+  const {lightBackground, folderColor, secondary} = useSelector(
+    (state) => state.themeReducer.theme,
+  );
+ 
+    // <EntypoIcon name={'folder-music'} size={35} color="#074DD9" />
    
+  
 
-    return (
-      <View style={styles.container}>
-        <View style={styles.iconWrap}>{folderIcon}</View>
-        <View style={styles.textWrap}>
-          <TouchableOpacity
-            style={styles.touchable}
-            onPress={this.modalHandler}>
-            <Text numberOfLines={1} style={styles.title}>
-              {folderName}
-            </Text>
-            <Text numberOfLines={1} style={styles.storage}>
-              /sd card
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.moreWrap}>
-          <TouchableOpacity style={styles.moreTouchable}>
-            <Text numberOfLines={1} style={styles.songs}>
-              songs: {tracksAmount}
-            </Text>
-            <IonIcon name="md-more" size={30} color="white" />
-          </TouchableOpacity>
-        </View>
+  const modalHandler = () => {};
+  return (
+    <View style={{...styles.container, backgroundColor: lightBackground}}>
+      <View style={styles.iconWrap}>
+      <Icon type="entypo" name="folder-music" size={35} color={secondary} />
       </View>
-    );
-  }
-}
+      <View style={styles.textWrap}>
+        <TouchableOpacity style={styles.touchable} onPress={modalHandler}>
+          <Text numberOfLines={1} style={styles.title}>
+            {folderName}
+          </Text>
+          <Text numberOfLines={1} style={styles.storage}>
+            /sd card
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.moreWrap}>
+        <TouchableOpacity style={styles.moreTouchable}>
+          <Text numberOfLines={1} style={styles.songs}>
+            songs: {numberOfSongs}
+          </Text>
+          <Icon size={30} name="more-vert" color="#fff" />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
 
-const colorLightBlack = '#131313';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colorLightBlack,
     justifyContent: 'space-between',
     flexDirection: 'row',
     paddingHorizontal: 15,
@@ -88,7 +77,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    paddingRight: 5,
+    
   },
   moreWrap: {
     flex: 2,

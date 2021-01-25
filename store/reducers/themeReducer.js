@@ -2,10 +2,12 @@ import {CHANGE_THEME, STORE_THEME} from '../actions/types';
 
 const themes = {
   blue: {
+    color: 'blue',
     background: '#0d0d0d',
-    secondaryBackground: '#131313',
+    lightBackground: '#131313',
     primary: '#2A56B9',
     secondary: '#0B64D9',
+    folderColor: "#074DD9"
   },
 };
 

@@ -5,11 +5,9 @@ import {
   ADD_ALBUM_DATA,
   ADD_IMAGES,
   ADD_FAVORITES,
-  ADD_COVER_ART,
 } from '../actions/types';
 
 const initialState = {
-  coverArt: null,
   albumData: null,
   tracks: [],
   albums: [],
@@ -47,11 +45,7 @@ const globalReducer = (state = initialState, action) => {
       }
     }
 
-    case ADD_COVER_ART: {
-      return {
-        ...state,
-      }
-    }
+   
 
     default:
       return state;

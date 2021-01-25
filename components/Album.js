@@ -5,46 +5,55 @@ import {
   Image,
   Text,
   ActivityIndicator,
+  TouchableOpacity
 } from "react-native";
+import {convertImageToBase64} from '../store/functions/converters.js';
 
 
 import useIsMounted from 'ismounted';
-import { TouchableOpacity } from "react-native-gesture-handler";
+// import { TouchableOpacity } from "react-native-gesture-handler";
 
-const Album = ({ album, id, author, numberOfSongs }) => {
+const Album = ({album, author, cover, id, numberOfSongs}) => {
   const isMounted = useIsMounted();
   const [albumCover, setAlbumCover] = useState(<ActivityIndicator size="large" color="#fff" />);
+  
+
   // <ActivityIndicator size="large" color="#fff" />
 
   const modalHandler = () => {
     console.log(albumCover)
   };
 
+
+
   const fetchCoverArt = async () => {
-    const author = "";
-    const uri = await fetchAlbumArt(author, album);
-    if (uri) {
-      
+    // const author = "";
+    
+    const convertedImage = await convertImageToBase64(cover)
+    
+  
       const imageContainer = (
-        <Image style={styles.image} source={{ uri: uri }} />
+        <Image style={styles.image} source={{ uri: convertedImage }} />
       );
       setAlbumCover(imageContainer);
-    } else {
-      setAlbumCover(<Text style={{ color: "#fff" }}>none</Text>);
-    }
+    
+     
   };
 
   useEffect(() => {
     // fetchCoverArt();
     if (isMounted.current) {
       // console.log(id)
-      // fetchCoverArt();
+        fetchCoverArt();
     }
     
-  }, []);
-  const image =
-    "https://lastfm.freetls.fastly.net/i/u/174s/f07c48bca199461cbd9aac9ad969785d.png";
-  const image2 = "https://flevix.com/wp-content/uploads/2019/07/Round-Line-Loading.gif";
+  }, [cover]);
+
+  // const image =
+    // "https://lastfm.freetls.fastly.net/i/u/174s/f07c48bca199461cbd9aac9ad969785d.png";
+  // const image2 = "https://flevix.com/wp-content/uploads/2019/07/Round-Line-Loading.gif";
+
+  
   return (
     <View style={styles.album}>
       <View style={styles.imageWrap}>
@@ -91,6 +100,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
+   
   },
   image: {
     borderTopLeftRadius: 10,

@@ -1,4 +1,4 @@
-
+import ImgToBase64 from "react-native-image-base64";
 const nameConverter = str => {
     str = str.replace('.mp3', '');
     let arr = str.split('-');
@@ -52,4 +52,18 @@ const nameConverter = str => {
    return folders
   };
 
-  export { trackConverter, createFolders }
+  const convertImageToBase64 = async (file) => {
+    
+    
+    const image = `file://${file}`
+
+    try {
+      const base64String = await ImgToBase64.getBase64String(image)
+      return `data:image/jpeg;base64,${base64String}`
+    }catch(err) {
+      console.log(err)
+    }
+
+  }
+
+  export { trackConverter, createFolders, convertImageToBase64 }

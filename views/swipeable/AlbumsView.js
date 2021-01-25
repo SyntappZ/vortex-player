@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
-
-import { View, StyleSheet, FlatList } from "react-native";
-import Album from "../../components/Album";
+import React, {useEffect, useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {View, StyleSheet, FlatList} from 'react-native';
+import Album from '../../components/Album';
 // import { getMusicAlbums } from "../../store/functions/fetchMusic.js";
 // import { fetchAlbumArt } from "../../functions/AlbumArtApi.js";
 
-const renderItem = ({ item }) => (
+const renderItem = ({item}) => (
   <Album
     album={item.album}
     author={item.author}
-    numberOfTracks={item.numberOfSongs}
+    cover={item.cover}
     id={item.id}
+    numberOfSongs={item.numberOfSongs}
   />
 );
 
@@ -19,10 +20,12 @@ const renderItem = ({ item }) => (
 // )
 
 const AlbumView = () => {
-  const [albums, setAlbums] = useState([]);
+  const {albums} = useSelector((state) => state.globalReducer);
 
+  useEffect(() => {
+    // console.log(albums)
+  }, [albums]);
 
- 
   return (
     <View style={styles.container}>
       <FlatList
@@ -31,7 +34,6 @@ const AlbumView = () => {
         // getItemLayout={getItemLayout}
         horizontal={false}
         numColumns={2}
-      
         keyExtractor={(item) => `item-id${item.id}004`}
       />
     </View>
@@ -45,6 +47,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
-
-export default AlbumView
+export default AlbumView;

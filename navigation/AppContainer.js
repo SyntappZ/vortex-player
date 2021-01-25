@@ -18,7 +18,7 @@ const AppContainer = () => {
     const granted = await requestPermission();
     if (granted) {
       dispatch(AllActions.fetchAlbums());
-      dispatch(AllActions.fetchTracks());
+      // dispatch(AllActions.fetchTracks());
     }
   };
 

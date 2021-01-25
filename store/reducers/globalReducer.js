@@ -23,13 +23,20 @@ const globalReducer = (state = initialState, action) => {
       // console.log(payload)
       return {
         ...state,
+        tracks: payload
       };
     }
     case ADD_ALBUMS: {
-      // console.log(payload);
+      //  console.log(payload);
+
+     const imageOnlyAlbums = Object.values(payload).filter(album => album.cover)
+     
 
       return {
         ...state,
+        albums: imageOnlyAlbums,
+        albumData: payload,
+        folders: Object.values(payload)
       };
     }
 
@@ -37,12 +44,6 @@ const globalReducer = (state = initialState, action) => {
 
       return {
         ...state,
-      }
-    }
-    case ADD_ALBUM_DATA: {
-      return {
-        ...state,
-        albumData: payload
       }
     }
 

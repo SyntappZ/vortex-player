@@ -2,7 +2,7 @@ import {fetchAlbumArt} from '../functions/AlbumArtApi.js';
 import {getMusicTracks, getMusicAlbums} from '../functions/fetchMusic.js';
 import {trackConverter, createFolders} from '../functions/converters.js';
 
-import {ADD_TRACKS, ADD_ALBUM_DATA, ADD_ALBUMS, ADD_FOLDERS, ADD_COVER_ART} from './types';
+import {ADD_TRACKS, ADD_ALBUMS, ADD_FOLDERS, ADD_COVER_ART} from './types';
 
 // const createCoverArtObject = async (arr, objData = {}) => {
 //   if (arr.length < 1) return objData;
@@ -29,49 +29,80 @@ import {ADD_TRACKS, ADD_ALBUM_DATA, ADD_ALBUMS, ADD_FOLDERS, ADD_COVER_ART} from
 //   // console.log(image);
 // };
 
-const createAlbumsObject = (arr, objData = {}) => {
-  if (arr.length < 1) return objData;
+// const createAlbumsObject = async (arr, objData = {}) => {
+//   if (arr.length < 1) return objData;
 
-  const album = arr.shift();
+//   const album = arr.shift();
+//   console.log(album)
+//   const albumName = album[0];
+//   const tracks = album[1];
 
-  const albumName = album[0];
-  const tracks = album[1];
-  objData[albumName] = {
-    cover: '',
-    tracks: tracks,
-    totalTracks: tracks.length,
+//   console.log(cover)
+//   objData[albumName] = {
+//     cover: cover,
+//     tracks: tracks,
+//     trackAmount: tracks.length
+//   };
+
+//   console.log(objData)
+//   // return createAlbumsObject(arr, objData);
+// };
+
+// const fetchTracks = () => {
+//   return async (dispatch) => {
+//     const data = await getMusicTracks();
+//     const tracks = trackConverter(data);
+//     dispatch(addTracks(tracks));
+//     const folders = createFolders(tracks);
+//     const entries = Object.entries(folders);
+
+//     const obj = createAlbumsObject(entries);
+
+//     dispatch(addAlbumData(obj));
+//   };
+// };
+
+const addTracksToAlbums = (albums, tracks, output = {}) => {
+  if (albums.length < 1) return output;
+  const album = albums.shift();
+  const id = album.id;
+  const albumTracks = tracks.filter((track) => {
+    track.albumId = id;
+    return track.album === album.album;
+  });
+  const allDetails = {
+    ...album,
+    tracks: albumTracks,
+    cover: album.cover === 'null' ? null : album.cover,
+    author: album.author == '<unknown>' ? null : album.author,
   };
-  return createAlbumsObject(arr, objData);
+
+  output[id] = allDetails;
+
+  return addTracksToAlbums(albums, tracks, output);
 };
-
-const fetchTracks = () => {
-  return async (dispatch) => {
-    const data = await getMusicTracks();
-    const tracks = trackConverter(data);
-    dispatch(addTracks(tracks));
-    const folders = createFolders(tracks);
-    const entries = Object.entries(folders);
-
-    const obj = createAlbumsObject(entries);
-
-    dispatch(addAlbumData(obj));
-  };
-};
-
-const addAlbumData = (payload) => ({
-  type: ADD_ALBUM_DATA,
-  payload: payload,
-});
 
 const fetchAlbums = () => {
   return async (dispatch) => {
-    const folders = await getMusicAlbums();
-    const albums = res.filter((item) => item.cover !== 'null');
-    dispatch(addAlbums(albums));
-    // dispatch(fetchCoverArt(albums));
-    dispatch(addFolders(folders));
+    const musicAlbums = await getMusicAlbums();
+    const musicTracks = await getMusicTracks();
+    const tracks = trackConverter(musicTracks);
+    dispatch(addTracks(tracks));
+
+    const albumsObject = addTracksToAlbums(musicAlbums, tracks);
+    dispatch(addAlbums(albumsObject));
   };
 };
+
+// const fetchAlbums = () => {
+//   return async (dispatch) => {
+//     const folders = await getMusicAlbums();
+//     const albums = folders.filter((item) => item.cover !== 'null');
+//     dispatch(addAlbums(albums));
+//     // dispatch(fetchCoverArt(albums));
+//     dispatch(addFolders(folders));
+//   };
+// };
 
 const fetchCoverArt = (albums) => {
   return async (dispatch) => {
@@ -102,4 +133,4 @@ const addFolders = (payload) => ({
   payload: payload,
 });
 
-export {fetchTracks, fetchAlbums, addCoverArt};
+export {fetchAlbums, addCoverArt};

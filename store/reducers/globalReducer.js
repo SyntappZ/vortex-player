@@ -6,12 +6,7 @@ import {
   UPDATE_IMAGE,
   ADD_FAVORITES,
 } from '../actions/types';
-import {
-  convertListView,
-  convertImageToBase64,
-} from '../functions/converters.js';
-
-
+import {convertListView} from '../functions/converters.js';
 
 const initialState = {
   albumData: {},
@@ -37,11 +32,10 @@ const globalReducer = (state = initialState, action) => {
         (album) => album.cover,
       );
 
-
       return {
         ...state,
         albums: convertListView(imageOnlyAlbums, 'ALBUMS'),
-        folders: Object.values(payload),
+        folders: convertListView(Object.values(payload), 'FOLDERS'),
       };
     }
 
@@ -52,11 +46,10 @@ const globalReducer = (state = initialState, action) => {
     }
 
     case UPDATE_IMAGE: {
-     
       return {
         ...state,
         albumData: payload,
-      }
+      };
     }
 
     default:

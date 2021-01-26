@@ -9,10 +9,13 @@ export default class LayoutProvider extends GridLayoutProvider {
       },
       (index) => {
         let type = props.getDataForIndex(index).type;
-        
+
         switch (type) {
-          case 'ITEM_SPAN_1':
-            return 1;
+          case 'TRACKS':
+            return 4;
+
+          case 'FOLDERS':
+            return 4;
 
           case 'ALBUMS':
             return 2;
@@ -21,10 +24,13 @@ export default class LayoutProvider extends GridLayoutProvider {
 
       (index) => {
         let type = props.getDataForIndex(index).type;
-        
+
         switch (type) {
-          case 'ITEM_SPAN_1':
+          case 'TRACKS':
             return 70;
+
+          case 'FOLDERS':
+            return 60;
 
           case 'ALBUMS':
             return 250;

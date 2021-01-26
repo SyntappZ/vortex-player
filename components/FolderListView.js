@@ -1,30 +1,30 @@
 import React, {Component} from 'react';
 import {View, StyleSheet} from 'react-native';
-import Track from './Track';
+import Folder from './Folder';
 import {RecyclerListView, DataProvider} from 'recyclerlistview';
 import LayoutProvider from './LayoutProvider';
 
-export default class TracksListView extends Component {
+export default class FolderListView extends Component {
   constructor(props) {
     super(props);
     this.state = {
       dataProvider: new DataProvider((r1, r2) => {
         return r1 !== r2;
-      }).cloneWithRows(this.props.tracks),
+      }).cloneWithRows(this.props.folders),
     };
     this._layoutProvider = new LayoutProvider(this.state.dataProvider);
     this._renderRow = this._renderRow.bind(this);
   }
 
   _renderRow = (type, data) => {
-    const {title, author, displayDuration, id} = data.item;
+    const {album, author, numberOfSongs, id} = data.item;
 
     return (
-      <Track
-        title={title}
+      <Folder
+        folderName={album}
         author={author}
         id={id}
-        displayDuration={displayDuration}
+        numberOfSongs={numberOfSongs}
       />
     );
   };
@@ -32,7 +32,7 @@ export default class TracksListView extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {this.props.tracks.length > 0 ? (
+        {this.props.folders.length > 0 ? (
           <View style={styles.listContainer}>
             <RecyclerListView
               rowRenderer={this._renderRow}

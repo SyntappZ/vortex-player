@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
 import LottieView from 'lottie-react-native';
 import MusicFlyLottie from '../../images/lottie/music-fly.json';
@@ -6,13 +6,24 @@ import headphones from '../../images/dark-headphones.png'
 import {useSelector, useDispatch} from 'react-redux';
 const SplashScreen = ({navigation}) => {
   const {background} = useSelector((state) => state.themeReducer.theme);
+  const {albums} = useSelector(
+    (state) => state.globalReducer,
+  );
+
   const changeView = () => {
     navigation.replace('SwipeNavigator')
   };
+
+  useEffect(() => {
+   if(albums.length > 0) {
+    changeView()
+   }
+  }, [albums.length])
+  
   return (
     <View style={{...styles.container, backgroundColor: background}}>
       <View style={styles.welcome}>
-      <LottieView style={styles.lottie} source={MusicFlyLottie} autoPlay loop={false} onAnimationFinish={changeView}/>
+      <LottieView style={styles.lottie} source={MusicFlyLottie} autoPlay loop />
         <View style={styles.wrap}>
           <Image
             style={styles.image}

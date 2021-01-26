@@ -22,12 +22,12 @@ const FolderView = () => {
     const {folders} = useSelector(state => state.globalReducer)
   return (
     <View style={styles.container}>
-      <FlatList
+      {/* <FlatList
         data={folders}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
         keyExtractor={(item) => `item-id${item.id}`}
-      />
+      /> */}
     </View>
   );
 };

@@ -20,15 +20,15 @@ const renderItem = ({item}) => (
 
 const TracksView = () => {
     const {tracks} = useSelector(state => state.globalReducer)
-    console.log(tracks[0])
+    // console.log(tracks[0])
   return (
     <View style={styles.container}>
-      <FlatList
+      {/* <FlatList
         data={tracks}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
         keyExtractor={(item) => `item-id${item.id}`}
-      />
+      /> */}
     </View>
   );
 };

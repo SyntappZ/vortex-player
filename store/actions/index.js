@@ -1,4 +1,4 @@
-import {fetchTracks, fetchAlbums} from './globalActions.js';
+import {fetchTracks, fetchAlbums, updateImage} from './globalActions.js';
 
 import {changeTheme, fetchThemeFromStorage, storeTheme} from './themeActions';
 
@@ -8,6 +8,7 @@ const AllActions = {
   changeTheme,
   fetchThemeFromStorage,
   storeTheme,
+  updateImage
 };
 
 export default AllActions;

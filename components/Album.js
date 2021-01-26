@@ -4,46 +4,37 @@ import {
   StyleSheet,
   Image,
   Text,
-  ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import {convertImageToBase64} from '../store/functions/converters.js';
 import {Icon} from 'react-native-elements';
-import { useSelector } from 'react-redux'
-import useIsMounted from 'ismounted';
-// import { TouchableOpacity } from "react-native-gesture-handler";
+import {useSelector, useDispatch} from 'react-redux';
+import LottieView from 'lottie-react-native';
+import searchingLottie from '../images/lottie/search-location.json';
 
 const Album = ({album, author, cover, id, numberOfSongs}) => {
-  const isMounted = useIsMounted();
-  const { primary } = useSelector(state => state.themeReducer.theme)
-  const [albumCover, setAlbumCover] = useState(
-    <ActivityIndicator size="large" color="#fff" />,
+
+  const searchImage = (
+    <LottieView style={styles.lottie} source={searchingLottie} autoPlay loop />
   );
 
+  const dispatch = useDispatch();
+  const {primary} = useSelector((state) => state.themeReducer.theme);
+
   const modalHandler = () => {
-    console.log(albumCover);
+    
   };
 
-  const fetchCoverArt = async () => {
-    const convertedImage = await convertImageToBase64(cover);
-
-    const imageContainer = (
-      <Image style={styles.image} source={{uri: convertedImage}} />
-    );
-    setAlbumCover(imageContainer);
-  };
-
-  useEffect(() => {
-    if (isMounted.current) {
-      fetchCoverArt();
-    }
-  }, []);
+  const base64 = cover.includes('data:image/jpeg;base64');
 
   return (
     <View style={styles.album}>
       <View style={styles.imageWrap}>
         <TouchableOpacity style={styles.touchable} onPress={modalHandler}>
-          {albumCover}
+          {base64 ? (
+            <Image style={styles.image} source={{uri: cover}} />
+          ) : (
+            searchImage
+          )}
         </TouchableOpacity>
       </View>
       <View style={{...styles.albumInfo, backgroundColor: primary}}>
@@ -64,13 +55,11 @@ const Album = ({album, author, cover, id, numberOfSongs}) => {
   );
 };
 
-
-
 const styles = StyleSheet.create({
   album: {
     flex: 1,
     height: 230,
-    margin: 5,
+    marginVertical: 10,
   },
   imageWrap: {
     flex: 5,
@@ -105,6 +94,9 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 5,
     flexDirection: 'row',
+  },
+  lottie: {
+    width: '50%',
   },
 });
 

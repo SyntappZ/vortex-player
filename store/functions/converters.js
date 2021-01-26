@@ -53,7 +53,7 @@ const nameConverter = str => {
   };
 
   const convertImageToBase64 = async (file) => {
-    
+    if(!file) return null
     
     const image = `file://${file}`
 
@@ -66,4 +66,16 @@ const nameConverter = str => {
 
   }
 
-  export { trackConverter, createFolders, convertImageToBase64 }
+  const convertListView = (items, type) => {
+    return items.map(item => {
+      return {
+        type: type,
+        item: item
+      }
+    })
+  }
+
+
+  
+
+  export { trackConverter, createFolders, convertImageToBase64, convertListView }

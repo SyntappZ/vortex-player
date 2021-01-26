@@ -11,7 +11,7 @@ import {
 // import Entypo from 'react-native-vector-icons/Entypo';
 import {Icon} from 'react-native-elements';
 import {useSelector} from 'react-redux';
-import useIsMounted from 'ismounted';
+
 const colorBlack = '#0D0D0D';
 
 const Track = ({author, title, displayDuration, id}) => {

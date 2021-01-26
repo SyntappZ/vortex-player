@@ -13,6 +13,7 @@ const AppContainer = () => {
   const {lightBackground, background} = useSelector(
     (state) => state.themeReducer.theme,
   );
+ 
 
   const getPermissions = async () => {
     const granted = await requestPermission();

@@ -1,0 +1,280 @@
+import React, {useState, useRef, useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Image,
+  Modal,
+  Animated,
+  Easing,
+  TouchableOpacity,
+} from 'react-native';
+import LottieView from 'lottie-react-native';
+import {Icon} from 'react-native-elements';
+import ProgressBar from './ProgressBar';
+import {useSelector} from 'react-redux';
+import TextTicker from 'react-native-text-ticker';
+import Play from './Play';
+
+import Record from './Play';
+const BottomPlayer = () => {
+  const [playing, setPlaying] = useState(null)
+
+  const {background, primary} = useSelector(
+    (state) => state.themeReducer.theme,
+  );
+
+  const modalHandler = () => {};
+  const playerControls = () => {};
+
+  const animationFinished = () => {};
+
+  return (
+    <View style={{...styles.container, backgroundColor: background}}>
+      <View style={styles.imageWrap}>
+        <TouchableOpacity onPress={modalHandler} style={styles.touchableImage}>
+       
+        </TouchableOpacity>
+      </View>
+      <View style={styles.rightWrap}>
+        <ProgressBar radius={0} color={primary} />
+        <View style={styles.playerWrap}>
+          <View style={styles.trackName}>
+            <TouchableOpacity onPress={modalHandler} style={styles.touchable}>
+              <View styles={styles.textWrap}>
+                <TextTicker
+                  style={styles.title}
+                  duration={15000}
+                  loop
+                  bounce
+                  repeatSpacer={50}
+                  marqueeDelay={1000}>
+                  title preview
+                </TextTicker>
+
+                <Text numberOfLines={1} style={styles.artist}>
+                  artist preview
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.controls}>
+            <TouchableOpacity
+              style={styles.touchableControl}
+              onPress={() => playerControls('backwards')}>
+              <Icon name="fast-rewind" size={28} color="#fff" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => setPlaying(!playing)}
+              style={styles.touchableControl}>
+             <Play playing={playing} color={primary} size={55}/>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => playerControls('forwards')}
+              style={styles.touchableControl}>
+              <Icon name="fast-forward" size={28} color="#fff" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const colorBlack = '#0D0D0D';
+
+const styles = StyleSheet.create({
+  container: {
+    width: Dimensions.get('window').width,
+    height: 70,
+    flex: 1,
+    flexDirection: 'row',
+
+    position: 'absolute',
+    bottom: 0,
+  },
+  imageWrap: {
+    flex: 1.2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#222',
+    // borderColor: '#0d0d0d',
+    // borderWidth: 3
+  },
+
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  rightWrap: {
+    flex: 5,
+  },
+  playerWrap: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingRight: 10,
+  },
+  touchable: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    width: '100%',
+    height: '100%',
+  },
+  touchableImage: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+  },
+  artist: {
+    fontSize: 12,
+    color: '#aaa',
+  },
+  title: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: 'white',
+    letterSpacing: 0.4,
+    paddingBottom: 5,
+  },
+  trackName: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    paddingHorizontal: 10,
+    height: '100%',
+  },
+
+  controls: {
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  touchableControl: {
+    flex: 2,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  lottie: {
+    width: 75,
+  },
+});
+
+export default BottomPlayer;
+
+{
+  /* <Modal
+        animationType="slide"
+        transparent={false}
+        presentationStyle={'fullScreen'}
+        hardwareAccelerated={true}
+        visible={modalOpen}
+        onRequestClose={() => {
+          modalHandler();
+        }}>
+        <NowPlayingBig
+          modalHandler={modalHandler}
+          trackTitle={trackTitle}
+          trackArtist={trackArtist}
+          trackArt={trackArt}
+          trackId={trackId}
+          playerControls={playerControls}
+          duration={duration}
+          isShuffled={isShuffled}
+          shuffleUpComingPlaylist={shuffleUpComingPlaylist}
+          setFavorites={setFavorites}
+          favorites={favorites}
+          seconds={seconds}
+          setRepeat={setRepeat}
+          isRepeat={isRepeat}
+        />
+      </Modal> */
+}
+
+//   useEffect(() => {
+//     if (afterFirstLoad) {
+//       setAsyncStorage('lastTrack', {
+//         title: trackTitle,
+//         artist: trackArtist,
+//         duration: duration,
+//         artwork: trackArt,
+//         id: trackId,
+//       });
+//     } else {
+//       getAsyncStorage('lastTrack').then(track => {
+//         setTrackArt(track.artwork);
+//         setTrackTitle(track.title);
+//         setId(track.id);
+//         setArtist(track.artist);
+//         setDuration(track.duration);
+//       });
+//     }
+//   }, [trackId]);
+
+//   useEffect(() => {
+//     setIsFirstLoad(true);
+//     let onTrackChange = TrackPlayer.addEventListener(
+//       'playback-track-changed',
+//       async data => {
+//         try {
+//           const track = await TrackPlayer.getTrack(data.nextTrack);
+
+//           if (isMounted.current) {
+//             if (track != null) {
+//               if (track.artwork) {
+//                 if (track.artwork !== trackArt) {
+//                   setTrackArt(track.artwork);
+//                 }
+//               } else {
+//                 setTrackArt(null);
+//               }
+
+//               setTrackTitle(track.title);
+//               setArtist(track.artist);
+//               setDuration(track.duration);
+//               setId(track.id);
+//               setSeconds(track.seconds);
+//             }
+//           }
+//         } catch (error) {
+//           console.log(error);
+//         }
+
+//         return () => {
+//           isMounted.current = false;
+
+//           onTrackChange.remove();
+//         };
+//       },
+//     );
+
+//   }, []);
+
+// const playerControls = (control) => {
+//   switch (control) {
+//     case 'play':
+//       TrackPlayer.play();
+//       break;
+//     case 'pause':
+//       TrackPlayer.pause();
+//       break;
+//     case 'stop':
+//       TrackPlayer.stop();
+//       break;
+//     case 'reset':
+//       TrackPlayer.reset();
+//       break;
+//     case 'forwards':
+//       TrackPlayer.skipToNext();
+//       break;
+//     case 'backwards':
+//       TrackPlayer.skipToPrevious();
+//   }
+// };

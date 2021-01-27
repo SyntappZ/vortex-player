@@ -6,17 +6,22 @@ import {
   convertImageToBase64,
 } from '../functions/converters.js';
 
-import {ADD_TRACKS, ADD_ALBUMS, ADD_FOLDERS, UPDATE_IMAGE} from './types';
+import {
+  ADD_TRACKS,
+  ADD_ALBUMS,
+  ADD_FOLDERS,
+  UPDATE_IMAGE,
+  APP_LOADED,
+  SET_PLAYER_VISIBILITY,
+} from './types';
 
 const createCoverArtObject = async (arr, objData = {}) => {
   if (arr.length < 1) return objData;
-  // console.log(data[0])
 
   const album = arr.shift();
 
   const author = album[1][0].author;
-  // const title = album[1][0].title;
-  //  console.log(albumName, author)
+
   const image = await fetchAlbumArt(author, album[0]);
 
   const albumName = album[0];
@@ -28,48 +33,7 @@ const createCoverArtObject = async (arr, objData = {}) => {
   };
 
   return createCoverArtObject(arr, objData);
-
-  // album.cover = image
-  // console.log(image);
 };
-
-// const createAlbumsObject = async (arr, objData = {}) => {
-//   if (arr.length < 1) return objData;
-
-//   const album = arr.shift();
-//   console.log(album)
-//   const albumName = album[0];
-//   const tracks = album[1];
-
-//   console.log(cover)
-//   objData[albumName] = {
-//     cover: cover,
-//     tracks: tracks,
-//     trackAmount: tracks.length
-//   };
-
-//   console.log(objData)
-//   // return createAlbumsObject(arr, objData);
-// };
-
-// const fetchTracks = () => {
-//   return async (dispatch) => {
-//     const data = await getMusicTracks();
-//     const tracks = trackConverter(data);
-//     dispatch(addTracks(tracks));
-//     const folders = createFolders(tracks);
-//     const entries = Object.entries(folders);
-
-//     const obj = createAlbumsObject(entries);
-
-//     dispatch(addAlbumData(obj));
-//   };
-// };
-
-// const fetchCoverArt = async (image) => {
-
-//   return convertedImage;
-// };
 
 const addTracksToAlbums = (albums, tracks, output = {}) => {
   if (albums.length < 1) return output;
@@ -91,27 +55,6 @@ const addTracksToAlbums = (albums, tracks, output = {}) => {
 
   return addTracksToAlbums(albums, tracks, output);
 };
-
-// const addCoversToAlbums = async (albums, output = {}) => {
-//   if (albums.length < 1) return output;
-
-//   const album = albums.shift();
-//   const id = album.id;
-//   const cover = album.cover;
-
-//   const convertedImage = cover ? await convertImageToBase64() : null;
-
-//   const allDetails = {
-//     ...album,
-//     cover: convertedImage,
-//   };
-
-//   output[id] = allDetails;
-
-//   console.log(output);
-
-//   return addTracksToAlbums(albums, output);
-// };
 
 const addCoversToAlbums = async (keys, object, output = {}) => {
   if (keys.length < 1) return output;
@@ -144,22 +87,10 @@ const fetchAlbums = () => {
   };
 };
 
-// const fetchAlbums = () => {
-//   return async (dispatch) => {
-//     const folders = await getMusicAlbums();
-//     const albums = folders.filter((item) => item.cover !== 'null');
-//     dispatch(addAlbums(albums));
-//     // dispatch(fetchCoverArt(albums));
-//     dispatch(addFolders(folders));
-//   };
-// };
 
 const fetchCoverArt = (albums) => {
   return async (dispatch) => {
-    // const folders = await getMusicAlbums();
-    // const albums = res.filter((item) => item.cover !== 'null');
-    // dispatch(addAlbums(albums));
-    // dispatch(addFolders(folders));
+   
   };
 };
 
@@ -183,4 +114,14 @@ const addFolders = (payload) => ({
   payload: payload,
 });
 
-export {fetchAlbums, updateImage};
+const setAppLoaded = () => ({
+  type: APP_LOADED,
+  payload: null,
+});
+
+const setPlayerVisibility = (payload) => ({
+  type: SET_PLAYER_VISIBILITY,
+  payload: payload,
+});
+
+export {fetchAlbums, updateImage, setAppLoaded, setPlayerVisibility};

@@ -6,9 +6,7 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-// import { TouchableOpacity } from "react-native-gesture-handler";
-// import IonIcon from 'react-native-vector-icons/Ionicons';
-// import Entypo from 'react-native-vector-icons/Entypo';
+
 import {Icon} from 'react-native-elements';
 import {useSelector} from 'react-redux';
 

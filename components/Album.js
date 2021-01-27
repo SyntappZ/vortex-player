@@ -17,6 +17,8 @@ const Album = ({album, author, cover, id, numberOfSongs}) => {
     <LottieView style={styles.lottie} source={searchingLottie} autoPlay loop />
   );
 
+
+
   const dispatch = useDispatch();
   const {primary} = useSelector((state) => state.themeReducer.theme);
 
@@ -35,6 +37,7 @@ const Album = ({album, author, cover, id, numberOfSongs}) => {
           ) : (
             searchImage
           )}
+          
         </TouchableOpacity>
       </View>
       <View style={{...styles.albumInfo, backgroundColor: primary}}>

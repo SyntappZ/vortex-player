@@ -1,14 +1,15 @@
-import {fetchTracks, fetchAlbums, updateImage} from './globalActions.js';
+import {fetchAlbums, updateImage, setAppLoaded, setPlayerVisibility} from './globalActions.js';
 
 import {changeTheme, fetchThemeFromStorage, storeTheme} from './themeActions';
 
 const AllActions = {
-  fetchTracks,
   fetchAlbums,
   changeTheme,
   fetchThemeFromStorage,
   storeTheme,
-  updateImage
+  updateImage,
+  setAppLoaded,
+  setPlayerVisibility
 };
 
 export default AllActions;

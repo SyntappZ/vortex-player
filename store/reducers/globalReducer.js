@@ -5,6 +5,8 @@ import {
   ADD_ALBUM_DATA,
   UPDATE_IMAGE,
   ADD_FAVORITES,
+  SET_PLAYER_VISIBILITY,
+  APP_LOADED
 } from '../actions/types';
 import {convertListView} from '../functions/converters.js';
 
@@ -14,6 +16,8 @@ const initialState = {
   albums: [],
   folders: [],
   favorites: [],
+  appLoaded: false,
+  bottomPlayerVisible: false
 };
 const globalReducer = (state = initialState, action) => {
   const {payload} = action;
@@ -43,6 +47,21 @@ const globalReducer = (state = initialState, action) => {
       return {
         ...state,
       };
+    }
+
+    case APP_LOADED: {
+      return {
+        ...state,
+        appLoaded: true,
+        bottomPlayerVisible: true
+      }
+    }
+
+    case SET_PLAYER_VISIBILITY: {
+      return {
+        ...state,
+        bottomPlayerVisible: payload
+      }
     }
 
     case UPDATE_IMAGE: {

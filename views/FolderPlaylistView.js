@@ -10,6 +10,10 @@ import {
 } from 'react-native';
 const screenWidth = Dimensions.get('window').width;
  const FolderPlaylistView = () => {
+
+  const name = 'bob marley'
+  const tracksAmount = '30'
+  const totalTime = '3.45'
     return (
         <View style={styles.container}>
         <StatusBar backgroundColor="#062D83" animated={true} />
@@ -17,12 +21,12 @@ const screenWidth = Dimensions.get('window').width;
         <View style={styles.top}>
           <View style={styles.imageContainer}>
             <View style={styles.imageWrap}>
-              <EntypoIcon
+              {/* <EntypoIcon
                 style={styles.backIcon}
                 name={'folder-music'}
                 size={70}
                 color="#fff"
-              />
+              /> */}
             </View>
             <View style={styles.titleWrap}>
               <TextTicker
@@ -39,28 +43,28 @@ const screenWidth = Dimensions.get('window').width;
           <View style={styles.information}>
             <View style={styles.backButton}>
               <TouchableOpacity style={styles.touchable}>
-                <SimpleLineIcon
+                {/* <SimpleLineIcon
                   style={styles.backIcon}
                   name={'shuffle'}
                   size={20}
                   color={'#fff'}
-                />
+                /> */}
               </TouchableOpacity>
               <TouchableOpacity
               
                 style={styles.touchableRight}>
-                <SimpleLineIcon
+                {/* <SimpleLineIcon
                   style={styles.backIcon}
                   name={'arrow-down'}
                   size={20}
                   color="#fff"
-                />
+                /> */}
               </TouchableOpacity>
             </View>
             <View style={styles.infoWrap}>
               <Text style={styles.songs}>Songs: {tracksAmount}</Text>
               <View style={styles.timeWrap}>
-                <Icon name="clock" size={12} color="#ccc" />
+                {/* <Icon name="clock" size={12} color="#ccc" /> */}
                 <Text style={styles.totalTime}>{totalTime}</Text>
               </View>
             </View>
@@ -68,7 +72,7 @@ const screenWidth = Dimensions.get('window').width;
         </View>
 
         <View style={styles.tracklist}>
-         //tracks
+        
         </View>
       </View>
     )

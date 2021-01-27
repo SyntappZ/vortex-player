@@ -6,12 +6,17 @@ import AlbumListView from '../../components/AlbumListView';
 
 
 
-const AlbumView = () => {
+const AlbumView = ({navigation}) => {
   const {albums} = useSelector((state) => state.globalReducer);
+
+  const changeView = () => {
+    navigation.navigate('AlbumPlaylist'); 
+    
+  };
 
   return (
     <View style={styles.container}>
-      <AlbumListView albums={albums} />
+      <AlbumListView albums={albums} changeView={changeView} />
     </View>
   );
 };

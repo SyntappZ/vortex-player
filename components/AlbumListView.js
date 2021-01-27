@@ -27,6 +27,7 @@ export default class AlbumsListView extends Component {
           cover={cover}
           id={id}
           numberOfSongs={numberOfSongs}
+          openAlbumPlaylist={this.props.changeView}
         />
       </View>
     );

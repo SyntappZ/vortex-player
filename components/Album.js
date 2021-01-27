@@ -12,7 +12,7 @@ import LottieView from 'lottie-react-native';
 import searchingLottie from '../images/lottie/search-location.json';
 import Headphones from './Headphones';
 
-const Album = ({album, author, cover, id, numberOfSongs}) => {
+const Album = ({album, author, cover, id, numberOfSongs, openAlbumPlaylist}) => {
 
   const searchImage = (
     <LottieView style={styles.lottie} source={searchingLottie} autoPlay loop />
@@ -23,16 +23,14 @@ const Album = ({album, author, cover, id, numberOfSongs}) => {
   const dispatch = useDispatch();
   const {primary} = useSelector((state) => state.themeReducer.theme);
 
-  const modalHandler = () => {
-    
-  };
+  
 
   // const base64 = cover.includes('data:image/jpeg;base64');
 
   return (
     <View style={styles.album}>
       <View style={styles.imageWrap}>
-        <TouchableOpacity style={styles.touchable} onPress={modalHandler}>
+        <TouchableOpacity style={styles.touchable} onPress={openAlbumPlaylist}>
           {cover ? (
             <Image style={styles.image} source={{uri: cover}} />
           ) : (

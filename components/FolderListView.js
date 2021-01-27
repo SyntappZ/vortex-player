@@ -26,6 +26,7 @@ export default class FolderListView extends Component {
         id={id}
         folderPath={folderPath}
         numberOfSongs={numberOfSongs}
+        openFolderPlaylist={this.props.changeView}
       />
     );
   };

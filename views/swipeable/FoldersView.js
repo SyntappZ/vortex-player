@@ -4,13 +4,17 @@ import {useSelector} from 'react-redux';
 import FolderListView from '../../components/FolderListView';
 
 
-const FolderView = () => {
+const FolderView = ({navigation}) => {
  
   const {folders} = useSelector((state) => state.globalReducer);
+
+  const changeView = () => {
+    navigation.navigate('FolderPlaylist'); 
+  };
   
   return (
     <View style={styles.container}>
-      <FolderListView folders={folders} />
+      <FolderListView folders={folders} changeView={changeView} />
     </View>
   );
 };

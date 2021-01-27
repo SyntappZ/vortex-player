@@ -8,12 +8,13 @@ import {
   SET_PLAYER_VISIBILITY,
   APP_LOADED
 } from '../actions/types';
-import {convertListView} from '../functions/converters.js';
+import {convertListView, createFolders} from '../functions/converters.js';
 
 const initialState = {
   albumData: {},
   tracks: [],
   albums: [],
+  foldersObject: {},
   folders: [],
   favorites: [],
   appLoaded: false,
@@ -23,10 +24,24 @@ const globalReducer = (state = initialState, action) => {
   const {payload} = action;
   switch (action.type) {
     case ADD_TRACKS: {
-      // console.log(payload)
+     const folders = createFolders(payload)
+     const folderArray = Object.entries(folders).map((item, index) => ({
+      type: 'FOLDERS',
+      item: {
+        folder: item[0],
+        tracks: item[1],
+        numberOfSongs: item[1].length,
+        id: `ID_${index}`,
+        folderPath: item[1][0].folderPath
+      }
+     }))
+     
       return {
         ...state,
         tracks: payload,
+        foldersObject: folders,
+        folders: folderArray
+        
       };
     }
     case ADD_ALBUMS: {
@@ -39,7 +54,7 @@ const globalReducer = (state = initialState, action) => {
       return {
         ...state,
         albums: convertListView(imageOnlyAlbums, 'ALBUMS'),
-        folders: convertListView(Object.values(payload), 'FOLDERS'),
+        albumData: payload,
       };
     }
 

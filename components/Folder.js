@@ -5,7 +5,7 @@ import {Icon} from 'react-native-elements';
 
 import {useSelector} from 'react-redux';
 // import { TouchableOpacity } from "react-native-gesture-handler";
-const Folder = ({folderName, author, id, numberOfSongs}) => {
+const Folder = ({folderName, tracks, folderPath, id, numberOfSongs}) => {
   const {lightBackground, folderColor, secondary} = useSelector(
     (state) => state.themeReducer.theme,
   );
@@ -26,7 +26,7 @@ const Folder = ({folderName, author, id, numberOfSongs}) => {
             {folderName}
           </Text>
           <Text numberOfLines={1} style={styles.storage}>
-            /sd card
+            {folderPath}
           </Text>
         </TouchableOpacity>
       </View>

@@ -40,7 +40,7 @@ const nameConverter = str => {
   }  
 
   const createFolders = (array) => {
-    const prop = 'album';
+    const prop = 'folder';
   
     const folders = array.reduce((a, b) => {
       if (!a[b[prop]]) {

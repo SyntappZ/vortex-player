@@ -39,6 +39,7 @@ const addTracksToAlbums = (albums, tracks, output = {}) => {
   if (albums.length < 1) return output;
   const album = albums.shift();
   const id = album.id;
+
   // console.log(tracks[0])
   const albumTracks = tracks.filter((track) => {
     track.albumId = id;
@@ -74,24 +75,35 @@ const fetchAlbums = () => {
   return async (dispatch) => {
     const musicAlbums = await getMusicAlbums();
     const musicTracks = await getMusicTracks();
+    musicTracks.forEach((track) => {
+      const splitPath = track.path.split('/').reverse()
+      const folder = splitPath[1];
+      const folderPath = splitPath[2]
+      track.folder = folder;
+      track.folderPath = `/${folderPath}`;
+    });
+
     const tracks = trackConverter(musicTracks);
     dispatch(addTracks(tracks));
+    const folders = musicTracks.map((track) => track.folder);
 
-    const albumsObject = addTracksToAlbums(musicAlbums, tracks);
+    const filterFolders = musicAlbums.filter(
+      (album) => !folders.includes(album.album),
+    );
+
+    const albumsObject = addTracksToAlbums(filterFolders, tracks);
     dispatch(addAlbums(albumsObject));
     const keys = Object.keys(albumsObject);
 
     const updatedAlbumsObject = await addCoversToAlbums(keys, albumsObject);
     // console.log(updatedAlbumsObject)
+
     dispatch(addAlbums(updatedAlbumsObject));
   };
 };
 
-
 const fetchCoverArt = (albums) => {
-  return async (dispatch) => {
-   
-  };
+  return async (dispatch) => {};
 };
 
 const updateImage = (payload) => ({

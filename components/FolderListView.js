@@ -17,13 +17,14 @@ export default class FolderListView extends Component {
   }
 
   _renderRow = (type, data) => {
-    const {album, author, numberOfSongs, id} = data.item;
+    const {folder, tracks, folderPath, numberOfSongs, id} = data.item;
 
     return (
       <Folder
-        folderName={album}
-        author={author}
+        folderName={folder}
+        tracks={tracks}
         id={id}
+        folderPath={folderPath}
         numberOfSongs={numberOfSongs}
       />
     );

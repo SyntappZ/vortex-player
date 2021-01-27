@@ -5,7 +5,9 @@ import FolderListView from '../../components/FolderListView';
 
 
 const FolderView = () => {
+ 
   const {folders} = useSelector((state) => state.globalReducer);
+  
   return (
     <View style={styles.container}>
       <FolderListView folders={folders} />

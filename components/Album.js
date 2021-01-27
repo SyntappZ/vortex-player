@@ -10,6 +10,7 @@ import {Icon} from 'react-native-elements';
 import {useSelector, useDispatch} from 'react-redux';
 import LottieView from 'lottie-react-native';
 import searchingLottie from '../images/lottie/search-location.json';
+import Headphones from './Headphones';
 
 const Album = ({album, author, cover, id, numberOfSongs}) => {
 
@@ -26,16 +27,16 @@ const Album = ({album, author, cover, id, numberOfSongs}) => {
     
   };
 
-  const base64 = cover.includes('data:image/jpeg;base64');
+  // const base64 = cover.includes('data:image/jpeg;base64');
 
   return (
     <View style={styles.album}>
       <View style={styles.imageWrap}>
         <TouchableOpacity style={styles.touchable} onPress={modalHandler}>
-          {base64 ? (
+          {cover ? (
             <Image style={styles.image} source={{uri: cover}} />
           ) : (
-            searchImage
+            <Headphones />
           )}
           
         </TouchableOpacity>

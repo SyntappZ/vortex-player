@@ -96,7 +96,7 @@ const fetchAlbums = () => {
     const keys = Object.keys(albumsObject);
 
     const updatedAlbumsObject = await addCoversToAlbums(keys, albumsObject);
-    // console.log(updatedAlbumsObject)
+    
 
     dispatch(addAlbums(updatedAlbumsObject));
   };

@@ -3,47 +3,47 @@ import {View, StyleSheet, Text, Image} from 'react-native';
 import LottieView from 'lottie-react-native';
 import Headphones from '../../images/lottie/headphones.json';
 // import headphones from '../../images/dark-headphones.png'
-import AllActions from '../../store/actions'
+import AllActions from '../../store/actions';
 import {useSelector, useDispatch} from 'react-redux';
 const SplashScreen = ({navigation}) => {
-  const {background, primary, secondary} = useSelector((state) => state.themeReducer.theme);
-  const {albums} = useSelector((state) => state.globalReducer);
-const dispatch = useDispatch()
+  const {background, primary} = useSelector(
+    (state) => state.themeReducer.theme,
+  );
+
+  const dispatch = useDispatch();
   const changeView = () => {
     navigation.replace('SwipeNavigator');
-    dispatch(AllActions.setAppLoaded())
-    
+    dispatch(AllActions.setAppLoaded());
   };
-
-  
 
   return (
     <View style={{...styles.container, backgroundColor: background}}>
-     
-        <View style={styles.lottieWrap}>
-          <LottieView
-            style={styles.lottie}
-            source={Headphones}
-            onAnimationFinish={changeView}
-            autoPlay
-            loop={false}
-            colorFilters={[{
-              keypath: "Head",
-              color: primary
-            },{
-              keypath: "Cover Left",
-              color: secondary
-            },{
-              keypath: "Cover Right",
-              color: secondary
-            }
+      <View style={styles.lottieWrap}>
+        <LottieView
+          style={styles.lottie}
+          source={Headphones}
+          onAnimationFinish={changeView}
+          autoPlay
+          loop={false}
+          colorFilters={[
+            {
+              keypath: 'Head',
+              color: primary,
+            },
+            {
+              keypath: 'Cover Left',
+              color: primary,
+            },
+            {
+              keypath: 'Cover Right',
+              color: primary,
+            },
           ]}
-          />
-        </View>
+        />
+      </View>
 
-        <Text style={styles.largeText}>vortex player</Text>
-        <Text style={styles.smallText}>Free Music App</Text>
-   
+      <Text style={styles.largeText}>vortex player</Text>
+      <Text style={styles.smallText}>Free Music App</Text>
     </View>
   );
 };
@@ -55,10 +55,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
- 
   lottieWrap: {
     width: 150,
-    marginBottom: 40
+    marginBottom: 40,
   },
   lottie: {
     width: '100%',

@@ -45,15 +45,11 @@ const globalReducer = (state = initialState, action) => {
       };
     }
     case ADD_ALBUMS: {
-      //  console.log(payload);
-
-      const imageOnlyAlbums = Object.values(payload).filter(
-        (album) => album.cover,
-      );
+    
 
       return {
         ...state,
-        albums: convertListView(imageOnlyAlbums, 'ALBUMS'),
+        albums: convertListView(Object.values(payload), 'ALBUMS'),
         albumData: payload,
       };
     }

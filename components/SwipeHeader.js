@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
     flexDirection: 'row',
+    
   },
   hamburger: {
     flex: 1,

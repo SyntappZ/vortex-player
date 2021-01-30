@@ -22,12 +22,13 @@ export default class AlbumsListView extends Component {
     return (
       <View style={styles.containerGrid}>
         <Album
-          album={album}
+          albumName={album}
           author={author}
           cover={cover}
           id={id}
           numberOfSongs={numberOfSongs}
-          openAlbumPlaylist={this.props.changeView}
+          album={data.item}
+          openAlbumPlaylist={this.props.openAlbumPlaylist}
         />
       </View>
     );

@@ -17,7 +17,7 @@ import {useSelector} from 'react-redux';
 import TextTicker from 'react-native-text-ticker';
 import Play from './Play';
 
-import Record from './Play';
+
 const BottomPlayer = () => {
   const [playing, setPlaying] = useState(null)
 
@@ -38,7 +38,7 @@ const BottomPlayer = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.rightWrap}>
-        <ProgressBar radius={0} color={primary} />
+        <ProgressBar radius={10} color={primary} />
         <View style={styles.playerWrap}>
           <View style={styles.trackName}>
             <TouchableOpacity onPress={modalHandler} style={styles.touchable}>
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     flex: 1.2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#222',
+    // backgroundColor: '#222',
     // borderColor: '#0d0d0d',
     // borderWidth: 3
   },

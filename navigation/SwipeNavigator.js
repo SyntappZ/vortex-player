@@ -45,11 +45,9 @@ const SwipeNavigator = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'red',
   },
   screens: {
     flex: 8,
-    backgroundColor: 'red',
   },
 });
 

@@ -1,6 +1,18 @@
-import {fetchAlbums, updateImage, setAppLoaded, setPlayerVisibility} from './globalActions.js';
+import {
+  fetchAlbums,
+  updateImage,
+  setAppLoaded,
+  setPlayerVisibility,
+} from './globalActions.js';
 
 import {changeTheme, fetchThemeFromStorage, storeTheme} from './themeActions';
+import {
+  setCurrentPlaylist,
+  setSelectedAlbum,
+  setSelectedFolder,
+  setPlayerAlbumData,
+  setPlayerTrackData,
+} from './playerActions';
 
 const AllActions = {
   fetchAlbums,
@@ -9,7 +21,12 @@ const AllActions = {
   storeTheme,
   updateImage,
   setAppLoaded,
-  setPlayerVisibility
+  setPlayerVisibility,
+  setCurrentPlaylist,
+  setSelectedAlbum,
+  setSelectedFolder,
+  setPlayerAlbumData,
+  setPlayerTrackData,
 };
 
 export default AllActions;

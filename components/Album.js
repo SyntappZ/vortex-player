@@ -12,25 +12,19 @@ import LottieView from 'lottie-react-native';
 import searchingLottie from '../images/lottie/search-location.json';
 import Headphones from './Headphones';
 
-const Album = ({album, author, cover, id, numberOfSongs, openAlbumPlaylist}) => {
+const Album = ({albumName, author, cover, id, numberOfSongs, album, openAlbumPlaylist}) => {
 
   const searchImage = (
     <LottieView style={styles.lottie} source={searchingLottie} autoPlay loop />
   );
 
+  const {primary} = useSelector((state) => state.themeReducer.theme)
 
-
-  const dispatch = useDispatch();
-  const {primary} = useSelector((state) => state.themeReducer.theme);
-
-  
-
-  // const base64 = cover.includes('data:image/jpeg;base64');
 
   return (
     <View style={styles.album}>
       <View style={styles.imageWrap}>
-        <TouchableOpacity style={styles.touchable} onPress={openAlbumPlaylist}>
+        <TouchableOpacity style={styles.touchable} onPress={() => openAlbumPlaylist(album)}>
           {cover ? (
             <Image style={styles.image} source={{uri: cover}} />
           ) : (
@@ -42,7 +36,7 @@ const Album = ({album, author, cover, id, numberOfSongs, openAlbumPlaylist}) => 
       <View style={{...styles.albumInfo, backgroundColor: primary}}>
         <View style={{flex: 3, justifyContent: 'center'}}>
           <Text style={{color: 'white'}} numberOfLines={1}>
-            {album}
+            {albumName}
           </Text>
           <Text style={{color: '#D3D3D3'}} numberOfLines={1}>
             songs: {numberOfSongs}
@@ -65,7 +59,7 @@ const styles = StyleSheet.create({
   },
   imageWrap: {
     flex: 5,
-    backgroundColor: '#222',
+    backgroundColor: '#B8B8B8',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     justifyContent: 'center',

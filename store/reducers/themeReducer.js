@@ -4,7 +4,9 @@ const themes = {
   blue: {
     color: 'blue',
     background: '#0d0d0d',
-    lightBackground: '#131313',
+    lightBackground: '#141414',
+    extraLightBackground: '#202020',
+    border: '#323232',
     primary: '#2A56B9',
     secondary: '#0B64D9',
     folderColor: "#074DD9"

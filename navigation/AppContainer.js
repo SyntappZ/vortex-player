@@ -13,19 +13,25 @@ const AppContainer = () => {
   const {lightBackground, background} = useSelector(
     (state) => state.themeReducer.theme,
   );
-  const {appLoaded} = useSelector((state) => state.globalReducer);
+  const {appLoaded, tracks, albumData} = useSelector(
+    (state) => state.globalReducer,
+  );
 
   const getPermissions = async () => {
     const granted = await requestPermission();
     if (granted) {
       dispatch(AllActions.fetchAlbums());
-      // dispatch(AllActions.fetchTracks());
     }
   };
 
   useEffect(() => {
     getPermissions();
   }, []);
+
+  useEffect(() => {
+    dispatch(AllActions.setPlayerAlbumData(albumData));
+    dispatch(AllActions.setPlayerTrackData(tracks));
+  }, [tracks, albumData]);
 
   const MyTheme = {
     ...DefaultTheme,
@@ -37,7 +43,7 @@ const AppContainer = () => {
   };
   return (
     <View style={{...styles.container, backgroundColor: background}}>
-      <StatusBar backgroundColor={background} />
+      <StatusBar  backgroundColor={background} />
       <NavigationContainer theme={MyTheme}>
         <StackNavigator />
         {appLoaded ? <BottomPlayer /> : null}
@@ -49,6 +55,7 @@ const AppContainer = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    
   },
 });
 

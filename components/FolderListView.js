@@ -14,7 +14,10 @@ export default class FolderListView extends Component {
     };
     this._layoutProvider = new LayoutProvider(this.state.dataProvider);
     this._renderRow = this._renderRow.bind(this);
+    
   }
+
+  
 
   _renderRow = (type, data) => {
     const {folder, tracks, folderPath, numberOfSongs, id} = data.item;
@@ -26,7 +29,8 @@ export default class FolderListView extends Component {
         id={id}
         folderPath={folderPath}
         numberOfSongs={numberOfSongs}
-        openFolderPlaylist={this.props.changeView}
+        openFolderPlaylist={this.props.openFolderPlaylist}
+        folder={data.item}
       />
     );
   };

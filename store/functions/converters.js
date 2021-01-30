@@ -10,6 +10,16 @@ const nameConverter = str => {
     var seconds = ((millis % 60000) / 1000).toFixed(0);
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
   };
+
+  const totalTimeConverter = (arr) => {
+    let total = 0
+     arr.forEach(item => {
+     total += parseInt(item.duration)
+    })
+    return durationConverter(total)
+  }
+
+  
   
   const secondsConverter = millis => (millis / 1000).toFixed(1);
   
@@ -78,4 +88,4 @@ const nameConverter = str => {
 
   
 
-  export { trackConverter, createFolders, convertImageToBase64, convertListView }
+  export { trackConverter, createFolders, convertImageToBase64, convertListView, totalTimeConverter }

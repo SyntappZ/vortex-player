@@ -1,25 +1,62 @@
 import {
-    FETCH_TRACKS,
-    FETCH_ALBUMS,
-    FETCH_IMAGES,
+  SET_CURRENT_PLAYLIST,
+  SET_SELECTED_FOLDER,
+  SET_PLAYER_ALBUM_DATA,
+  SET_SELECTED_ALBUM,
+  SET_PLAYER_TRACK_DATA,
+
   } from "../actions/types";
   
   
   const initialState = {
-    coverImages: [],
     tracks: [],
-    albums: [],
-    folders: [],
-    favorites: []
+    albumData: {},
+    currentPlaylist: [],
+    selectedAlbum:{},
+    selectedFolder:{}
+
+
   };
   const playerReducer = (state = initialState, action) => {
+    const {payload} = action
     switch (action.type) {
-      case FETCH_TRACKS: {
+      case SET_CURRENT_PLAYLIST: {
       
         return {
           ...state,
+        
         };
       }
+      case SET_SELECTED_ALBUM: {
+      
+        return {
+          ...state,
+          selectedAlbum: payload
+        };
+      }
+      case SET_SELECTED_FOLDER: {
+      
+        return {
+          ...state,
+          selectedFolder: payload
+        };
+      }
+      case SET_PLAYER_ALBUM_DATA: {
+      
+        return {
+          ...state,
+          albumData: payload
+        };
+      }
+      case SET_PLAYER_TRACK_DATA: {
+      
+        return {
+          ...state,
+          tracks: payload
+        };
+      }
+
+     
     
       default:
         return state;

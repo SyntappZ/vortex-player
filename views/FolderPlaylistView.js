@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react';
 import TextTicker from 'react-native-text-ticker';
 import {
   View,
@@ -8,78 +8,88 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
+
+import AllActions from '../store/actions';
+import {useSelector, useDispatch} from 'react-redux';
+import {Icon} from 'react-native-elements';
+import {totalTimeConverter} from '../store/functions/converters.js'
 const screenWidth = Dimensions.get('window').width;
- const FolderPlaylistView = () => {
+const FolderPlaylistView = () => {
+  const dispatch = useDispatch()
+  const {lightBackground, folderColor, secondary} = useSelector(
+    (state) => state.themeReducer.theme,
+  );
+  const [totalTime, setTotalTime] = useState(0.00)
+  const {selectedFolder} = useSelector(state => state.playerReducer)
+  const folderName = selectedFolder.folder
+  const numberOfSongs = selectedFolder.numberOfSongs
+ 
 
-  const name = 'bob marley'
-  const tracksAmount = '30'
-  const totalTime = '3.45'
-    return (
-        <View style={styles.container}>
-        <StatusBar backgroundColor="#062D83" animated={true} />
+  
+  useEffect(() => {
+    
+    const time = totalTimeConverter(selectedFolder.tracks)
+    setTotalTime(time)
+    return () => {
+       dispatch(AllActions.setSelectedFolder({}))
+    }
+}, [selectedFolder])
+  return (
+    <View style={styles.container}>
+      <StatusBar backgroundColor="#062D83" animated={true} />
 
-        <View style={styles.top}>
-          <View style={styles.imageContainer}>
-            <View style={styles.imageWrap}>
-              {/* <EntypoIcon
-                style={styles.backIcon}
-                name={'folder-music'}
-                size={70}
-                color="#fff"
-              /> */}
-            </View>
-            <View style={styles.titleWrap}>
-              <TextTicker
-                style={styles.title}
-                duration={15000}
-                loop
-                bounce
-                repeatSpacer={50}
-                marqueeDelay={1000}>
-                {name}
-              </TextTicker>
-            </View>
+      <View style={styles.top}>
+        <View style={styles.imageContainer}>
+          <View style={styles.imageWrap}>
+            <Icon type="entypo" name="folder-music" size={35} color={'white'} />
           </View>
-          <View style={styles.information}>
-            <View style={styles.backButton}>
-              <TouchableOpacity style={styles.touchable}>
-                {/* <SimpleLineIcon
-                  style={styles.backIcon}
-                  name={'shuffle'}
-                  size={20}
-                  color={'#fff'}
-                /> */}
-              </TouchableOpacity>
-              <TouchableOpacity
-              
-                style={styles.touchableRight}>
-                {/* <SimpleLineIcon
-                  style={styles.backIcon}
-                  name={'arrow-down'}
-                  size={20}
-                  color="#fff"
-                /> */}
-              </TouchableOpacity>
-            </View>
-            <View style={styles.infoWrap}>
-              <Text style={styles.songs}>Songs: {tracksAmount}</Text>
-              <View style={styles.timeWrap}>
-                {/* <Icon name="clock" size={12} color="#ccc" /> */}
-                <Text style={styles.totalTime}>{totalTime}</Text>
-              </View>
-            </View>
+          <View style={styles.titleWrap}>
+            <TextTicker
+              style={styles.title}
+              duration={15000}
+              loop
+              bounce
+              repeatSpacer={50}
+              marqueeDelay={1000}>
+              {folderName}
+            </TextTicker>
           </View>
         </View>
-
-        <View style={styles.tracklist}>
-        
+        <View style={styles.information}>
+          <View style={styles.backButton}>
+            <TouchableOpacity style={styles.touchable}>
+              <Icon
+                type="simple-line-icon"
+                name="shuffle"
+                size={20}
+                color={'white'}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.touchableRight}>
+              <Icon
+                type="simple-line-icon"
+                name="arrow-down"
+                size={20}
+                color={'white'}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.infoWrap}>
+            <Text style={styles.songs}>Songs: {numberOfSongs}</Text>
+            <View style={styles.timeWrap}>
+              <Icon name="clock" type="font-awesome-5" size={12} color="#ccc" />
+              <Text style={styles.totalTime}>{totalTime}</Text>
+            </View>
+          </View>
         </View>
       </View>
-    )
-}
 
+      <View style={styles.tracklist}></View>
+    </View>
+  );
+};
 
-export default FolderPlaylistView
+export default FolderPlaylistView;
 
 const colorLightBlack = '#131313';
 const darkBlue = '#062D83';
@@ -94,6 +104,7 @@ const styles = StyleSheet.create({
     flex: 1.2,
     backgroundColor: darkBlue,
     flexDirection: 'row',
+    paddingHorizontal: 20,
     borderBottomColor: '#aaa',
     borderBottomWidth: 1,
   },

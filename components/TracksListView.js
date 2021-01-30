@@ -3,6 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import Track from './Track';
 import {RecyclerListView, DataProvider} from 'recyclerlistview';
 import LayoutProvider from './LayoutProvider';
+import {convertListView} from '../store/functions/converters.js';
 
 export default class TracksListView extends Component {
   constructor(props) {
@@ -10,7 +11,7 @@ export default class TracksListView extends Component {
     this.state = {
       dataProvider: new DataProvider((r1, r2) => {
         return r1 !== r2;
-      }).cloneWithRows(this.props.tracks),
+      }).cloneWithRows(convertListView(this.props.tracks, 'TRACKS')),
     };
     this._layoutProvider = new LayoutProvider(this.state.dataProvider);
     this._renderRow = this._renderRow.bind(this);

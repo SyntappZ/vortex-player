@@ -9,7 +9,7 @@ const Headphones = () => {
     (state) => state.themeReducer.theme,
   );
 
-  const grey = '#B6B6B6'
+  const grey = '#A2A2A2'
 
   return (
     <LottieView
@@ -30,6 +30,10 @@ const Headphones = () => {
         {
           keypath: 'Cover Right',
           color: grey,
+        },
+        {
+          keypath: 'soundwave_1 Outlines 2',
+          color: 'white',
         },
       ]}
     />

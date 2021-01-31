@@ -3,13 +3,9 @@ import React from 'react';
 
 import LottieView from 'lottie-react-native';
 import headphones from '../images/lottie/headphones.json';
-import {useSelector} from 'react-redux';
-const Headphones = () => {
-  const {primary} = useSelector(
-    (state) => state.themeReducer.theme,
-  );
 
-  const grey = '#A2A2A2'
+const Headphones = ({color}) => {
+  
 
   return (
     <LottieView
@@ -21,15 +17,15 @@ const Headphones = () => {
       colorFilters={[
         {
           keypath: 'Head',
-          color: grey,
+          color: color,
         },
         {
           keypath: 'Cover Left',
-          color: grey,
+          color: color,
         },
         {
           keypath: 'Cover Right',
-          color: grey,
+          color: color,
         },
         {
           keypath: 'soundwave_1 Outlines 2',

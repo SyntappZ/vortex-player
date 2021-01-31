@@ -5,10 +5,12 @@ import {
   Image,
   Text,
   TouchableOpacity,
+
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 import {useSelector, useDispatch} from 'react-redux';
 import LottieView from 'lottie-react-native';
+import {vw, vh} from 'react-native-viewport-units';
 import searchingLottie from '../images/lottie/search-location.json';
 import Headphones from './Headphones';
 
@@ -19,7 +21,9 @@ const Album = ({albumName, author, cover, id, numberOfSongs, album, openAlbumPla
   );
 
   const {primary} = useSelector((state) => state.themeReducer.theme)
+ 
 
+  const grey = '#A2A2A2'
 
   return (
     <View style={styles.album}>
@@ -28,7 +32,7 @@ const Album = ({albumName, author, cover, id, numberOfSongs, album, openAlbumPla
           {cover ? (
             <Image style={styles.image} source={{uri: cover}} />
           ) : (
-            <Headphones />
+            <Headphones color={grey} />
           )}
           
         </TouchableOpacity>

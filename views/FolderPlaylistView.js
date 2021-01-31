@@ -1,49 +1,74 @@
-import React, {useEffect, useState} from 'react';
-import TextTicker from 'react-native-text-ticker';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Dimensions,
-  TouchableOpacity,
-  StatusBar,
-} from 'react-native';
-
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Text, Dimensions, StatusBar } from 'react-native';
 import AllActions from '../store/actions';
-import {useSelector, useDispatch} from 'react-redux';
-import {Icon} from 'react-native-elements';
-import {totalTimeConverter} from '../store/functions/converters.js'
-const screenWidth = Dimensions.get('window').width;
+import TracksListView from '../components/TracksListView';
+import TextTicker from 'react-native-text-ticker';
+import { totalTimeConverter } from '../store/functions/converters.js';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Headphones from '../components/Headphones';
+import Play from '../components/Play';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { Icon } from 'react-native-elements';
+
+// const screenWidth = Dimensions.get('window').width;
 const FolderPlaylistView = () => {
-  const dispatch = useDispatch()
-  const {lightBackground, folderColor, secondary} = useSelector(
-    (state) => state.themeReducer.theme,
-  );
-  const [totalTime, setTotalTime] = useState(0.00)
-  const {selectedFolder} = useSelector(state => state.playerReducer)
-  const folderName = selectedFolder.folder
-  const numberOfSongs = selectedFolder.numberOfSongs
- 
+  const dispatch = useDispatch();
+  const {
+    lightBackground,
+    extraLightBackground,
+    folderColor,
+    background,
+    primary,
+    secondary,
+  } = useSelector((state) => state.themeReducer.theme);
+  const [totalTime, setTotalTime] = useState(0.0);
+  const { selectedFolder } = useSelector((state) => state.playerReducer);
 
-  
   useEffect(() => {
-    
-    const time = totalTimeConverter(selectedFolder.tracks)
-    setTotalTime(time)
+    const time = totalTimeConverter(selectedFolder.tracks);
+    setTotalTime(time);
     return () => {
-       dispatch(AllActions.setSelectedFolder({}))
-    }
-}, [selectedFolder])
-  return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor="#062D83" animated={true} />
+      // dispatch(AllActions.setSelectedFolder({}));
+    };
+  }, [selectedFolder]);
 
+  const HeadphonesColor = '#494949'
+  return (
+    <View
+      style={{ ...styles.container, backgroundColor: extraLightBackground }}>
+      <StatusBar backgroundColor={extraLightBackground} />
       <View style={styles.top}>
-        <View style={styles.imageContainer}>
-          <View style={styles.imageWrap}>
-            <Icon type="entypo" name="folder-music" size={35} color={'white'} />
+        <View style={styles.backButtonContainer}>
+          <TouchableOpacity>
+            <Icon
+              type="entypo"
+              style={styles.backIcon}
+              name="chevron-thin-left"
+              size={25}
+              color="#fff"
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.albumDetailsContainer}>
+          <View style={{ ...styles.imageWrap, borderColor: '#eee' }}>
+            <Headphones color={HeadphonesColor} />
           </View>
-          <View style={styles.titleWrap}>
+          <View style={styles.info}>
+            <View style={styles.totalSongsWrap}>
+              <Text style={styles.subtext}>Folder</Text>
+              <Icon
+                type="entypo"
+                name="dot-single"
+                size={12}
+                color="#888"
+                iconStyle={{ paddingHorizontal: 2 }}
+              />
+              <Text style={styles.subtext}>
+                {selectedFolder.numberOfSongs} Songs
+              </Text>
+            </View>
+
             <TextTicker
               style={styles.title}
               duration={15000}
@@ -51,146 +76,169 @@ const FolderPlaylistView = () => {
               bounce
               repeatSpacer={50}
               marqueeDelay={1000}>
-              {folderName}
+              {selectedFolder.folder}
             </TextTicker>
-          </View>
-        </View>
-        <View style={styles.information}>
-          <View style={styles.backButton}>
-            <TouchableOpacity style={styles.touchable}>
-              <Icon
-                type="simple-line-icon"
-                name="shuffle"
-                size={20}
-                color={'white'}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.touchableRight}>
-              <Icon
-                type="simple-line-icon"
-                name="arrow-down"
-                size={20}
-                color={'white'}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.infoWrap}>
-            <Text style={styles.songs}>Songs: {numberOfSongs}</Text>
-            <View style={styles.timeWrap}>
-              <Icon name="clock" type="font-awesome-5" size={12} color="#ccc" />
-              <Text style={styles.totalTime}>{totalTime}</Text>
+            <Text numberOfLines={1} style={styles.author}>{selectedFolder.folderPath}</Text>
+            <View style={styles.totalTime}>
+              <Icon name="clock" type="font-awesome-5" size={9} color="#888" />
+              <Text style={styles.timeText}>{totalTime}</Text>
+            </View>
+            <View style={styles.shuffleButtonWrap}>
+              <TouchableOpacity style={styles.shuffleButton}>
+                <Icon type="entypo" name="shuffle" size={22} color={'white'} />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
       </View>
 
-      <View style={styles.tracklist}></View>
+      <View style={{ ...styles.bottom, backgroundColor: background }}>
+        <View style={{...styles.fabWrap, backgroundColor: lightBackground}}>
+          <TouchableOpacity style={{ ...styles.fab, backgroundColor: primary }}>
+            <Play playing={null} size={50} color={'white'} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.tracksContainer}>
+          <TracksListView tracks={selectedFolder.tracks} />
+        </View>
+      </View>
     </View>
   );
 };
 
-export default FolderPlaylistView;
-
-const colorLightBlack = '#131313';
-const darkBlue = '#062D83';
+const radius = 40;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 70,
+  },
+  top: {
+    padding: 20,
   },
 
-  top: {
-    flex: 1.2,
-    backgroundColor: darkBlue,
+  bottom: {
+    flex: 1,
+    borderTopRightRadius: radius,
+    paddingTop: 10,
+    position: 'relative',
+  },
+  backButtonContainer: {
+    height: 30,
     flexDirection: 'row',
-    paddingHorizontal: 20,
-    borderBottomColor: '#aaa',
-    borderBottomWidth: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  information: {
+  albumDetailsContainer: {
+    flexDirection: 'row',
+    paddingTop: 40,
+  },
+
+  fab: {
+    width: 70,
+    height: 70,
     flex: 1,
-    backgroundColor: darkBlue,
-    paddingBottom: 20,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  imageContainer: {
+
+  fabWrap: {
+    position: 'absolute',
+    top: -35,
+    borderRadius: 50,
+    right: radius,
+    zIndex: 1000,
+  },
+
+  imageWrap: {
+    borderRadius: 22,
+    marginRight: 20,
+    backgroundColor: '#333',
+    width: 150,
+    height: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: 150,
+    height: 150,
+    borderRadius: 22,
+  },
+  backButton: {
+    flex: 2,
+    alignItems: 'flex-start',
+  },
+  infoTopSpace: {
+    flex: 2,
+  },
+  infoBottomSpace: {
+    flex: 4,
+    paddingHorizontal: 25,
+  },
+  info: {
     flex: 1,
-    paddingBottom: 20,
   },
+  backIcon: {
+    paddingVertical: 10,
+    paddingRight: 10,
+  },
+
   titleWrap: {
     flex: 1,
-    paddingHorizontal: 20,
-    justifyContent: 'flex-end',
-  },
-
-  infoWrap: {
-    flex: 1,
-    paddingHorizontal: 20,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-end',
-    flexDirection: 'column',
-  },
-  imageWrap: {
-    flex: 1,
-  },
-
-  fadeBorder: {
-    flex: 1,
-    width: 40,
-    height: '100%',
+    width: '100%',
   },
 
   title: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 26,
     fontWeight: 'bold',
     textTransform: 'capitalize',
   },
 
-  songs: {
+  timeText: {
+    textTransform: 'capitalize',
+    color: '#888',
+    textAlign: 'center',
+    fontSize: 10,
+    paddingLeft: 3,
+  },
+  subtext: {
+    color: '#888',
     fontSize: 12,
-    color: '#eee',
-    paddingTop: 7,
+    paddingVertical: 5,
   },
-
-  line: {
-    width: '100%',
-    height: 3,
-    backgroundColor: 'white',
-    flex: 4,
-  },
-
-  tracklist: {
-    flex: 3,
-    backgroundColor: colorLightBlack,
-  },
-
-  timeWrap: {
-    flexDirection: 'row',
-    height: 20,
-    marginTop: 2,
+  author: {
+    color: '#888',
+    fontSize: 12,
+    paddingTop: 8,
+    paddingBottom: 2,
     alignItems: 'center',
+    justifyContent: 'center',
+    letterSpacing: 0.5,
+  },
+  shuffleButtonWrap: {
+    position: 'absolute',
+    bottom: 0,
+  },
+  shuffleButton: {
+    paddingTop: 20,
+    paddingRight: 20,
   },
   totalTime: {
-    color: '#ccc',
-    paddingLeft: 4,
-    fontWeight: '100',
-    fontSize: 12,
-  },
-
-  backButton: {
-    flex: 1,
     flexDirection: 'row',
+    alignItems: 'center',
+    // paddingTop: 10,
   },
-
-  touchable: {
+  totalSongsWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 15,
+  },
+  tracksContainer: {
     flex: 1,
-  },
-  touchableRight: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  backIcon: {
-    padding: 20,
   },
 });
+
+export default FolderPlaylistView;
+

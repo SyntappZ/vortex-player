@@ -30,6 +30,7 @@
     "react-native-text-ticker": "^1.11.0",
     "react-native-track-player": "^1.2.3",
     "react-native-vector-icons": "^8.0.0",
+    "react-native-viewport-units": "^0.0.5",
     "react-navigation": "^4.4.3",
     "react-redux": "^7.2.2",
     "recyclerlistview": "^3.0.5",

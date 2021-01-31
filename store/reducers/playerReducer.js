@@ -42,7 +42,7 @@ import {
         };
       }
       case SET_PLAYER_ALBUM_DATA: {
-      
+    
         return {
           ...state,
           albumData: payload

@@ -1,5 +1,5 @@
-import {fetchAlbumArt} from '../functions/AlbumArtApi.js';
-import {getMusicTracks, getMusicAlbums} from '../functions/fetchMusic.js';
+import { fetchAlbumArt } from '../functions/AlbumArtApi.js';
+import { getMusicTracks, getMusicAlbums } from '../functions/fetchMusic.js';
 import {
   trackConverter,
   createFolders,
@@ -15,32 +15,28 @@ import {
   SET_PLAYER_VISIBILITY,
 } from './types';
 
-const createCoverArtObject = async (arr, objData = {}) => {
-  if (arr.length < 1) return objData;
+// const createCoverArtObject = async (arr, objData = {}) => {
+//   if (arr.length < 1) return objData;
 
-  const album = arr.shift();
+//   const album = arr.shift();
 
-  const author = album[1][0].author;
+//   const author = album[1][0].author;
 
-  const image = await fetchAlbumArt(author, album[0]);
+//   const albumName = album[0];
+//   const tracks = album[1];
+//   objData[albumName] = {
+//     cover: '',
+//     tracks: tracks,
+//     totalTracks: tracks.length,
+//   };
 
-  const albumName = album[0];
-  const tracks = album[1];
-  objData[albumName] = {
-    cover: '',
-    tracks: tracks,
-    totalTracks: tracks.length,
-  };
-
-  return createCoverArtObject(arr, objData);
-};
+//   return createCoverArtObject(arr, objData);
+// };
 
 const addTracksToAlbums = (albums, tracks, output = {}) => {
   if (albums.length < 1) return output;
   const album = albums.shift();
   const id = album.id;
-
-  // console.log(tracks[0])
   const albumTracks = tracks.filter((track) => {
     track.albumId = id;
     return track.album === album.album;
@@ -76,9 +72,9 @@ const fetchAlbums = () => {
     const musicAlbums = await getMusicAlbums();
     const musicTracks = await getMusicTracks();
     musicTracks.forEach((track) => {
-      const splitPath = track.path.split('/').reverse()
+      const splitPath = track.path.split('/').reverse();
       const folder = splitPath[1];
-      const folderPath = splitPath[2]
+      const folderPath = splitPath[2];
       track.folder = folder;
       track.folderPath = `/${folderPath}`;
     });
@@ -96,7 +92,6 @@ const fetchAlbums = () => {
     const keys = Object.keys(albumsObject);
 
     const updatedAlbumsObject = await addCoversToAlbums(keys, albumsObject);
-    
 
     dispatch(addAlbums(updatedAlbumsObject));
   };
@@ -136,4 +131,4 @@ const setPlayerVisibility = (payload) => ({
   payload: payload,
 });
 
-export {fetchAlbums, updateImage, setAppLoaded, setPlayerVisibility};
+export { fetchAlbums, updateImage, setAppLoaded, setPlayerVisibility };

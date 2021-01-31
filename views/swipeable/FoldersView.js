@@ -9,7 +9,7 @@ const FolderView = ({navigation}) => {
   const {folders} = useSelector((state) => state.globalReducer);
 
   const openFolderPlaylist = (folder) => {
-    dispatch(AllActions.setSelectedFolder(folder))
+    // dispatch(AllActions.setSelectedFolder(folder))
     navigation.navigate('FolderPlaylist'); 
   };
   

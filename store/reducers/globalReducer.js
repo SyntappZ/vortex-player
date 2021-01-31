@@ -6,9 +6,9 @@ import {
   UPDATE_IMAGE,
   ADD_FAVORITES,
   SET_PLAYER_VISIBILITY,
-  APP_LOADED
+  APP_LOADED,
 } from '../actions/types';
-import {convertListView, createFolders} from '../functions/converters.js';
+import { convertListView, createFolders } from '../functions/converters.js';
 
 const initialState = {
   albumData: {},
@@ -18,38 +18,42 @@ const initialState = {
   folders: [],
   favorites: [],
   appLoaded: false,
-  bottomPlayerVisible: false
+  bottomPlayerVisible: false,
 };
 const globalReducer = (state = initialState, action) => {
-  const {payload} = action;
+  const { payload } = action;
   switch (action.type) {
     case ADD_TRACKS: {
-     const folders = createFolders(payload)
-     const folderArray = Object.entries(folders).map((item, index) => ({
-      type: 'FOLDERS',
-      item: {
-        folder: item[0],
-        tracks: item[1],
-        numberOfSongs: item[1].length,
-        id: `ID_${index}`,
-        folderPath: item[1][0].folderPath
-      }
-     }))
-     
+      const folders = createFolders(payload);
+      const folderArray = Object.entries(folders).map((item, index) => ({
+        type: 'FOLDERS',
+        item: {
+          folder: item[0],
+          tracks: item[1],
+          numberOfSongs: item[1].length,
+          id: `ID_${index}`,
+          folderPath: item[1][0].folderPath,
+        },
+      }));
+
       return {
         ...state,
         tracks: payload,
         foldersObject: folders,
-        folders: folderArray
-        
+        folders: folderArray,
       };
     }
     case ADD_ALBUMS: {
-    
+      const sortedAlbums = convertListView(
+        Object.values(payload).sort(
+          (a, b) => parseInt(b.numberOfSongs) - parseInt(a.numberOfSongs),
+        ),
+        'ALBUMS',
+      );
 
       return {
         ...state,
-        albums: convertListView(Object.values(payload), 'ALBUMS'),
+        albums: sortedAlbums,
         albumData: payload,
       };
     }
@@ -64,15 +68,15 @@ const globalReducer = (state = initialState, action) => {
       return {
         ...state,
         appLoaded: true,
-        bottomPlayerVisible: true
-      }
+        bottomPlayerVisible: true,
+      };
     }
 
     case SET_PLAYER_VISIBILITY: {
       return {
         ...state,
-        bottomPlayerVisible: payload
-      }
+        bottomPlayerVisible: payload,
+      };
     }
 
     case UPDATE_IMAGE: {

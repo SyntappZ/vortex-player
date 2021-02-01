@@ -4,17 +4,20 @@ import {
   SET_PLAYER_ALBUM_DATA,
   SET_SELECTED_ALBUM,
   SET_PLAYER_TRACK_DATA,
+  SET_IS_PLAYING,
+  SET_CURRENT_TRACK,
 
   } from "../actions/types";
   
   
   const initialState = {
-    tracks: [],
-    albumData: {},
+    playerTracks: [],
+    playerAlbumData: null,
     currentPlaylist: [],
     selectedAlbum:{},
-    selectedFolder:{}
-
+    selectedFolder:{},
+    isPlaying: false,
+    currentPlayingTrack: {}
 
   };
   const playerReducer = (state = initialState, action) => {
@@ -45,15 +48,34 @@ import {
     
         return {
           ...state,
-          albumData: payload
+          playerAlbumData: payload
         };
       }
       case SET_PLAYER_TRACK_DATA: {
-      
+     
         return {
           ...state,
-          tracks: payload
+          playerTracks: payload,
+
         };
+      }
+
+      case SET_IS_PLAYING: {
+        return {
+          ...state,
+          isPlaying: payload
+        }
+      }
+
+      case SET_CURRENT_TRACK: {
+        const track = payload
+        const albumName = track.album
+         track.cover = state.playerAlbumData[albumName].cover
+
+        return {
+          ...state,
+          currentPlayingTrack: track
+        }
       }
 
      

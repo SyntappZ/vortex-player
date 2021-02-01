@@ -4,6 +4,8 @@ import {
   SET_SELECTED_FOLDER,
   SET_PLAYER_ALBUM_DATA,
   SET_PLAYER_TRACK_DATA,
+  SET_IS_PLAYING,
+  SET_CURRENT_TRACK,
 } from './types';
 
 const setCurrentPlaylist = (payload) => ({
@@ -28,10 +30,22 @@ const setPlayerTrackData = (payload) => ({
   payload: payload,
 });
 
+const setIsPlaying = (payload) => ({
+  type: SET_IS_PLAYING,
+  payload: payload
+})
+
+const setCurrentTrack = (payload) => ({
+  type: SET_CURRENT_TRACK,
+  payload: payload
+})
+
 export {
   setCurrentPlaylist,
   setSelectedAlbum,
   setSelectedFolder,
   setPlayerAlbumData,
   setPlayerTrackData,
+  setIsPlaying,
+  setCurrentTrack,
 };

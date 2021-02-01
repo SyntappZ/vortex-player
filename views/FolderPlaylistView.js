@@ -6,25 +6,31 @@ import TextTicker from 'react-native-text-ticker';
 import { totalTimeConverter } from '../store/functions/converters.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Headphones from '../components/Headphones';
-import Play from '../components/Play';
+import MusicFly from '../components/MusicFly';
+import Heart from '../components/Heart';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { Icon } from 'react-native-elements';
+import FabButton from '../components/FabButton';
+
 
 // const screenWidth = Dimensions.get('window').width;
-const FolderPlaylistView = () => {
+const FolderPlaylistView = ({ navigation }) => {
   const dispatch = useDispatch();
   const {
     lightBackground,
     extraLightBackground,
     folderColor,
+    subtext,
+    text,
     background,
     primary,
     secondary,
   } = useSelector((state) => state.themeReducer.theme);
   const [totalTime, setTotalTime] = useState(0.0);
+  const [isFavorite, setIsFavorite] = useState(null)
   const { selectedFolder } = useSelector((state) => state.playerReducer);
-
+  const { isPlaying } = useSelector((state) => state.playerReducer);
   useEffect(() => {
     const time = totalTimeConverter(selectedFolder.tracks);
     setTotalTime(time);
@@ -33,14 +39,21 @@ const FolderPlaylistView = () => {
     };
   }, [selectedFolder]);
 
-  const HeadphonesColor = '#494949'
+  const navigateBack = () => navigation.goBack();
+
+  const favoriteHandler = () => {
+    setIsFavorite(!isFavorite)
+  }
+  
+
+  const HeadphonesColor = '#494949';
   return (
     <View
       style={{ ...styles.container, backgroundColor: extraLightBackground }}>
       <StatusBar backgroundColor={extraLightBackground} />
       <View style={styles.top}>
         <View style={styles.backButtonContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={navigateBack}>
             <Icon
               type="entypo"
               style={styles.backIcon}
@@ -49,22 +62,26 @@ const FolderPlaylistView = () => {
               color="#fff"
             />
           </TouchableOpacity>
+          <TouchableOpacity style={styles.favoriteButton} onPress={favoriteHandler}>
+           <Heart isFavorite={isFavorite} />
+          </TouchableOpacity>
         </View>
         <View style={styles.albumDetailsContainer}>
-          <View style={{ ...styles.imageWrap, borderColor: '#eee' }}>
+          <View style={{...styles.imageWrap, backgroundColor: secondary}}>
+            {isPlaying ? <MusicFly color={'white'} /> : null}
             <Headphones color={HeadphonesColor} />
           </View>
           <View style={styles.info}>
             <View style={styles.totalSongsWrap}>
-              <Text style={styles.subtext}>Folder</Text>
+              <Text style={{...styles.subtext, color: subtext}}>Folder</Text>
               <Icon
                 type="entypo"
                 name="dot-single"
                 size={12}
-                color="#888"
+                color={subtext}
                 iconStyle={{ paddingHorizontal: 2 }}
               />
-              <Text style={styles.subtext}>
+              <Text style={{...styles.subtext, color: subtext}}>
                 {selectedFolder.numberOfSongs} Songs
               </Text>
             </View>
@@ -78,10 +95,12 @@ const FolderPlaylistView = () => {
               marqueeDelay={1000}>
               {selectedFolder.folder}
             </TextTicker>
-            <Text numberOfLines={1} style={styles.author}>{selectedFolder.folderPath}</Text>
+            <Text numberOfLines={1} style={{...styles.author, color: subtext}}>
+              {selectedFolder.folderPath}
+            </Text>
             <View style={styles.totalTime}>
-              <Icon name="clock" type="font-awesome-5" size={9} color="#888" />
-              <Text style={styles.timeText}>{totalTime}</Text>
+              <Icon name="clock" type="font-awesome-5" size={9} color={subtext} />
+              <Text style={{...styles.timeText, color: subtext}}>{totalTime}</Text>
             </View>
             <View style={styles.shuffleButtonWrap}>
               <TouchableOpacity style={styles.shuffleButton}>
@@ -93,11 +112,7 @@ const FolderPlaylistView = () => {
       </View>
 
       <View style={{ ...styles.bottom, backgroundColor: background }}>
-        <View style={{...styles.fabWrap, backgroundColor: lightBackground}}>
-          <TouchableOpacity style={{ ...styles.fab, backgroundColor: primary }}>
-            <Play playing={null} size={50} color={'white'} />
-          </TouchableOpacity>
-        </View>
+      <FabButton />
 
         <View style={styles.tracksContainer}>
           <TracksListView tracks={selectedFolder.tracks} />
@@ -154,7 +169,7 @@ const styles = StyleSheet.create({
   imageWrap: {
     borderRadius: 22,
     marginRight: 20,
-    backgroundColor: '#333',
+    // backgroundColor: '#333',
     width: 150,
     height: 150,
     justifyContent: 'center',
@@ -183,6 +198,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingRight: 10,
   },
+  favoriteButton: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    
+  },
 
   titleWrap: {
     flex: 1,
@@ -198,18 +220,17 @@ const styles = StyleSheet.create({
 
   timeText: {
     textTransform: 'capitalize',
-    color: '#888',
     textAlign: 'center',
     fontSize: 10,
     paddingLeft: 3,
   },
   subtext: {
-    color: '#888',
+  
     fontSize: 12,
     paddingVertical: 5,
   },
   author: {
-    color: '#888',
+
     fontSize: 12,
     paddingTop: 8,
     paddingBottom: 2,
@@ -241,4 +262,3 @@ const styles = StyleSheet.create({
 });
 
 export default FolderPlaylistView;
-

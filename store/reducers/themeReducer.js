@@ -8,8 +8,10 @@ const themes = {
     extraLightBackground: '#202020',
     border: '#323232',
     primary: '#2A56B9',
-    secondary: '#0B64D9',
-    folderColor: "#074DD9"
+    secondary: '#333',
+    folderColor: "#074DD9",
+    subtext: "#888",
+    text: "#fff"
   },
 };
 

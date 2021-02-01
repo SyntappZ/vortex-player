@@ -12,6 +12,8 @@ import {
   setSelectedFolder,
   setPlayerAlbumData,
   setPlayerTrackData,
+  setIsPlaying,
+  setCurrentTrack
 } from './playerActions';
 
 const AllActions = {
@@ -27,6 +29,8 @@ const AllActions = {
   setSelectedFolder,
   setPlayerAlbumData,
   setPlayerTrackData,
+  setIsPlaying,
+  setCurrentTrack
 };
 
 export default AllActions;

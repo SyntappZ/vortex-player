@@ -7,16 +7,19 @@ import FoldersView from '../views/swipeable/FoldersView'
 import TracksView from '../views/swipeable/TracksView'
 import FavoritesView from '../views/swipeable/FavoritesView'
 import {useSelector} from 'react-redux'
+import { vw, vh } from 'react-native-viewport-units';
+
 const Tab = createMaterialTopTabNavigator();
 const SwipeNavigator = () => {
+const labelFontSize = 3 * vw;
 
   const {background, primary, secondary} = useSelector(state => state.themeReducer.theme)
   const options = {
-    activeTintColor: secondary,
+    activeTintColor: primary,
     inactiveTintColor: 'white',
     labelStyle: {
       textTransform: 'capitalize',
-      
+      fontSize: labelFontSize
     },
     style: {
       backgroundColor: background,

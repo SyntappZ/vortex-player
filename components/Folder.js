@@ -6,7 +6,7 @@ import {Icon} from 'react-native-elements';
 import {useSelector} from 'react-redux';
 // import { TouchableOpacity } from "react-native-gesture-handler";
 const Folder = ({folderName, tracks, folderPath, id, numberOfSongs, folder, openFolderPlaylist}) => {
-  const {lightBackground, folderColor, secondary} = useSelector(
+  const {lightBackground, folderColor, primary} = useSelector(
     (state) => state.themeReducer.theme,
   );
  
@@ -18,7 +18,7 @@ const Folder = ({folderName, tracks, folderPath, id, numberOfSongs, folder, open
   return (
     <View style={{...styles.container, backgroundColor: lightBackground}}>
       <View style={styles.iconWrap}>
-      <Icon type="entypo" name="folder-music" size={35} color={secondary} />
+      <Icon type="entypo" name="folder-music" size={35} color={primary} />
       </View>
       <View style={styles.textWrap}>
         <TouchableOpacity style={styles.touchable} onPress={() => openFolderPlaylist(folder)}>

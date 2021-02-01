@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,31 +11,55 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
-import {Icon} from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import ProgressBar from './ProgressBar';
-import {useSelector} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import TextTicker from 'react-native-text-ticker';
+import AllActions from '../store/actions';
 import Play from './Play';
 
-
-const BottomPlayer = () => {
-  const [playing, setPlaying] = useState(null)
-
-  const {background, primary} = useSelector(
+const BottomPlayer = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const [playing, setPlaying] = useState(null);
+  const [cover, setCover] = useState(null);
+  const [track, setTrack] = useState({});
+  const { background, primary } = useSelector(
     (state) => state.themeReducer.theme,
   );
 
-  const modalHandler = () => {};
+  const { currentPlayingTrack, albumData } = useSelector(
+    (state) => state.playerReducer,
+  );
+
+  // useEffect(() => {
+  //   if (albumData) {
+  //     const id = currentPlayingTrack.albumId;
+
+  //     setCover(albumData[id].cover);
+  //   }
+  // }, [albumData, currentPlayingTrack]);
+
+  const modalHandler = () => {
+    navigation.navigate('NowPlayingView');
+    dispatch(AllActions.setPlayerVisibility(false));
+  };
   const playerControls = () => {};
 
   const animationFinished = () => {};
 
   return (
-    <View style={{...styles.container, backgroundColor: background}}>
+    <View style={{ ...styles.container, backgroundColor: background }}>
       <View style={styles.imageWrap}>
-        <TouchableOpacity onPress={modalHandler} style={styles.touchableImage}>
+        
+          <TouchableOpacity
+            onPress={modalHandler}
+            style={styles.touchableImage}>
+            <Image
+              source={{ uri: currentPlayingTrack.cover }}
+              style={styles.image}
+            />
+          </TouchableOpacity>
        
-        </TouchableOpacity>
       </View>
       <View style={styles.rightWrap}>
         <ProgressBar radius={10} color={primary} />
@@ -50,11 +74,11 @@ const BottomPlayer = () => {
                   bounce
                   repeatSpacer={50}
                   marqueeDelay={1000}>
-                  title preview
+                  {currentPlayingTrack.title}
                 </TextTicker>
 
                 <Text numberOfLines={1} style={styles.artist}>
-                  artist preview
+                  {currentPlayingTrack.author}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -70,7 +94,7 @@ const BottomPlayer = () => {
             <TouchableOpacity
               onPress={() => setPlaying(!playing)}
               style={styles.touchableControl}>
-             <Play playing={playing} color={primary} size={55}/>
+              <Play playing={playing} color={primary} size={55} />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => playerControls('forwards')}
@@ -100,12 +124,14 @@ const styles = StyleSheet.create({
     flex: 1.2,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: '#222',
-    // borderColor: '#0d0d0d',
-    // borderWidth: 3
+    backgroundColor: '#222',
+    // borderColor: 'grey',
+    // borderRadius: 15,
+    // borderWidth: 3,
   },
 
   image: {
+    // borderRadius: 15,
     width: '100%',
     height: '100%',
   },
@@ -130,6 +156,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '100%',
+    backgroundColor: '#222',
   },
   artist: {
     fontSize: 12,

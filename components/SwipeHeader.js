@@ -14,7 +14,7 @@ import {
 const SwipeHeader = ({navigation}) => {
   const [isSearching, setSearching] = useState(false);
 
-  const {background, secondary} = useSelector(
+  const {background, primary, secondary} = useSelector(
     (state) => state.themeReducer.theme,
   );
 
@@ -41,7 +41,7 @@ const SwipeHeader = ({navigation}) => {
     </TouchableOpacity>
     <TouchableOpacity onPress={wipeStorage} style={styles.title}>
       <Text style={styles.titleText}>
-        vortex <Text style={{...styles.blueText, color: secondary}}>player</Text>
+        vortex <Text style={{...styles.blueText, color: primary}}>player</Text>
       </Text>
     </TouchableOpacity>
     <TouchableOpacity onPress={search} style={styles.search}>

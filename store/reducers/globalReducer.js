@@ -16,6 +16,7 @@ const initialState = {
   albums: [],
   foldersObject: {},
   folders: [],
+  folderNames: [],
   favorites: [],
   appLoaded: false,
   bottomPlayerVisible: false,
@@ -41,19 +42,22 @@ const globalReducer = (state = initialState, action) => {
         tracks: payload,
         foldersObject: folders,
         folders: folderArray,
+        folderNames: Object.keys(folders),
       };
     }
     case ADD_ALBUMS: {
-      const sortedAlbums = convertListView(
-        Object.values(payload).sort(
-          (a, b) => parseInt(b.numberOfSongs) - parseInt(a.numberOfSongs),
-        ),
-        'ALBUMS',
+      const sortedAlbums = Object.values(payload).sort(
+        (a, b) => parseInt(b.numberOfSongs) - parseInt(a.numberOfSongs));
+
+
+      const filterFolders = sortedAlbums.filter(
+        (album) => !state.folderNames.includes(album.album),
       );
 
+    
       return {
         ...state,
-        albums: sortedAlbums,
+        albums: convertListView(filterFolders ,'ALBUMS'),
         albumData: payload,
       };
     }

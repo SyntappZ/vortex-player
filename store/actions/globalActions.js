@@ -36,9 +36,8 @@ import {
 const addTracksToAlbums = (albums, tracks, output = {}) => {
   if (albums.length < 1) return output;
   const album = albums.shift();
-  const id = album.id;
+  const id = album.album;
   const albumTracks = tracks.filter((track) => {
-    track.albumId = id;
     return track.album === album.album;
   });
   const allDetails = {
@@ -84,13 +83,9 @@ const fetchAlbums = () => {
 
     const tracks = trackConverter(musicTracks);
     dispatch(addTracks(tracks));
-    const folders = musicTracks.map((track) => track.folder);
+  
 
-    const filterFolders = musicAlbums.filter(
-      (album) => !folders.includes(album.album),
-    );
-
-    const albumsObject = addTracksToAlbums(filterFolders, tracks);
+    const albumsObject = addTracksToAlbums(musicAlbums, tracks);
     dispatch(addAlbums(albumsObject));
     const keys = Object.keys(albumsObject);
 

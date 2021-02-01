@@ -1,5 +1,8 @@
 import {GridLayoutProvider} from 'recyclerlistview-gridlayoutprovider';
+import {vw, vh} from 'react-native-viewport-units';
+
 const MAX_SPAN = 4;
+const albumHeight = 32*vh
 export default class LayoutProvider extends GridLayoutProvider {
   constructor(props) {
     super(
@@ -33,7 +36,7 @@ export default class LayoutProvider extends GridLayoutProvider {
             return 60;
 
           case 'ALBUMS':
-            return 250;
+            return albumHeight;
         }
       },
     );

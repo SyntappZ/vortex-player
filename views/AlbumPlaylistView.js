@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Icon } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
 import { View, StyleSheet, StatusBar, Image, Text } from 'react-native';
-
+import Heart from '../components/Heart';
 import AllActions from '../store/actions';
 import TracksListView from '../components/TracksListView';
 import TextTicker from 'react-native-text-ticker';
@@ -10,8 +10,8 @@ import { totalTimeConverter } from '../store/functions/converters.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Headphones from '../components/Headphones';
 import Play from '../components/Play';
-
-const AlbumPlaylistView = () => {
+import FabButton from '../components/FabButton'
+const AlbumPlaylistView = ({navigation}) => {
   const dispatch = useDispatch();
   const { selectedAlbum } = useSelector((state) => state.playerReducer);
   const [tracks, setTracks] = useState([]);
@@ -21,9 +21,12 @@ const AlbumPlaylistView = () => {
     lightBackground,
     extraLightBackground,
     secondary,
+    subtext,
+    text,
     border,
   } = useSelector((state) => state.themeReducer.theme);
   const [totalTime, setTotalTime] = useState(0.0);
+  const [isFavorite, setIsFavorite] = useState(null)
   useEffect(() => {
     const time = totalTimeConverter(selectedAlbum.tracks);
     setTotalTime(time);
@@ -32,7 +35,13 @@ const AlbumPlaylistView = () => {
     };
   }, [selectedAlbum]);
 
-  const HeadphonesColor = '#494949'
+  const HeadphonesColor = '#494949';
+
+  const navigateBack = () => navigation.goBack()
+  
+  const favoriteHandler = () => {
+    setIsFavorite(!isFavorite)
+  }
 
   return (
     <View
@@ -40,7 +49,7 @@ const AlbumPlaylistView = () => {
       <StatusBar backgroundColor={extraLightBackground} />
       <View style={styles.top}>
         <View style={styles.backButtonContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={navigateBack}>
             <Icon
               type="entypo"
               style={styles.backIcon}
@@ -49,29 +58,32 @@ const AlbumPlaylistView = () => {
               color="#fff"
             />
           </TouchableOpacity>
+          <TouchableOpacity style={styles.favoriteButton} onPress={favoriteHandler}>
+          <Heart isFavorite={isFavorite} />
+          </TouchableOpacity>
         </View>
         <View style={styles.albumDetailsContainer}>
-          <View style={{ ...styles.imageWrap, borderColor: '#eee' }}>
+          <View style={styles.imageWrap}>
             {selectedAlbum.cover ? (
               <Image
                 style={styles.image}
                 source={{ uri: selectedAlbum.cover }}
               />
             ) : (
-              <Headphones color={HeadphonesColor}/>
+              <Headphones color={HeadphonesColor} />
             )}
           </View>
           <View style={styles.info}>
             <View style={styles.totalSongsWrap}>
-              <Text style={styles.subtext}>Album</Text>
+              <Text style={{...styles.subtext, color: subtext}}>Album</Text>
               <Icon
                 type="entypo"
                 name="dot-single"
                 size={12}
-                color="#888"
+                color={subtext}
                 iconStyle={{ paddingHorizontal: 2 }}
               />
-              <Text style={styles.subtext}>
+              <Text style={{...styles.subtext, color: subtext}}>
                 {selectedAlbum.numberOfSongs} Songs
               </Text>
             </View>
@@ -85,10 +97,10 @@ const AlbumPlaylistView = () => {
               marqueeDelay={1000}>
               {selectedAlbum.album}
             </TextTicker>
-            <Text style={styles.author}>{selectedAlbum.author}</Text>
+            <Text style={{...styles.author, color: subtext}}>{selectedAlbum.author}</Text>
             <View style={styles.totalTime}>
-              <Icon name="clock" type="font-awesome-5" size={9} color="#888" />
-              <Text style={styles.timeText}>{totalTime}</Text>
+              <Icon name="clock" type="font-awesome-5" size={9} color={subtext} />
+              <Text style={{...styles.timeText, color: subtext}}>{totalTime}</Text>
             </View>
             <View style={styles.shuffleButtonWrap}>
               <TouchableOpacity style={styles.shuffleButton}>
@@ -100,11 +112,7 @@ const AlbumPlaylistView = () => {
       </View>
 
       <View style={{ ...styles.bottom, backgroundColor: background }}>
-        <View style={{...styles.fabWrap, backgroundColor: lightBackground}}>
-          <TouchableOpacity style={{ ...styles.fab, backgroundColor: primary }}>
-            <Play playing={null} size={50} color={'white'} />
-          </TouchableOpacity>
-        </View>
+       <FabButton />
 
         <View style={styles.tracksContainer}>
           <TracksListView tracks={selectedAlbum.tracks} />
@@ -176,6 +184,13 @@ const styles = StyleSheet.create({
     flex: 2,
     alignItems: 'flex-start',
   },
+  favoriteButton: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    
+  },
   infoTopSpace: {
     flex: 2,
   },
@@ -205,18 +220,15 @@ const styles = StyleSheet.create({
 
   timeText: {
     textTransform: 'capitalize',
-    color: '#888',
     textAlign: 'center',
     fontSize: 10,
     paddingLeft: 3,
   },
   subtext: {
-    color: '#888',
     fontSize: 12,
     paddingVertical: 5,
   },
   author: {
-    color: '#888',
     fontSize: 15,
     paddingTop: 8,
     paddingBottom: 2,

@@ -6,6 +6,9 @@ import {View, Text} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import FolderPlaylistView from '../views/FolderPlaylistView';
 import AlbumPlaylistView from '../views/AlbumPlaylistView';
+import NowPlayingView from '../views/NowPlayingView'
+import SettingsView from '../views/SettingsView'
+import SearchView from '../views/SearchView'
 const Stack = createStackNavigator();
 
 
@@ -24,6 +27,9 @@ const StackNavigator = () => {
       <Stack.Screen name="SwipeNavigator" component={SwipeNavigator} />
       <Stack.Screen name="FolderPlaylist" component={FolderPlaylistView} />
       <Stack.Screen name="AlbumPlaylist" component={AlbumPlaylistView} />
+      <Stack.Screen name="NowPlayingView" component={NowPlayingView} />
+      <Stack.Screen name="SettingsView" component={SettingsView} />
+      <Stack.Screen name="SearchView" component={SearchView} />
      
       {/* <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Settings" component={Settings} /> */}

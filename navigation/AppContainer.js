@@ -6,7 +6,7 @@ import { requestPermission } from '../store/functions/askPermission.js';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import StackNavigator from './StackNavigator';
 import AllActions from '../store/actions';
-import BottomPlayer from '../components/BottomPlayer';
+import BottomSheetPlayer from '../components/BottomSheetPlayer';
 
 const AppContainer = () => {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const AppContainer = () => {
     (state) => state.themeReducer.theme,
   );
   const { playerAlbumData } = useSelector((state) => state.playerReducer);
-  const { appLoaded, tracks, albumData } = useSelector(
+  const { appLoaded, bottomPlayerPosition, tracks, albumData } = useSelector(
     (state) => state.globalReducer,
   );
 
@@ -31,7 +31,6 @@ const AppContainer = () => {
 
   useEffect(() => {
     if (playerAlbumData) {
-  
       dispatch(AllActions.setCurrentTrack(tracks[0]));
     }
   }, [playerAlbumData]);
@@ -62,8 +61,9 @@ const AppContainer = () => {
       <StatusBar backgroundColor={background} />
       <NavigationContainer ref={navigationRef} theme={MyTheme}>
         <StackNavigator />
-        {appLoaded ? <BottomPlayer navigation={navigationRef.current} /> : null}
+       
       </NavigationContainer>
+      <BottomSheetPlayer />
     </View>
   );
 };

@@ -2,10 +2,10 @@ import React from 'react';
 import {View, Text, Dimensions, StyleSheet} from 'react-native';
 import SwipeHeader from '../components/SwipeHeader';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import AlbumsView from '../views/swipeable/AlbumsView'
-import FoldersView from '../views/swipeable/FoldersView'
-import TracksView from '../views/swipeable/TracksView'
-import FavoritesView from '../views/swipeable/FavoritesView'
+import AlbumsView from '../views/swipeScreens/AlbumsView'
+import FoldersView from '../views/swipeScreens/FoldersView'
+import TracksView from '../views/swipeScreens/TracksView'
+import FavoritesView from '../views/swipeScreens/FavoritesView'
 import {useSelector} from 'react-redux'
 import { vw, vh } from 'react-native-viewport-units';
 

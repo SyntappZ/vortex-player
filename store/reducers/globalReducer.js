@@ -19,7 +19,7 @@ const initialState = {
   folderNames: [],
   favorites: [],
   appLoaded: false,
-  bottomPlayerVisible: false,
+  sheetSnapPoint: 0,
 };
 const globalReducer = (state = initialState, action) => {
   const { payload } = action;
@@ -72,14 +72,16 @@ const globalReducer = (state = initialState, action) => {
       return {
         ...state,
         appLoaded: true,
-        bottomPlayerVisible: true,
+        bottomPlayerPosition: 20,
       };
     }
 
     case SET_PLAYER_VISIBILITY: {
+      
+
       return {
         ...state,
-        bottomPlayerVisible: payload,
+        sheetSnapPoint: 0,
       };
     }
 

@@ -30,6 +30,9 @@ const BottomPlayer = ({ navigation }) => {
   const { currentPlayingTrack, albumData } = useSelector(
     (state) => state.playerReducer,
   );
+  const { bottomPlayerPosition } = useSelector(
+    (state) => state.globalReducer,
+  );
 
   // useEffect(() => {
   //   if (albumData) {
@@ -48,7 +51,7 @@ const BottomPlayer = ({ navigation }) => {
   const animationFinished = () => {};
 
   return (
-    <View style={{ ...styles.container, backgroundColor: background }}>
+    <View style={{ ...styles.container, backgroundColor: background, bottom: bottomPlayerPosition }}>
       <View style={styles.imageWrap}>
         
           <TouchableOpacity
@@ -108,7 +111,7 @@ const BottomPlayer = ({ navigation }) => {
   );
 };
 
-const colorBlack = '#0D0D0D';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -116,9 +119,7 @@ const styles = StyleSheet.create({
     height: 70,
     flex: 1,
     flexDirection: 'row',
-
-    position: 'absolute',
-    bottom: 0,
+    position: 'absolute',  
   },
   imageWrap: {
     flex: 1.2,

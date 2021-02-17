@@ -14,6 +14,7 @@ export default class AlbumsListView extends Component {
     };
     this._layoutProvider = new LayoutProvider(this.state.dataProvider);
     this._renderRow = this._renderRow.bind(this);
+    this.footer = this.footer.bind(this)
   }
 
   _renderRow = (type, data) => {
@@ -34,6 +35,14 @@ export default class AlbumsListView extends Component {
     );
   };
 
+  footer = () => {
+    return (
+      <View style={{padding: 35}}>
+
+      </View>
+    )
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -43,6 +52,7 @@ export default class AlbumsListView extends Component {
               rowRenderer={this._renderRow}
               dataProvider={this.state.dataProvider}
               layoutProvider={this._layoutProvider}
+              renderFooter={this.footer}
             />
           </View>
         ) : null}
@@ -54,7 +64,7 @@ export default class AlbumsListView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 70,
+    
   },
   containerGrid: {
     flex: 1,

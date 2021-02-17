@@ -37,7 +37,7 @@ const SwipeHeader = ({navigation}) => {
   return (
     <View style={{...styles.header, backgroundColor: background}}>
     <TouchableOpacity onPress={openMenu} style={styles.hamburger}>
-      <Icon size={38} name="navicon" type="evilicon" color="#fff" />
+      <Icon size={32} name="navicon" type="evilicon" color="#fff" />
     </TouchableOpacity>
     <TouchableOpacity onPress={wipeStorage} style={styles.title}>
       <Text style={styles.titleText}>

@@ -14,7 +14,7 @@ export default class FolderListView extends Component {
     };
     this._layoutProvider = new LayoutProvider(this.state.dataProvider);
     this._renderRow = this._renderRow.bind(this);
-    
+    this.footer = this.footer.bind(this)
   }
 
   
@@ -35,6 +35,14 @@ export default class FolderListView extends Component {
     );
   };
 
+  footer = () => {
+    return (
+      <View style={{padding: 35}}>
+
+      </View>
+    )
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -44,6 +52,7 @@ export default class FolderListView extends Component {
               rowRenderer={this._renderRow}
               dataProvider={this.state.dataProvider}
               layoutProvider={this._layoutProvider}
+              renderFooter={this.footer}
             />
           </View>
         ) : null}
@@ -55,7 +64,7 @@ export default class FolderListView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 70,
+  
   },
 
   listContainer: {

@@ -4,6 +4,7 @@ import Track from './Track';
 import {RecyclerListView, DataProvider} from 'recyclerlistview';
 import LayoutProvider from './LayoutProvider';
 import {convertListView} from '../store/functions/converters.js';
+import { ThemeProvider } from '@react-navigation/native';
 
 export default class TracksListView extends Component {
   constructor(props) {
@@ -27,6 +28,7 @@ export default class TracksListView extends Component {
         author={author}
         id={id}
         displayDuration={displayDuration}
+        light={this.props.light}
       />
     );
   };

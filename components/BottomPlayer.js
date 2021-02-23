@@ -16,7 +16,7 @@ import ProgressBar from './ProgressBar';
 import { useSelector, useDispatch } from 'react-redux';
 import TextTicker from 'react-native-text-ticker';
 import AllActions from '../store/actions';
-import Play from './Play';
+// import Play from './Play';
 
 const BottomPlayer = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -97,7 +97,7 @@ const BottomPlayer = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => setPlaying(!playing)}
               style={styles.touchableControl}>
-              <Play playing={playing} color={primary} size={55} />
+              {/* <Play playing={playing} color={primary} size={55} /> */}
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => playerControls('forwards')}
@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     position: 'absolute',  
+    bottom: 0,
   },
   imageWrap: {
     flex: 1.2,

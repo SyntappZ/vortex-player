@@ -13,9 +13,9 @@ const Tab = createMaterialTopTabNavigator();
 const SwipeNavigator = () => {
 const labelFontSize = 3 * vw;
 
-  const {background, primary, secondary} = useSelector(state => state.themeReducer.theme)
+  const {background, lightBackground, primary, secondary} = useSelector(state => state.themeReducer.theme)
   const options = {
-    activeTintColor: primary,
+    activeTintColor: secondary,
     inactiveTintColor: 'white',
     labelStyle: {
       textTransform: 'capitalize',
@@ -25,7 +25,7 @@ const labelFontSize = 3 * vw;
       backgroundColor: background,
     },
     indicatorStyle: {
-      backgroundColor: primary,
+      backgroundColor: secondary,
     },
   };
 

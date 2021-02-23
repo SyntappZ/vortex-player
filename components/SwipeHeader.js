@@ -41,7 +41,7 @@ const SwipeHeader = ({navigation}) => {
     </TouchableOpacity>
     <TouchableOpacity onPress={wipeStorage} style={styles.title}>
       <Text style={styles.titleText}>
-        vortex <Text style={{...styles.blueText, color: primary}}>player</Text>
+        vortex <Text style={{...styles.blueText, color: secondary}}>player</Text>
       </Text>
     </TouchableOpacity>
     <TouchableOpacity onPress={search} style={styles.search}>

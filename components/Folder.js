@@ -1,47 +1,54 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
-import {Icon} from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 // import { TouchableOpacity } from "react-native-gesture-handler";
-const Folder = ({folderName, tracks, folderPath, id, numberOfSongs, folder, openFolderPlaylist}) => {
-  const {lightBackground, folderColor, primary} = useSelector(
+const Folder = ({
+  folderName,
+  tracks,
+  folderPath,
+  id,
+  numberOfSongs,
+  folder,
+  openFolderPlaylist,
+}) => {
+  const { lightBackground, folderColor, primary, subtext, text } = useSelector(
     (state) => state.themeReducer.theme,
   );
- 
-    // <EntypoIcon name={'folder-music'} size={35} color="#074DD9" />
-   
-  
+
+  // <EntypoIcon name={'folder-music'} size={35} color="#074DD9" />
 
   const modalHandler = () => {};
   return (
-    <View style={{...styles.container, backgroundColor: lightBackground}}>
+    <View style={{ ...styles.container, backgroundColor: lightBackground }}>
       <View style={styles.iconWrap}>
-      <Icon type="entypo" name="folder-music" size={35} color={primary} />
+        <Icon type="entypo" name="folder-music" size={35} color={primary} />
       </View>
       <View style={styles.textWrap}>
-        <TouchableOpacity style={styles.touchable} onPress={() => openFolderPlaylist(folder)}>
-          <Text numberOfLines={1} style={styles.title}>
+        <TouchableOpacity
+          style={styles.touchable}
+          onPress={() => openFolderPlaylist(folder)}>
+          <Text numberOfLines={1} style={{ ...styles.title, color: text }}>
             {folderName}
           </Text>
-          <Text numberOfLines={1} style={styles.storage}>
+          <Text numberOfLines={1} style={{ ...styles.storage, color: subtext }}>
             {folderPath}
           </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.moreWrap}>
         <TouchableOpacity style={styles.moreTouchable}>
-          <Text numberOfLines={1} style={styles.songs}>
+          <Text numberOfLines={1} style={{...styles.songs, color: subtext}}>
             songs: {numberOfSongs}
           </Text>
-          <Icon size={30} name="more-vert" color="#fff" />
+          <Icon size={30} name="more-vert" color={text} />
         </TouchableOpacity>
       </View>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -77,7 +84,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    
   },
   moreWrap: {
     flex: 2,
@@ -85,18 +91,16 @@ const styles = StyleSheet.create({
 
   songs: {
     fontSize: 12,
-    color: '#aaa',
+
     textAlign: 'right',
     paddingRight: 15,
   },
   storage: {
-    fontSize: 12,
     color: '#aaa',
   },
   title: {
     fontSize: 14,
-    fontWeight: 'bold',
-    color: 'white',
+   
     letterSpacing: 0.4,
     paddingBottom: 2,
   },

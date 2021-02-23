@@ -1,15 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import 'react-native-gesture-handler';
-import { StatusBar, View, StyleSheet } from 'react-native';
+import { StatusBar, View, StyleSheet,  } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { requestPermission } from '../store/functions/askPermission.js';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import StackNavigator from './StackNavigator';
 import AllActions from '../store/actions';
 import BottomSheetPlayer from '../components/BottomSheetPlayer';
-
+import BottomPlayer from '../components/BottomPlayer';
+import BottomView from '../components/BottomView';
+import NowPlayingView from "../views/NowPlayingView"
 const AppContainer = () => {
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
   const { lightBackground, background } = useSelector(
     (state) => state.themeReducer.theme,
   );
@@ -61,9 +64,9 @@ const AppContainer = () => {
       <StatusBar backgroundColor={background} />
       <NavigationContainer ref={navigationRef} theme={MyTheme}>
         <StackNavigator />
-       
       </NavigationContainer>
-      <BottomSheetPlayer />
+       <NowPlayingView setOpen={setOpen} open={open} />
+      <BottomView setOpen={setOpen} open={open} />
     </View>
   );
 };
@@ -72,6 +75,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  box: {
+    width: '100%',
+    height: 100,
+    backgroundColor: 'red',
+    position: 'absolute',
+    bottom: 0,
+  },
+ 
 });
 
 export default AppContainer;

@@ -1,22 +1,37 @@
 import {CHANGE_THEME, STORE_THEME} from '../actions/types';
-
+const bluenew = "#192240"
 const themes = {
-  blue: {
-    color: 'blue',
-    background: '#0d0d0d',
-    lightBackground: '#141414',
-    extraLightBackground: '#202020',
-    border: '#323232',
-    primary: '#2A56B9',
-    secondary: '#333',
-    folderColor: "#074DD9",
-    subtext: "#888",
-    text: "#fff"
+  // blue: {
+  //   color: 'blue',
+  //   background: '#0d0d0d',
+  //   lightBackground: '#141414',
+  //   extraLightBackground: '#202020',
+  //   bottomPlayer: "#18181A",
+  //   border: '#323232',
+  //   primary: '#2A56B9',
+  //   secondary: '#333333',
+  //   folderColor: "#074DD9",
+  //   subtext: "#888888",
+  //   text: "#ffffff"
+  // },
+  lightBlue: {
+    color: 'lightBlue',
+    background: '#151D39',
+    lightBackground: '#eeeeee',
+    extraLightBackground: '#ffffff',
+    bottomPlayer: "#192240",
+    // border: '#323232',
+    primary: '#374780',
+    secondary: '#9CAADD',
+    folderColor: "#151D39",
+    subtext: '#aaaaaa',
+    text: "#555555",
+    titleColor: "#ffffff"
   },
 };
 
 const initialState = {
-  theme: themes.blue,
+  theme: themes.lightBlue,
 };
 
 const themeReducer = (state = initialState, action) => {

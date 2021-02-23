@@ -12,10 +12,12 @@ import {useSelector} from 'react-redux';
 
 const colorBlack = '#0D0D0D';
 
-const Track = ({author, title, displayDuration, id}) => {
-  const {primary} = useSelector((state) => state.themeReducer.theme);
+const Track = ({author, title, displayDuration, id, light}) => {
+  const {primary, text, subtext} = useSelector((state) => state.themeReducer.theme);
 
   const getPlaylist = () => {};
+
+  const titleColor = light ? "white" : text
 
   return (
     <View
@@ -28,8 +30,8 @@ const Track = ({author, title, displayDuration, id}) => {
 
       <View style={styles.textWrap}>
         <TouchableOpacity style={styles.Touchable} onPress={getPlaylist}>
-          <Text numberOfLines={1}>{title}</Text>
-          <Text numberOfLines={1} style={styles.author}>
+          <Text style={{color: titleColor}} numberOfLines={1}>{title}</Text>
+          <Text numberOfLines={1} style={{...styles.author, color: subtext}}>
             {author}
           </Text>
         </TouchableOpacity>
@@ -37,10 +39,10 @@ const Track = ({author, title, displayDuration, id}) => {
 
       <TouchableOpacity style={styles.moreWrap}>
         <View style={styles.timeWrap}>
-          <Text style={styles.trackTime}>{displayDuration}</Text>
+          <Text style={{...styles.trackTime, color: subtext}}>{displayDuration}</Text>
 
           <View>
-            <Icon size={30} name="more-vert" color="#fff" />
+            <Icon size={30} name="more-vert" color={titleColor} />
           </View>
         </View>
       </TouchableOpacity>
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   trackTime: {
-    color: '#aaa',
+   
     fontSize: 13,
     textAlign: 'right',
     paddingRight: 15,
@@ -94,13 +96,13 @@ const styles = StyleSheet.create({
 
   author: {
     fontSize: 12,
-    color: '#aaa',
+   
     paddingTop: 1
   },
   title: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: 'white',
+   
     letterSpacing: 0.4,
     paddingBottom: 5,
   },

@@ -7,13 +7,13 @@ const Heart = ({ isFavorite }) => {
   const animation = useRef(null);
   useEffect(() => {
     if (isFavorite) {
-      console.log('play');
+      // console.log('play');
       animation.current.play();
       setTimeout(() => {
         animation.current.pause();
       }, 2000);
     } else if (isFavorite === false) {
-      console.log('stop');
+      // console.log('stop');
       animation.current.resume();
      
     }

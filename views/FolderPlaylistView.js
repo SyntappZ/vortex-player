@@ -46,11 +46,11 @@ const FolderPlaylistView = ({ navigation }) => {
   }
   
 
-  const HeadphonesColor = '#494949';
+ 
   return (
     <View
       style={{ ...styles.container, backgroundColor: extraLightBackground }}>
-      <StatusBar backgroundColor={extraLightBackground} />
+      <StatusBar backgroundColor={extraLightBackground} barStyle={'dark-content'} animated={true} />
       <View style={styles.top}>
         <View style={styles.backButtonContainer}>
           <TouchableOpacity onPress={navigateBack}>
@@ -59,7 +59,7 @@ const FolderPlaylistView = ({ navigation }) => {
               style={styles.backIcon}
               name="chevron-thin-left"
               size={25}
-              color="#fff"
+              color={subtext}
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.favoriteButton} onPress={favoriteHandler}>
@@ -67,9 +67,9 @@ const FolderPlaylistView = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View style={styles.albumDetailsContainer}>
-          <View style={{...styles.imageWrap, backgroundColor: secondary}}>
+          <View style={{...styles.imageWrap, backgroundColor: primary}}>
             {isPlaying ? <MusicFly color={'white'} /> : null}
-            <Headphones color={HeadphonesColor} />
+            <Headphones color={secondary} />
           </View>
           <View style={styles.info}>
             <View style={styles.totalSongsWrap}>
@@ -87,7 +87,7 @@ const FolderPlaylistView = ({ navigation }) => {
             </View>
 
             <TextTicker
-              style={styles.title}
+              style={{...styles.title, color: text}}
               duration={15000}
               loop
               bounce
@@ -104,7 +104,7 @@ const FolderPlaylistView = ({ navigation }) => {
             </View>
             <View style={styles.shuffleButtonWrap}>
               <TouchableOpacity style={styles.shuffleButton}>
-                <Icon type="entypo" name="shuffle" size={22} color={'white'} />
+                <Icon type="entypo" name="shuffle" size={22} color={text} />
               </TouchableOpacity>
             </View>
           </View>
@@ -115,7 +115,7 @@ const FolderPlaylistView = ({ navigation }) => {
       <FabButton />
 
         <View style={styles.tracksContainer}>
-          <TracksListView tracks={selectedFolder.tracks} />
+          <TracksListView tracks={selectedFolder.tracks} light={true} />
         </View>
       </View>
     </View>

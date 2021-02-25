@@ -1,8 +1,6 @@
-
-import { RNAndroidAudioStore } from "react-native-get-music-files";
+import { RNAndroidAudioStore } from 'react-native-get-music-files';
 
 const getMusicTracks = async () => {
- 
   const options = {
     blured: false, // works only when 'cover' is set to true
     artist: true,
@@ -17,14 +15,17 @@ const getMusicTracks = async () => {
 
   try {
     const response = await RNAndroidAudioStore.getAll(options);
-    return response;
+    if (response === 'Something get wrong with musicCursor') {
+      return null;
+    } else {
+      return response;
+    }
   } catch (err) {
     return err;
   }
 };
 
 const getMusicAlbums = async () => {
- 
   const options = {
     author: true,
     album: true,
@@ -35,7 +36,11 @@ const getMusicAlbums = async () => {
 
   try {
     const response = await RNAndroidAudioStore.getAlbums();
-    return response;
+    if (response === 'Something get wrong with musicCursor') {
+      return null;
+    } else {
+      return response;
+    }
   } catch (err) {
     return err;
   }

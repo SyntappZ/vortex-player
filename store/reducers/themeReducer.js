@@ -23,10 +23,14 @@ const themes = {
     // border: '#323232',
     primary: '#374780',
     secondary: '#9CAADD',
+    
     folderColor: "#151D39",
+    
     subtext: '#aaaaaa',
     text: "#555555",
-    titleColor: "#ffffff"
+    titleColor: "#ffffff",
+    line: "#334171",
+    vinalColor: "#425390"
   },
 };
 

@@ -8,9 +8,11 @@ import TracksListView from '../components/TracksListView';
 import TextTicker from 'react-native-text-ticker';
 import { totalTimeConverter } from '../store/functions/converters.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Headphones from '../components/Headphones';
+
 import Play from '../components/Play';
 import FabButton from '../components/FabButton'
+import HeadphonesImage from '../components/HeadphonesImage';
+
 const AlbumPlaylistView = ({navigation}) => {
   const dispatch = useDispatch();
   const { selectedAlbum } = useSelector((state) => state.playerReducer);
@@ -43,6 +45,7 @@ const AlbumPlaylistView = ({navigation}) => {
   }
 
 
+
   return (
     <View
       style={{ ...styles.container, backgroundColor: extraLightBackground }} >
@@ -70,7 +73,7 @@ const AlbumPlaylistView = ({navigation}) => {
                 source={{ uri: selectedAlbum.cover }}
               />
             ) : (
-              <Headphones color={secondary} />
+              <HeadphonesImage isPlaying={false} color={secondary} />
             )}
           </View>
           <View style={styles.info}>

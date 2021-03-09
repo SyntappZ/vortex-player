@@ -8,6 +8,7 @@ import StackNavigator from './StackNavigator';
 import AllActions from '../store/actions';
 import BottomSheetPlayer from '../components/BottomSheetPlayer';
 import BottomPlayer from '../components/BottomPlayer';
+import { setupPlayer } from 'react-native-track-player';
 import BottomView from '../components/BottomView';
 import NowPlayingView from "../views/NowPlayingView"
 const AppContainer = () => {
@@ -17,7 +18,7 @@ const AppContainer = () => {
     (state) => state.themeReducer.theme,
   );
   const { playerAlbumData } = useSelector((state) => state.playerReducer);
-  const { appLoaded, bottomPlayerPosition, tracks, albumData } = useSelector(
+  const { appLoaded, tracks, albumData } = useSelector(
     (state) => state.globalReducer,
   );
 
@@ -28,8 +29,12 @@ const AppContainer = () => {
     }
   };
 
+
+  
+
   useEffect(() => {
     getPermissions();
+    setupPlayer();
   }, []);
 
   useEffect(() => {

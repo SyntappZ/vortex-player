@@ -6,24 +6,51 @@ import { Icon } from 'react-native-elements';
 // import Play from './Play';
 import TextTicker from 'react-native-text-ticker';
 import AllActions from '../store/actions';
+import HeadphonesImage from '../components/HeadphonesImage';
 const BottomView = ({ setOpen, open }) => {
-  const { primary, background, bottomPlayer } = useSelector(
+  const { primary, background, bottomPlayer, secondary } = useSelector(
     (state) => state.themeReducer.theme,
   );
   const { currentPlayingTrack, albumData } = useSelector(
     (state) => state.playerReducer,
   );
+  const { appLoaded } = useSelector((state) => state.globalReducer);
   const [playing, setPlaying] = useState(false);
-
+  const [cover, setCover] = useState(null);
+  const [bottomPosition, setBottomPosition] = useState(-90);
   const playerControls = () => {};
-  return (
-    <View style={{ ...styles.container, backgroundColor: bottomPlayer }}>
-      <TouchableOpacity style={styles.imageContainer} onPress={() => setOpen(!open)}>
-        <View style={styles.imageWrap}>
+
+  useEffect(() => {
+    if (currentPlayingTrack.cover) {
+      setCover(
         <Image
-              source={{ uri: currentPlayingTrack.cover }}
-              style={styles.image}
-            />
+          source={{ uri: currentPlayingTrack.cover }}
+          style={styles.image}
+        />,
+      );
+    } else {
+      setCover(<HeadphonesImage color={secondary} isPlaying={playing} />);
+    }
+  }, [currentPlayingTrack.cover]);
+
+  useEffect(() => {
+    if (appLoaded) {
+      setBottomPosition(0);
+    }
+  }, [appLoaded]);
+
+  return (
+    <View
+      style={{
+        ...styles.container,
+        backgroundColor: bottomPlayer,
+        bottom: bottomPosition,
+      }}>
+      <TouchableOpacity
+        style={styles.imageContainer}
+        onPress={() => setOpen(!open)}>
+        <View style={{ ...styles.imageWrap, backgroundColor: primary }}>
+          {cover}
         </View>
         <View style={styles.textWrap}>
           <TextTicker
@@ -72,7 +99,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 40,
     width: '100%',
     position: 'absolute',
-    bottom: 0,
     flexDirection: 'row',
     height: 90,
     paddingLeft: 20,
@@ -84,21 +110,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    // backgroundColor: 'grey',
   },
 
   imageWrap: {
     width: imageSize,
     height: imageSize,
     borderRadius: imageSize / 2,
-    backgroundColor: 'green',
     marginRight: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    paddingBottom: 10,
   },
   image: {
     width: imageSize,
     height: imageSize,
     borderRadius: imageSize / 2,
-    
   },
 
   buttonsContainer: {
@@ -116,7 +143,7 @@ const styles = StyleSheet.create({
   },
 
   textWrap: {
-    flex:1,
+    flex: 1,
     width: 30,
     // backgroundColor: 'red',
     height: 30,

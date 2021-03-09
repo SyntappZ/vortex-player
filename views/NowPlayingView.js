@@ -55,7 +55,7 @@ const NowPlayingView = ({ open, setOpen }) => {
           </Text>
         </View>
         <View style={{ ...styles.imageContainer }}>
-          <CircleSliderContainer playing={playing}/>
+          <CircleSliderContainer isPlaying={playing}/>
         </View>
 
         <View style={{ ...styles.favoriteContainer }}>

@@ -24,13 +24,13 @@ const Album = ({
     console.log(id)
   };
 
-  const { primary } = useSelector((state) => state.themeReducer.theme);
+  const { primary, secondary, albumBackground } = useSelector((state) => state.themeReducer.theme);
 
   const grey = '#A2A2A2';
 
   return (
     <View style={styles.album}>
-      <View style={styles.imageWrap}>
+      <View style={{...styles.imageWrap, backgroundColor: albumBackground}}>
         <TouchableOpacity
           style={styles.touchable}
           onPress={() => openAlbumPlaylist(album)}
@@ -39,7 +39,7 @@ const Album = ({
           {cover ? (
             <Image style={styles.image} source={{ uri: cover }} />
           ) : (
-            <Headphones color={grey} />
+            <Headphones color={primary} waveColor={primary} />
           )}
         </TouchableOpacity>
       </View>
@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
   },
   imageWrap: {
     flex: 5,
-    backgroundColor: '#B8B8B8',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     justifyContent: 'center',

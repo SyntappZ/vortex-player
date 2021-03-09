@@ -3,11 +3,13 @@ import { View, StyleSheet, Image, Dimensions } from 'react-native';
 import CircleSlider from 'react-native-circle-slider';
 import { useSelector, useDispatch } from 'react-redux';
 import LottieView from 'lottie-react-native';
-import vinal from '../images/lottie/spinning-vinyl.json';
+// import vinal from '../images/lottie/spinning-vinyl.json';
+import HeadphonesImage from '../components/HeadphonesImage';
+
 const { width, height } = Dimensions.get('window');
 const radius = height / 5.5;
-const CircleSliderContainer = ({ playing }) => {
-  const vinalAnimation = useRef(null);
+const CircleSliderContainer = ({ isPlaying }) => {
+
   const { primary, background, secondary, subtext, vinalColor } = useSelector(
     (state) => state.themeReducer.theme,
   );
@@ -15,24 +17,7 @@ const CircleSliderContainer = ({ playing }) => {
     (state) => state.playerReducer,
   );
 
-  const colorArray = Array(3)
-    .fill('')
-    .map((_, i) => {
-      return {
-        keypath: `Shape Layer ${i + 1}`,
-        color: secondary,
-      };
-    });
-
-  useEffect(() => {
-    if (vinalAnimation.current) {
-      if (playing) {
-        vinalAnimation.current.resume();
-      } else {
-        vinalAnimation.current.pause();
-      }
-    }
-  }, [playing]);
+ const cover = currentPlayingTrack.cover
 
   return (
     <View style={styles.container}>
@@ -45,39 +30,15 @@ const CircleSliderContainer = ({ playing }) => {
         strokeColor={primary}
         dialRadius={radius}
       />
-      <View style={{ ...styles.imageWrap }}>
-        {currentPlayingTrack.cover ? (
+      <View style={{ ...styles.imageWrap, backgroundColor: vinalColor, padding: cover ? 0 : 40, paddingBottom: cover ? 0 : 50, }}>
+        {cover ? (
           <Image
-            source={{ uri: currentPlayingTrack.cover }}
+            source={{ uri: cover }}
             style={styles.image}
           />
         ) : (
-          <LottieView
-            ref={vinalAnimation}
-            style={{ width: '100%' }}
-            source={vinal}
-            autoPlay={true}
-            loop={true}
-            speed={0.3}
-            colorFilters={[
-              {
-                keypath: 'disk',
-                color: vinalColor,
-              },
-              {
-                keypath: 'disk 2',
-                color: vinalColor,
-              },
-              {
-                keypath: 'reflect',
-                color: background,
-              },
-              {
-                keypath: 'Shape Layer 2',
-                color: background,
-              },
-            ]}
-          />
+        
+          <HeadphonesImage isPlaying={isPlaying} color={secondary} playAnimation={false} />
         )}
       </View>
     </View>
@@ -98,6 +59,10 @@ const styles = StyleSheet.create({
     width: imageRadius,
     height: imageRadius,
     borderRadius: imageRadius / 2,
+    justifyContent: "center",
+    alignItems: "center",
+    
+    
 
     position: 'absolute',
     zIndex: -1,

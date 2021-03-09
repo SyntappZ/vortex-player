@@ -6,7 +6,7 @@ import Headphones from '../../images/lottie/headphones.json';
 import AllActions from '../../store/actions';
 import {useSelector, useDispatch} from 'react-redux';
 const SplashScreen = ({navigation}) => {
-  const {background, primary} = useSelector(
+  const {background, primary, subtext, secondary} = useSelector(
     (state) => state.themeReducer.theme,
   );
 
@@ -28,22 +28,22 @@ const SplashScreen = ({navigation}) => {
           colorFilters={[
             {
               keypath: 'Head',
-              color: primary,
+              color: secondary,
             },
             {
               keypath: 'Cover Left',
-              color: primary,
+              color: secondary,
             },
             {
               keypath: 'Cover Right',
-              color: primary,
+              color: secondary,
             },
           ]}
         />
       </View>
 
       <Text style={styles.largeText}>vortex player</Text>
-      <Text style={styles.smallText}>Free Music App</Text>
+      <Text style={{...styles.smallText, color: subtext}}>Free Music App</Text>
     </View>
   );
 };
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   smallText: {
-    color: '#555',
+    
     letterSpacing: 1,
     paddingTop: 5,
     textAlign: 'center',

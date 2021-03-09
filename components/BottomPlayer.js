@@ -30,9 +30,7 @@ const BottomPlayer = ({ navigation }) => {
   const { currentPlayingTrack, albumData } = useSelector(
     (state) => state.playerReducer,
   );
-  const { bottomPlayerPosition } = useSelector(
-    (state) => state.globalReducer,
-  );
+  const { bottomPlayerPosition } = useSelector((state) => state.globalReducer);
 
   // useEffect(() => {
   //   if (albumData) {
@@ -49,20 +47,19 @@ const BottomPlayer = ({ navigation }) => {
   const playerControls = () => {};
 
   const animationFinished = () => {};
+ 
 
   return (
-    <View style={{ ...styles.container, backgroundColor: background, bottom: bottomPlayerPosition }}>
+    <View
+      style={{
+        ...styles.container,
+        backgroundColor: background,
+        bottom: bottomPlayerPosition,
+      }}>
       <View style={styles.imageWrap}>
-        
-          <TouchableOpacity
-            onPress={modalHandler}
-            style={styles.touchableImage}>
-            <Image
-              source={{ uri: currentPlayingTrack.cover }}
-              style={styles.image}
-            />
-          </TouchableOpacity>
-       
+        <TouchableOpacity onPress={modalHandler} style={styles.touchableImage}>
+          {cover}
+        </TouchableOpacity>
       </View>
       <View style={styles.rightWrap}>
         <ProgressBar radius={10} color={primary} />
@@ -111,15 +108,13 @@ const BottomPlayer = ({ navigation }) => {
   );
 };
 
-
-
 const styles = StyleSheet.create({
   container: {
     width: Dimensions.get('window').width,
     height: 70,
     flex: 1,
     flexDirection: 'row',
-    position: 'absolute',  
+    position: 'absolute',
     bottom: 0,
   },
   imageWrap: {

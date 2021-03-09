@@ -30,7 +30,8 @@ const themes = {
     text: "#555555",
     titleColor: "#ffffff",
     line: "#334171",
-    vinalColor: "#425390"
+    vinalColor: "#242F54",
+    albumBackground: "#CFCFCF"
   },
 };
 

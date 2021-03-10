@@ -6,16 +6,19 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-
+import AllActions from "../store/actions"
 import {Icon} from 'react-native-elements';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 
 const colorBlack = '#0D0D0D';
 
-const Track = ({author, title, displayDuration, id, light}) => {
+const Track = ({author, title, displayDuration, id, light, playlist, track}) => {
+  const dispatch = useDispatch()
   const {primary, text, subtext} = useSelector((state) => state.themeReducer.theme);
 
-  const getPlaylist = () => {};
+  const setPlaylist = () => {
+    dispatch(AllActions.setPlaylist(playlist, track))
+  }
 
   const titleColor = light ? "white" : text
 
@@ -29,7 +32,7 @@ const Track = ({author, title, displayDuration, id, light}) => {
       </View>
 
       <View style={styles.textWrap}>
-        <TouchableOpacity style={styles.Touchable} onPress={getPlaylist}>
+        <TouchableOpacity style={styles.Touchable} onPress={setPlaylist}>
           <Text style={{color: titleColor}} numberOfLines={1}>{title}</Text>
           <Text numberOfLines={1} style={{...styles.author, color: subtext}}>
             {author}

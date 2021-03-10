@@ -8,6 +8,7 @@ import {
   SET_CURRENT_TRACK,
 } from './types';
 
+
 const setCurrentPlaylist = (payload) => ({
   type: SET_CURRENT_PLAYLIST,
   payload: payload,
@@ -32,13 +33,31 @@ const setPlayerTrackData = (payload) => ({
 
 const setIsPlaying = (payload) => ({
   type: SET_IS_PLAYING,
-  payload: payload
-})
+  payload: payload,
+});
 
 const setCurrentTrack = (payload) => ({
   type: SET_CURRENT_TRACK,
-  payload: payload
-})
+  payload: payload,
+});
+
+
+
+const setPlaylist = (playlist, track) => {
+  return async (dispatch) => {
+    dispatch(setCurrentPlaylist(playlist));
+    dispatch(setCurrentTrack(track));
+  };
+};
+
+const setPlayerData = (albumData, tracks) => {
+  return async (dispatch) => {
+   await dispatch(setPlayerAlbumData(albumData));
+    dispatch(setPlayerTrackData(tracks));
+  };
+}
+
+
 
 export {
   setCurrentPlaylist,
@@ -48,4 +67,6 @@ export {
   setPlayerTrackData,
   setIsPlaying,
   setCurrentTrack,
+  setPlaylist,
+  setPlayerData
 };

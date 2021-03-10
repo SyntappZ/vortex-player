@@ -13,7 +13,9 @@ import {
   setPlayerAlbumData,
   setPlayerTrackData,
   setIsPlaying,
-  setCurrentTrack
+  setCurrentTrack,
+  setPlaylist,
+  setPlayerData
 } from './playerActions';
 
 const AllActions = {
@@ -30,7 +32,9 @@ const AllActions = {
   setPlayerAlbumData,
   setPlayerTrackData,
   setIsPlaying,
-  setCurrentTrack
+  setCurrentTrack,
+  setPlaylist,
+  setPlayerData
 };
 
 export default AllActions;

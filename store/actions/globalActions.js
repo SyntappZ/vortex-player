@@ -69,9 +69,9 @@ const addCoversToAlbums = async (keys, object, output = {}) => {
 const fetchAlbums = () => {
   return async (dispatch) => {
     const musicAlbums = await getMusicAlbums();
-    // console.log(musicAlbums)
+  
     const musicTracks = await getMusicTracks()
-    // console.log(musicTracks)
+   
 
     musicTracks.forEach((track) => {
       const splitPath = track.path.split('/').reverse();

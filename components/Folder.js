@@ -19,6 +19,7 @@ const Folder = ({
   );
 
   // <EntypoIcon name={'folder-music'} size={35} color="#074DD9" />
+  
 
   const modalHandler = () => {};
   return (

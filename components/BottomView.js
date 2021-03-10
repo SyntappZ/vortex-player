@@ -7,11 +7,14 @@ import { Icon } from 'react-native-elements';
 import TextTicker from 'react-native-text-ticker';
 import AllActions from '../store/actions';
 import HeadphonesImage from '../components/HeadphonesImage';
+
+import TrackPlayer from 'react-native-track-player';
+import { setCurrentPlaylist } from '../store/actions/playerActions';
 const BottomView = ({ setOpen, open }) => {
   const { primary, background, bottomPlayer, secondary } = useSelector(
     (state) => state.themeReducer.theme,
   );
-  const { currentPlayingTrack, albumData } = useSelector(
+  const { currentPlayingTrack, playerAlbumData, currentPlaylist } = useSelector(
     (state) => state.playerReducer,
   );
   const { appLoaded } = useSelector((state) => state.globalReducer);
@@ -19,6 +22,37 @@ const BottomView = ({ setOpen, open }) => {
   const [cover, setCover] = useState(null);
   const [bottomPosition, setBottomPosition] = useState(-90);
   const playerControls = () => {};
+
+  const playlistConverter = (arr) => {
+    return arr.map(item => ({
+       id: item.id,
+       album: item.album,
+       artist: item.author,
+       title: item.title,
+       duration: item.duration,
+       url: item.path,
+       artwork: playerAlbumData[item.album].cover || "../images/defalutNote.jpg"
+     }))
+   }
+
+   const loadTracks = async (playlist, track) => {
+  
+    if (playlist) {
+      await TrackPlayer.add(playlist);
+      await TrackPlayer.skip(track);
+      TrackPlayer.play()
+    }
+  }
+
+  useEffect(() => {
+   
+    if(currentPlayingTrack) {
+      
+      const playlist = playlistConverter(currentPlaylist)
+      loadTracks(playlist, currentPlayingTrack.id)
+    }
+   
+  }, [currentPlayingTrack])
 
   useEffect(() => {
     if (currentPlayingTrack.cover) {

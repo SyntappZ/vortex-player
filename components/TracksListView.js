@@ -29,6 +29,8 @@ export default class TracksListView extends Component {
         id={id}
         displayDuration={displayDuration}
         light={this.props.light}
+        playlist={this.props.tracks}
+        track={data.item}
       />
     );
   };

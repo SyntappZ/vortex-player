@@ -8,10 +8,10 @@ import {
   SET_CURRENT_TRACK,
 
   } from "../actions/types";
-  
+  import defaultImage from "../../images/defaultNote.jpg"
   
   const initialState = {
-    playerTracks: [],
+    playerTracks: null,
     playerAlbumData: null,
     currentPlaylist: [],
     selectedAlbum:{},
@@ -52,10 +52,22 @@ import {
         };
       }
       case SET_PLAYER_TRACK_DATA: {
+
+        const playlistConverter = (arr) => {
+          return arr.map(item => ({
+             id: item.id,
+             album: item.album,
+             artist: item.author,
+             title: item.title,
+             duration: item.duration,
+             url: item.path,
+             artwork: state.playerAlbumData[item.album].cover || defaultImage
+           }))
+         }
      
         return {
           ...state,
-          playerTracks: payload,
+          playerTracks: playlistConverter(payload),
 
         };
       }

@@ -17,7 +17,7 @@ const AppContainer = () => {
   const { lightBackground, background } = useSelector(
     (state) => state.themeReducer.theme,
   );
-  const { playerAlbumData } = useSelector((state) => state.playerReducer);
+  const { playerAlbumData, playerTracks } = useSelector((state) => state.playerReducer);
   const { appLoaded, tracks, albumData } = useSelector(
     (state) => state.globalReducer,
   );
@@ -38,21 +38,24 @@ const AppContainer = () => {
   }, []);
 
   useEffect(() => {
-    if (playerAlbumData) {
-      dispatch(AllActions.setCurrentTrack(tracks[0]));
+    if(playerTracks) {
+      dispatch(AllActions.setPlaylist(playerTracks, playerTracks[0]));
     }
-  }, [playerAlbumData]);
+    
+
+    
+  }, [playerTracks])
+
+
+
+  
 
   useEffect(() => {
     if (Object.keys(albumData).length > 0) {
-      dispatch(AllActions.setPlayerAlbumData(albumData));
+      dispatch(AllActions.setPlayerData(albumData, tracks));  
     }
   }, [albumData]);
-  useEffect(() => {
-    if (tracks.length > 0) {
-      dispatch(AllActions.setPlayerTrackData(tracks));
-    }
-  }, [tracks]);
+ 
 
   const navigationRef = useRef(null);
 

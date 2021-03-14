@@ -17,23 +17,25 @@ import LottieView from 'lottie-react-native';
 import dancingNote from '../images/lottie/dancing-note.json';
 import wave from '../images/lottie/wave.json';
 import CircleSliderContainer from '../components/CircleSliderContainer';
+import {
+  playerControls,
+  setTrackFromId,
+  loadPlaylist,
+} from '../store/functions/playerFunctions.js';
 const NowPlayingView = ({ open, setOpen }) => {
   const dispatch = useDispatch();
   const [isFavorite, setIsFavorite] = useState(null);
-  const [playing, setPlaying] = useState(false);
 
   const { primary, background, secondary, subtext, line } = useSelector(
     (state) => state.themeReducer.theme,
   );
-  const { currentPlayingTrack, albumData } = useSelector(
+  const { currentPlayingTrack, albumData, isPlaying } = useSelector(
     (state) => state.playerReducer,
   );
 
   const modalHandler = () => {};
   const shuffleToggle = () => {};
   const storeFavorite = () => {};
-  const playerControls = () => {};
-
 
   return (
     <Modal
@@ -48,14 +50,14 @@ const NowPlayingView = ({ open, setOpen }) => {
         </View>
         <View style={{ ...styles.titleContainer }}>
           <Text numberOfLines={1} style={{ ...styles.author, color: 'white' }}>
-            {currentPlayingTrack.author}
+            {currentPlayingTrack.artist}
           </Text>
           <Text numberOfLines={1} style={{ ...styles.title, color: subtext }}>
             {currentPlayingTrack.title}
           </Text>
         </View>
         <View style={{ ...styles.imageContainer }}>
-          <CircleSliderContainer isPlaying={playing}/>
+          <CircleSliderContainer isPlaying={isPlaying} />
         </View>
 
         <View style={{ ...styles.favoriteContainer }}>
@@ -85,10 +87,27 @@ const NowPlayingView = ({ open, setOpen }) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => setPlaying(!playing)}
-              style={{ ...styles.touchablePlay, backgroundColor: secondary, paddingLeft: playing ? 0 : 5, }}>
-                {playing ? (<Icon name="pause" type="font-awesome-5" size={28} color="#fff" />) : (<Icon name="play" type="font-awesome-5" size={28} color="#fff" />)}
-              
+              onPress={() => playerControls(isPlaying ? 'pause' : 'play')}
+              style={{
+                ...styles.touchablePlay,
+                backgroundColor: secondary,
+                paddingLeft: isPlaying ? 0 : 5,
+              }}>
+              {isPlaying ? (
+                <Icon
+                  name="pause"
+                  type="font-awesome-5"
+                  size={28}
+                  color="#fff"
+                />
+              ) : (
+                <Icon
+                  name="play"
+                  type="font-awesome-5"
+                  size={28}
+                  color="#fff"
+                />
+              )}
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => playerControls('forwards')}
@@ -113,7 +132,7 @@ const NowPlayingView = ({ open, setOpen }) => {
           </View>
         </View>
         <View style={{ ...styles.lottieContainer }}>
-          {playing ? (
+          {isPlaying ? (
             <LottieView
               style={{ width: '100%' }}
               source={wave}
@@ -166,7 +185,6 @@ const styles = StyleSheet.create({
     flex: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    
   },
   favoriteContainer: {
     flex: 1,
@@ -200,7 +218,7 @@ const styles = StyleSheet.create({
     height: buttonSize,
     justifyContent: 'center',
     alignItems: 'center',
-    
+
     borderRadius: buttonSize / 2,
   },
   touchableControl: {

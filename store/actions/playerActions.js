@@ -6,9 +6,11 @@ import {
   SET_PLAYER_TRACK_DATA,
   SET_IS_PLAYING,
   SET_CURRENT_TRACK,
+  SET_ALL_TRACKS,
+  LOAD_FIRST_TRACKS,
+  PLAY_SONG
 } from './types';
-
-
+import { loadPlaylist, playTrackFromId } from '../functions/playerFunctions.js';
 const setCurrentPlaylist = (payload) => ({
   type: SET_CURRENT_PLAYLIST,
   payload: payload,
@@ -41,23 +43,37 @@ const setCurrentTrack = (payload) => ({
   payload: payload,
 });
 
+const setAllTracks = () => ({
+  type: SET_ALL_TRACKS,
+});
+const loadFirstTracks = () => ({
+  type: LOAD_FIRST_TRACKS,
+});
+const playSong = (payload) => ({
+  type: PLAY_SONG,
+  payload: payload
+})
 
-
-const setPlaylist = (playlist, track) => {
+const setPlaylist = (playlist, track, allTracks) => {
   return async (dispatch) => {
-    dispatch(setCurrentPlaylist(playlist));
-    dispatch(setCurrentTrack(track));
+    if (allTracks) {
+      await dispatch(setAllTracks());
+      // await dispatch(setCurrentTrack(track));
+    } else {
+      await dispatch(setCurrentPlaylist(playlist));
+      // await dispatch(setCurrentTrack(track));
+    }
+    dispatch(playSong(track.id))
   };
 };
 
 const setPlayerData = (albumData, tracks) => {
   return async (dispatch) => {
-   await dispatch(setPlayerAlbumData(albumData));
-    dispatch(setPlayerTrackData(tracks));
+    await dispatch(setPlayerAlbumData(albumData));
+    await dispatch(setPlayerTrackData(tracks));
+    await dispatch(loadFirstTracks());
   };
-}
-
-
+};
 
 export {
   setCurrentPlaylist,
@@ -68,5 +84,8 @@ export {
   setIsPlaying,
   setCurrentTrack,
   setPlaylist,
-  setPlayerData
+  setPlayerData,
+  setAllTracks,
+  loadFirstTracks,
+
 };

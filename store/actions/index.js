@@ -15,7 +15,9 @@ import {
   setIsPlaying,
   setCurrentTrack,
   setPlaylist,
-  setPlayerData
+  setPlayerData,
+  setAllTracks,
+  loadFirstTracks
 } from './playerActions';
 
 const AllActions = {
@@ -34,7 +36,10 @@ const AllActions = {
   setIsPlaying,
   setCurrentTrack,
   setPlaylist,
-  setPlayerData
+  setPlayerData,
+  setAllTracks,
+
+  loadFirstTracks
 };
 
 export default AllActions;

@@ -67,10 +67,10 @@ const AlbumPlaylistView = ({navigation}) => {
         </View>
         <View style={styles.albumDetailsContainer}>
           <View style={{...styles.imageWrap, backgroundColor: primary}}>
-            {selectedAlbum.cover ? (
+            {selectedAlbum.artwork ? (
               <Image
                 style={styles.image}
-                source={{ uri: selectedAlbum.cover }}
+                source={{ uri: selectedAlbum.artwork }}v 
               />
             ) : (
               <HeadphonesImage isPlaying={false} color={secondary} />

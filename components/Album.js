@@ -9,8 +9,8 @@ import Headphones from './Headphones';
 
 const Album = ({
   albumName,
-  author,
-  cover,
+  artist,
+  artwork,
   id,
   numberOfSongs,
   album,
@@ -21,7 +21,7 @@ const Album = ({
   );
 
   const handleFavorites = () => {
-    console.log(id)
+    // console.log(id)
   };
 
   const { primary, secondary, albumBackground } = useSelector((state) => state.themeReducer.theme);
@@ -36,8 +36,8 @@ const Album = ({
           onPress={() => openAlbumPlaylist(album)}
         
           >
-          {cover ? (
-            <Image style={styles.image} source={{ uri: cover }} />
+          {artwork ? (
+            <Image style={styles.image} source={{ uri: artwork }} />
           ) : (
             <Headphones color={primary} waveColor={primary} />
           )}

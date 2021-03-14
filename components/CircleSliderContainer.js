@@ -17,7 +17,7 @@ const CircleSliderContainer = ({ isPlaying }) => {
     (state) => state.playerReducer,
   );
 
- const cover = currentPlayingTrack.cover
+ const cover = currentPlayingTrack.artwork
 
   return (
     <View style={styles.container}>

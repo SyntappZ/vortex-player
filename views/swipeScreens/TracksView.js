@@ -8,11 +8,13 @@ import TracksListView from '../../components/TracksListView';
 
 const TracksView = () => {
   const {tracks} = useSelector((state) => state.globalReducer);
+  
 
   return (
     <View style={styles.container}>
       <TracksListView
         tracks={tracks}
+        allTracks={true}
       />
     </View>
   );

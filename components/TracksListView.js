@@ -20,17 +20,18 @@ export default class TracksListView extends Component {
   }
 
   _renderRow = (type, data) => {
-    const {title, author, displayDuration, id} = data.item;
+    const {title, artist, displayDuration, id} = data.item;
 
     return (
       <Track
         title={title}
-        author={author}
+        artist={artist}
         id={id}
         displayDuration={displayDuration}
         light={this.props.light}
         playlist={this.props.tracks}
         track={data.item}
+        allTracks={this.props.allTracks}
       />
     );
   };

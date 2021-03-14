@@ -33,38 +33,33 @@ import {
 //   return createCoverArtObject(arr, objData);
 // };
 
-const addTracksToAlbums = (albums, tracks, output = {}) => {
+const addTracksToAlbums = async (albums, tracks, output = {}) => {
   if (albums.length < 1) return output;
   const album = albums.shift();
   const id = album.album;
   const albumTracks = tracks.filter((track) => {
     return track.album === album.album;
   });
+
+  const artwork = await convertImageToBase64(album.cover);
+
+ 
+  
   const allDetails = {
     ...album,
     tracks: albumTracks,
-    cover: album.cover === 'null' ? null : album.cover,
-    author: album.author == '<unknown>' ? null : album.author,
+    artwork: artwork,
+    artist: album.author == '<unknown>' ? null : album.author,
+    
   };
+
+  
 
   output[id] = allDetails;
 
   return addTracksToAlbums(albums, tracks, output);
 };
 
-const addCoversToAlbums = async (keys, object, output = {}) => {
-  if (keys.length < 1) return output;
-
-  const key = keys.shift();
-
-  const cover = await convertImageToBase64(object[key].cover);
-
-  object[key].cover = cover ? cover : null;
-
-  output[key] = object[key];
-
-  return addCoversToAlbums(keys, object, output);
-};
 
 const fetchAlbums = () => {
   return async (dispatch) => {
@@ -85,13 +80,10 @@ const fetchAlbums = () => {
     dispatch(addTracks(tracks));
   
 
-    const albumsObject = addTracksToAlbums(musicAlbums, tracks);
+    const albumsObject = await addTracksToAlbums(musicAlbums, tracks);
+   
     dispatch(addAlbums(albumsObject));
-    const keys = Object.keys(albumsObject);
-
-    const updatedAlbumsObject = await addCoversToAlbums(keys, albumsObject);
-
-    dispatch(addAlbums(updatedAlbumsObject));
+   
   };
 };
 

@@ -27,7 +27,7 @@ const nameConverter = str => {
     return tracks.map((track, index) => {
       let title = '';
       let artist = '';
-     
+  
       if (track.author === "<unknown>") {
         if (nameConverter(track.fileName)) {
           title = nameConverter(track.fileName)[1].trim();
@@ -37,7 +37,7 @@ const nameConverter = str => {
     
       return {
         ...track,
-        author: artist ? artist : track.author !== "<unknown>" ? track.author : 'Unknown',
+        artist: artist ? artist : track.author !== "<unknown>" ? track.author : 'Unknown',
         displayDuration: durationConverter(track.duration),
         seconds: secondsConverter(track.duration),
         title: title
@@ -63,7 +63,7 @@ const nameConverter = str => {
   };
 
   const convertImageToBase64 = async (file) => {
-    if(!file) return null
+    if(!file || file == 'null') return null
     
     const image = `file://${file}`
 

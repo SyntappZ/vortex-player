@@ -6,8 +6,7 @@ import { requestPermission } from '../store/functions/askPermission.js';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import StackNavigator from './StackNavigator';
 import AllActions from '../store/actions';
-import BottomSheetPlayer from '../components/BottomSheetPlayer';
-import BottomPlayer from '../components/BottomPlayer';
+
 import { setupPlayer } from 'react-native-track-player';
 import BottomView from '../components/BottomView';
 import NowPlayingView from "../views/NowPlayingView"
@@ -36,17 +35,6 @@ const AppContainer = () => {
     getPermissions();
     setupPlayer();
   }, []);
-
-  useEffect(() => {
-    if(playerTracks) {
-      dispatch(AllActions.setPlaylist(playerTracks, playerTracks[0]));
-    }
-    
-
-    
-  }, [playerTracks])
-
-
 
   
 

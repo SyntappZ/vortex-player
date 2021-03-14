@@ -7,71 +7,121 @@ import { Icon } from 'react-native-elements';
 import TextTicker from 'react-native-text-ticker';
 import AllActions from '../store/actions';
 import HeadphonesImage from '../components/HeadphonesImage';
-
+import {
+  playerControls,
+  setTrackFromId,
+  loadPlaylist,
+} from '../store/functions/playerFunctions.js';
 import TrackPlayer from 'react-native-track-player';
-import { setCurrentPlaylist } from '../store/actions/playerActions';
+import { setCurrentPlaylist, setIsPlaying } from '../store/actions/playerActions';
+import { getMusicTracks } from '../store/functions/fetchMusic';
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+
 const BottomView = ({ setOpen, open }) => {
+  const dispatch = useDispatch();
+  const playerState = TrackPlayer.usePlaybackState();
   const { primary, background, bottomPlayer, secondary } = useSelector(
     (state) => state.themeReducer.theme,
   );
-  const { currentPlayingTrack, playerAlbumData, currentPlaylist } = useSelector(
-    (state) => state.playerReducer,
-  );
+  const {
+    currentPlayingTrack,
+    playerAlbumData,
+    currentPlaylist,
+    playerTracks,
+    firstTrackLoaded,
+    isPlaying
+  } = useSelector((state) => state.playerReducer);
   const { appLoaded } = useSelector((state) => state.globalReducer);
-  const [playing, setPlaying] = useState(false);
+ 
   const [cover, setCover] = useState(null);
   const [bottomPosition, setBottomPosition] = useState(-90);
-  const playerControls = () => {};
-
-  const playlistConverter = (arr) => {
-    return arr.map(item => ({
-       id: item.id,
-       album: item.album,
-       artist: item.author,
-       title: item.title,
-       duration: item.duration,
-       url: item.path,
-       artwork: playerAlbumData[item.album].cover || "../images/defalutNote.jpg"
-     }))
-   }
-
-   const loadTracks = async (playlist, track) => {
-  
-    if (playlist) {
-      await TrackPlayer.add(playlist);
-      await TrackPlayer.skip(track);
-      TrackPlayer.play()
-    }
-  }
 
   useEffect(() => {
-   
-    if(currentPlayingTrack) {
-      
-      const playlist = playlistConverter(currentPlaylist)
-      loadTracks(playlist, currentPlayingTrack.id)
+     console.log('change');
+
+    if (currentPlaylist.length > 0 && firstTrackLoaded) {
+      loadPlaylist(currentPlaylist.playlist);
     }
-   
-  }, [currentPlayingTrack])
+  }, [currentPlaylist.id]);
+
+ 
 
   useEffect(() => {
-    if (currentPlayingTrack.cover) {
+    let mounted = true;
+    TrackPlayer.updateOptions({
+      stopWithApp: true,
+      alwaysPauseOnInterruption: true,
+      capabilities: [
+        TrackPlayer.CAPABILITY_PLAY,
+        TrackPlayer.CAPABILITY_PAUSE,
+        TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+        TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+        TrackPlayer.CAPABILITY_STOP,
+      ],
+      compactCapabilities: [
+        TrackPlayer.CAPABILITY_PLAY,
+        TrackPlayer.CAPABILITY_PAUSE,
+        TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+        TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+        TrackPlayer.CAPABILITY_STOP,
+      ],
+    });
+
+    const listener = TrackPlayer.addEventListener(
+      'playback-track-changed',
+      async (data) => {
+        const track = await TrackPlayer.getTrack(data.nextTrack);
+       
+        if (!mounted) return;
+        if(track) {
+         
+          dispatch(AllActions.setCurrentTrack(track))
+        }
+       
+
+        
+      },
+    );
+
+    return () => {
+      mounted = false;
+      listener.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (currentPlayingTrack.artwork) {
+      console.log(currentPlayingTrack)
       setCover(
         <Image
-          source={{ uri: currentPlayingTrack.cover }}
+          source={{ uri: currentPlayingTrack.artwork }}
           style={styles.image}
         />,
       );
     } else {
-      setCover(<HeadphonesImage color={secondary} isPlaying={playing} />);
+      setCover(<HeadphonesImage color={secondary} isPlaying={isPlaying} />);
     }
-  }, [currentPlayingTrack.cover]);
+  }, [currentPlayingTrack.artwork]);
 
   useEffect(() => {
     if (appLoaded) {
       setBottomPosition(0);
     }
   }, [appLoaded]);
+
+
+  const playerStateChange = () => {
+    const playing = playerState === TrackPlayer.STATE_PLAYING;
+    dispatch(AllActions.setIsPlaying(playing))
+    
+  }
+
+  useEffect(() => {
+    playerStateChange()
+  }, [playerState])
+
+  
+ 
 
   return (
     <View
@@ -98,7 +148,7 @@ const BottomView = ({ setOpen, open }) => {
           </TextTicker>
 
           <Text numberOfLines={1} style={styles.artist}>
-            {currentPlayingTrack.author}
+            {currentPlayingTrack.artist}
           </Text>
         </View>
       </TouchableOpacity>
@@ -111,9 +161,13 @@ const BottomView = ({ setOpen, open }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => setPlaying(!playing)}
+          onPress={() => playerControls(isPlaying ? 'pause' : 'play')}
           style={styles.touchablePlay}>
-          <Icon name="play" type="font-awesome-5" size={26} color="#fff" />
+          {isPlaying ? (
+            <Icon name="pause" type="font-awesome-5" size={26} color="#fff" />
+          ) : (
+            <Icon name="play" type="font-awesome-5" size={26} color="#fff" />
+          )}
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => playerControls('forwards')}

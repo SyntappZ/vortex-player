@@ -18,14 +18,14 @@ export default class AlbumsListView extends Component {
   }
 
   _renderRow = (type, data) => {
-    const {album, author, numberOfSongs, cover, id} = data.item;
+    const {album, artist, numberOfSongs, artwork, id} = data.item;
 
     return (
       <View style={styles.containerGrid}>
         <Album
           albumName={album}
-          author={author}
-          cover={cover}
+          artist={artist}
+          artwork={artwork}
           id={id}
           numberOfSongs={numberOfSongs}
           album={data.item}

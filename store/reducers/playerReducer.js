@@ -13,11 +13,18 @@ import {
 } from '../actions/types';
 import defaultImage from '../../images/defaultNote.jpg';
 import TracksView from '../../views/swipeScreens/TracksView';
-import { firstLoad, playTrackFromId } from '../functions/playerFunctions.js';
+import {
+  firstLoad,
+  playTrackFromId,
+  loadPlaylist,
+  addPlaylstAndPlay,
+  skipAndPlay
+} from '../functions/playerFunctions.js';
 const initialState = {
   playerTracks: null,
   playerAlbumData: null,
   currentPlaylist: [],
+  currentPlaylistId: null,
   selectedAlbum: {},
   selectedFolder: {},
   isPlaying: false,
@@ -30,21 +37,30 @@ const playerReducer = (state = initialState, action) => {
     return arr.map((item) => ({
       id: item.id,
       album: item.album,
-      artist: item.author,
+      artist: item.artist,
       title: item.title,
       duration: item.duration,
       url: item.path,
-      artwork: state.playerAlbumData[item.album].artwork || defaultImage,
+      artwork: state.playerAlbumData[item.album].artwork || null,
     }));
   };
   switch (action.type) {
     case SET_CURRENT_PLAYLIST: {
-      const data = playlistConverter(payload);
+      const { playlist, track } = payload;
+      const data = playlistConverter(playlist);
       const id = data.map((item) => item.id).join('');
+
+      if (id === state.currentPlaylistId) {
+        skipAndPlay(track.id);
+      } else {
+        addPlaylstAndPlay(data, track.id);
+      }
 
       return {
         ...state,
-        currentPlaylist: { id: id, playlist: data },
+        currentPlaylist: data,
+        currentPlaylistId: id,
+        // currentPlayingTrack: track
       };
     }
     case SET_SELECTED_ALBUM: {
@@ -67,12 +83,16 @@ const playerReducer = (state = initialState, action) => {
     }
     case SET_PLAYER_TRACK_DATA: {
       const data = playlistConverter(payload);
+      const id = data.map((item) => item.id).join('');
       let track = data[0];
-
+      
+     
+     
       return {
         ...state,
         playerTracks: data,
         currentPlaylist: data,
+        currentPlaylistId: id,
         currentPlayingTrack: track,
       };
     }
@@ -108,16 +128,30 @@ const playerReducer = (state = initialState, action) => {
     }
 
     case SET_ALL_TRACKS: {
-      const playlist = state.playerTracks;
-      const id = playlist.map((item) => item.id).join('');
+      // const playlist = state.playerTracks;
+      // // console.log(playlist)
+      // const id = playlist.map((item) => item.id).join('');
+      // // console.log('add all tracks')
+      // // console.log(state.playerTracks)
+      // if (id === state.currentPlaylistId) {
+  
+      //   skipAndPlay(payload.id);
+      // } else {
+        
+        
+      //   addPlaylstAndPlay(playlist, payload.id);
+      // }
       return {
         ...state,
-        currentPlaylist: { id: id, playlist: playlist },
+        // currentPlaylist: playlist,
+        // currentPlaylistId: id,
+        // currentPlayingTrack: payload
       };
     }
 
     case PLAY_SONG: {
-      playTrackFromId(payload);
+      const { playlist, track } = payload;
+      addPlaylstAndPlay(playlist, track.id);
     }
 
     default:

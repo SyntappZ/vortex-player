@@ -11,7 +11,7 @@ import { Icon } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFirstTrackLoaded } from '../store/actions/playerActions';
 import TrackPlayer from 'react-native-track-player';
-import { set } from 'react-native-reanimated';
+
 // import { skipToId,  } from "../store/functions/playerFunctions.js";
 const colorBlack = '#0D0D0D';
 
@@ -35,20 +35,20 @@ const Track = ({
   );
   const [currentPlaying, setCurrentPlaying] = useState(null);
   const setPlaylist = async () => {
-    // if (!firstTrackLoaded) {
-    //   dispatch(AllActions.setFirstTrackLoaded(true));
-    // }
-
+    // console.log(track)
     dispatch(AllActions.setPlaylist(playlist, track, allTracks));
   };
 
   const titleColor = light ? 'white' : text;
 
-  useEffect(() => {
-    if (currentPlayingTrack) {
-      setCurrentPlaying(currentPlayingTrack.id == id);
-    }
-  }, [currentPlayingTrack]);
+  // useEffect(() => {
+  //   if (currentPlayingTrack) {
+  //     setCurrentPlaying(currentPlayingTrack.id === id);
+  //     console.log(currentPlayingTrack.id)
+  //       console.log(id)
+
+  //   }
+  // }, [currentPlayingTrack.id]);
 
   const trackBackground = light ? currentTrack : '#fff';
 

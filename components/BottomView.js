@@ -36,13 +36,7 @@ const BottomView = ({ setOpen, open }) => {
   const [cover, setCover] = useState(null);
   const [bottomPosition, setBottomPosition] = useState(-90);
 
-  useEffect(() => {
-     console.log('change');
-
-    if (currentPlaylist.length > 0 && firstTrackLoaded) {
-      loadPlaylist(currentPlaylist.playlist);
-    }
-  }, [currentPlaylist.id]);
+  
 
  
 
@@ -91,7 +85,7 @@ const BottomView = ({ setOpen, open }) => {
 
   useEffect(() => {
     if (currentPlayingTrack.artwork) {
-      console.log(currentPlayingTrack)
+     
       setCover(
         <Image
           source={{ uri: currentPlayingTrack.artwork }}

@@ -10,10 +10,10 @@ import { totalTimeConverter } from '../store/functions/converters.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Play from '../components/Play';
-import FabButton from '../components/FabButton'
+import FabButton from '../components/FabButton';
 import HeadphonesImage from '../components/HeadphonesImage';
 
-const AlbumPlaylistView = ({navigation}) => {
+const AlbumPlaylistView = ({ navigation }) => {
   const dispatch = useDispatch();
   const { selectedAlbum } = useSelector((state) => state.playerReducer);
   const [tracks, setTracks] = useState([]);
@@ -28,28 +28,40 @@ const AlbumPlaylistView = ({navigation}) => {
     border,
   } = useSelector((state) => state.themeReducer.theme);
   const [totalTime, setTotalTime] = useState(0.0);
-  const [isFavorite, setIsFavorite] = useState(null)
+  const [isFavorite, setIsFavorite] = useState(null);
+  const [newPlaylistId, setNewPlaylistId] = useState(null);
   useEffect(() => {
     const time = totalTimeConverter(selectedAlbum.tracks);
     setTotalTime(time);
+    if (selectedAlbum.tracks.length > 0) {
+      const id = selectedAlbum.tracks.map((item) => item.id).join('');
+      setNewPlaylistId(id);
+    }
+
     return () => {
       // dispatch(AllActions.setSelectedAlbum({}));
     };
   }, [selectedAlbum]);
 
+  const navigateBack = () => navigation.goBack();
 
-  const navigateBack = () => navigation.goBack()
-  
   const favoriteHandler = () => {
-    setIsFavorite(!isFavorite)
+    setIsFavorite(!isFavorite);
+  };
+
+  const fabHandler = () => {
+    const playlist = selectedAlbum.tracks
+    dispatch(AllActions.setPlaylist(playlist, playlist[0]))
   }
-
-
 
   return (
     <View
-      style={{ ...styles.container, backgroundColor: extraLightBackground }} >
-      <StatusBar backgroundColor={extraLightBackground} barStyle={'dark-content'} animated={true}/>
+      style={{ ...styles.container, backgroundColor: extraLightBackground }}>
+      <StatusBar
+        backgroundColor={extraLightBackground}
+        barStyle={'dark-content'}
+        animated={true}
+      />
       <View style={styles.top}>
         <View style={styles.backButtonContainer}>
           <TouchableOpacity onPress={navigateBack}>
@@ -61,16 +73,19 @@ const AlbumPlaylistView = ({navigation}) => {
               color={subtext}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.favoriteButton} onPress={favoriteHandler}>
-          <Heart isFavorite={isFavorite} />
+          <TouchableOpacity
+            style={styles.favoriteButton}
+            onPress={favoriteHandler}>
+            <Heart isFavorite={isFavorite} />
           </TouchableOpacity>
         </View>
         <View style={styles.albumDetailsContainer}>
-          <View style={{...styles.imageWrap, backgroundColor: primary}}>
+          <View style={{ ...styles.imageWrap, backgroundColor: primary }}>
             {selectedAlbum.artwork ? (
               <Image
                 style={styles.image}
-                source={{ uri: selectedAlbum.artwork }}v 
+                source={{ uri: selectedAlbum.artwork }}
+                v
               />
             ) : (
               <HeadphonesImage isPlaying={false} color={secondary} />
@@ -78,7 +93,7 @@ const AlbumPlaylistView = ({navigation}) => {
           </View>
           <View style={styles.info}>
             <View style={styles.totalSongsWrap}>
-              <Text style={{...styles.subtext, color: subtext}}>Album</Text>
+              <Text style={{ ...styles.subtext, color: subtext }}>Album</Text>
               <Icon
                 type="entypo"
                 name="dot-single"
@@ -86,13 +101,13 @@ const AlbumPlaylistView = ({navigation}) => {
                 color={subtext}
                 iconStyle={{ paddingHorizontal: 2 }}
               />
-              <Text style={{...styles.subtext, color: subtext}}>
+              <Text style={{ ...styles.subtext, color: subtext }}>
                 {selectedAlbum.numberOfSongs} Songs
               </Text>
             </View>
 
             <TextTicker
-              style={{...styles.title, color: text}}
+              style={{ ...styles.title, color: text }}
               duration={15000}
               loop
               bounce
@@ -100,10 +115,19 @@ const AlbumPlaylistView = ({navigation}) => {
               marqueeDelay={1000}>
               {selectedAlbum.album}
             </TextTicker>
-            <Text style={{...styles.author, color: subtext}}>{selectedAlbum.author}</Text>
+            <Text style={{ ...styles.author, color: subtext }}>
+              {selectedAlbum.author}
+            </Text>
             <View style={styles.totalTime}>
-              <Icon name="clock" type="font-awesome-5" size={9} color={subtext} />
-              <Text style={{...styles.timeText, color: subtext}}>{totalTime}</Text>
+              <Icon
+                name="clock"
+                type="font-awesome-5"
+                size={9}
+                color={subtext}
+              />
+              <Text style={{ ...styles.timeText, color: subtext }}>
+                {totalTime}
+              </Text>
             </View>
             <View style={styles.shuffleButtonWrap}>
               <TouchableOpacity style={styles.shuffleButton}>
@@ -115,7 +139,7 @@ const AlbumPlaylistView = ({navigation}) => {
       </View>
 
       <View style={{ ...styles.bottom, backgroundColor: background }}>
-       <FabButton />
+        <FabButton fabHandler={fabHandler} newPlaylistId={newPlaylistId} />
 
         <View style={styles.tracksContainer}>
           <TracksListView tracks={selectedAlbum.tracks} light={true} />
@@ -172,7 +196,7 @@ const styles = StyleSheet.create({
   imageWrap: {
     borderRadius: 22,
     marginRight: 20,
-   
+
     width: 150,
     height: 150,
     justifyContent: 'center',
@@ -192,7 +216,6 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    
   },
   infoTopSpace: {
     flex: 2,
@@ -215,7 +238,6 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    
     fontSize: 26,
     fontWeight: 'bold',
     textTransform: 'capitalize',

@@ -42,7 +42,8 @@ const addTracksToAlbums = async (albums, tracks, output = {}) => {
   });
 
   const artwork = await convertImageToBase64(album.cover);
-
+  
+// console.log(albumTracks)
  
   
   const allDetails = {
@@ -68,13 +69,15 @@ const fetchAlbums = () => {
     const musicTracks = await getMusicTracks()
    
 
-    musicTracks.forEach((track) => {
+    musicTracks.forEach((track, i) => {
       const splitPath = track.path.split('/').reverse();
       const folder = splitPath[1];
       const folderPath = splitPath[2];
       track.folder = folder;
       track.folderPath = `/${folderPath}`;
+      track.id = track.id + i
     });
+
 
     const tracks = trackConverter(musicTracks);
     dispatch(addTracks(tracks));

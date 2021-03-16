@@ -8,7 +8,7 @@ import {
   SET_CURRENT_TRACK,
   SET_ALL_TRACKS,
   LOAD_FIRST_TRACKS,
-  PLAY_SONG
+  PLAY_SONG,
 } from './types';
 import { loadPlaylist, playTrackFromId } from '../functions/playerFunctions.js';
 const setCurrentPlaylist = (payload) => ({
@@ -43,27 +43,28 @@ const setCurrentTrack = (payload) => ({
   payload: payload,
 });
 
-const setAllTracks = () => ({
+const setAllTracks = (payload) => ({
   type: SET_ALL_TRACKS,
+  payload: payload
 });
 const loadFirstTracks = () => ({
   type: LOAD_FIRST_TRACKS,
 });
 const playSong = (payload) => ({
   type: PLAY_SONG,
-  payload: payload
-})
+  payload: payload,
+});
 
 const setPlaylist = (playlist, track, allTracks) => {
   return async (dispatch) => {
-    if (allTracks) {
-      await dispatch(setAllTracks());
-      // await dispatch(setCurrentTrack(track));
-    } else {
-      await dispatch(setCurrentPlaylist(playlist));
-      // await dispatch(setCurrentTrack(track));
-    }
-    dispatch(playSong(track.id))
+    // if (allTracks) {
+  
+    //    await dispatch(setAllTracks(track));
+     
+    // } else {
+      await dispatch(setCurrentPlaylist({playlist: playlist, track: track}));
+     
+    // }
   };
 };
 
@@ -87,5 +88,4 @@ export {
   setPlayerData,
   setAllTracks,
   loadFirstTracks,
-
 };

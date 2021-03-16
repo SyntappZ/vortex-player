@@ -28,11 +28,16 @@ const FolderPlaylistView = ({ navigation }) => {
   } = useSelector((state) => state.themeReducer.theme);
   const [totalTime, setTotalTime] = useState(0.0);
   const [isFavorite, setIsFavorite] = useState(null);
+  const [newPlaylistId, setNewPlaylistId] = useState(null);
   const { selectedFolder } = useSelector((state) => state.playerReducer);
   const { isPlaying } = useSelector((state) => state.playerReducer);
   useEffect(() => {
     const time = totalTimeConverter(selectedFolder.tracks);
     setTotalTime(time);
+    if (selectedFolder.tracks.length > 0) {
+      const id = selectedFolder.tracks.map((item) => item.id).join('');
+      setNewPlaylistId(id);
+    }
     return () => {
       // dispatch(AllActions.setSelectedFolder({}));
     };
@@ -43,6 +48,11 @@ const FolderPlaylistView = ({ navigation }) => {
   const favoriteHandler = () => {
     setIsFavorite(!isFavorite);
   };
+
+  const fabHandler = () => {
+    const playlist = selectedFolder.tracks
+    dispatch(AllActions.setPlaylist(playlist, playlist[0]))
+  }
 
   return (
     <View
@@ -124,7 +134,8 @@ const FolderPlaylistView = ({ navigation }) => {
       </View>
 
       <View style={{ ...styles.bottom, backgroundColor: background }}>
-        <FabButton />
+      <FabButton fabHandler={fabHandler} newPlaylistId={newPlaylistId} />
+
 
         <View style={styles.tracksContainer}>
           <TracksListView tracks={selectedFolder.tracks} light={true} />

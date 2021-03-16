@@ -18,7 +18,8 @@ const getMusicTracks = async () => {
     if (response === 'Something get wrong with musicCursor') {
       return null;
     } else {
-      return response;
+      
+      return response
     }
   } catch (err) {
     return err;
@@ -39,6 +40,7 @@ const getMusicAlbums = async () => {
     if (response === 'Something get wrong with musicCursor') {
       return null;
     } else {
+  
       return response;
     }
   } catch (err) {

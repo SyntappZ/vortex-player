@@ -44,7 +44,7 @@ const NowPlayingView = ({ open, setOpen }) => {
       visible={open}
       onRequestClose={() => setOpen(!open)}>
       <View style={{ ...styles.container, backgroundColor: background }}>
-        <StatusBar backgroundColor={primary} animated={true} />
+        <StatusBar backgroundColor={primary} barStyle={'dark-content'}  animated={true} />
         <View style={{ ...styles.nowPlaying, backgroundColor: primary }}>
           <Text style={styles.nowPlayingText}>Now Playing</Text>
         </View>

@@ -39,7 +39,7 @@ const playerReducer = (state = initialState, action) => {
       album: item.album,
       artist: item.artist,
       title: item.title,
-      duration: item.duration,
+      duration: item.seconds,
       url: item.path,
       artwork: state.playerAlbumData[item.album].artwork || null,
     }));

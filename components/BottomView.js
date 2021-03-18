@@ -12,14 +12,14 @@ import {
   setTrackFromId,
   loadPlaylist,
 } from '../store/functions/playerFunctions.js';
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, {useTrackPlayerEvents, TrackPlayerEvents, STATE_PLAYING} from 'react-native-track-player';
 import { setCurrentPlaylist, setIsPlaying } from '../store/actions/playerActions';
 import { getMusicTracks } from '../store/functions/fetchMusic';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 
 const BottomView = ({ setOpen, open }) => {
   const dispatch = useDispatch();
-  const playerState = TrackPlayer.usePlaybackState();
+  
   const { primary, background, bottomPlayer, secondary } = useSelector(
     (state) => state.themeReducer.theme,
   );
@@ -104,15 +104,25 @@ const BottomView = ({ setOpen, open }) => {
   }, [appLoaded]);
 
 
-  const playerStateChange = () => {
-    const playing = playerState === TrackPlayer.STATE_PLAYING;
-    dispatch(AllActions.setIsPlaying(playing))
-    
-  }
+ 
 
-  useEffect(() => {
-    playerStateChange()
-  }, [playerState])
+  const events = [
+    TrackPlayerEvents.PLAYBACK_STATE,
+    TrackPlayerEvents.PLAYBACK_ERROR
+  ];
+
+  useTrackPlayerEvents(events, (event) => {
+    if (event.type === TrackPlayerEvents.PLAYBACK_ERROR) {
+      console.warn('An error occured while playing the current track.');
+    }
+    if (event.type === TrackPlayerEvents.PLAYBACK_STATE) {
+      
+      const playing = event.state === STATE_PLAYING;
+    dispatch(AllActions.setIsPlaying(playing))
+    }
+  });
+
+ 
 
   
  

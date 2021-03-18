@@ -27,7 +27,7 @@ const playerControls = (control) => {
 
 
   const addPlaylstAndPlay = async (playlist, id) => {
-         console.log(playlist)
+        
 
     await TrackPlayer.reset();
     await TrackPlayer.add(playlist);
@@ -48,7 +48,7 @@ const playerControls = (control) => {
   }
 
   const loadPlaylist = async (playlist) => {
-    console.log(playlist)
+   
     if (playlist) {
       await TrackPlayer.reset();
       await TrackPlayer.add(playlist);
@@ -60,6 +60,10 @@ const playerControls = (control) => {
     await TrackPlayer.skip(id)
   }
 
+  const seekTo = (seconds) => {
+    TrackPlayer.skip(seconds)
+  }
+
   
 
-  export {playerControls, addPlaylstAndPlay, skipAndPlay, loadPlaylist, firstLoad, getQueue}
+  export {playerControls, addPlaylstAndPlay, skipAndPlay, loadPlaylist, firstLoad, getQueue, seekTo}

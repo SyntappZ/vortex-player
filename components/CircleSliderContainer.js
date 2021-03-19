@@ -12,9 +12,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import LottieView from 'lottie-react-native';
 // import vinal from '../images/lottie/spinning-vinyl.json';
 import HeadphonesImage from '../components/HeadphonesImage';
-import { useTrackPlayerProgress } from 'react-native-track-player';
+import { useTrackPlayerProgress, seekTo } from 'react-native-track-player';
 import CircularSlider from './CircularSlider';
-import { seekTo } from '../store/functions/playerFunctions.js';
+// import { seekTo } from '../store/functions/playerFunctions.js';
 import { Touchable } from 'react-native';
 import CircleSlider from 'react-native-circle-slider';
 // import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -22,7 +22,7 @@ const { width, height } = Dimensions.get('window');
 const radius = height / 5.5;
 const CircleSliderContainer = ({ isPlaying }) => {
   const [sliderValue, setSliderValue] = useState(0);
-  const { position, bufferedPosition, duration } = useTrackPlayerProgress(
+  const { position } = useTrackPlayerProgress(
     100,
     null,
   );
@@ -41,11 +41,12 @@ const CircleSliderContainer = ({ isPlaying }) => {
 
   const cover = currentPlayingTrack.artwork;
 
-  const onValueChange = (pos) => {
-    // console.log('change')
-    //  console.log(parseInt(newPos));
-    // seekTo(parseInt(newPos))
-    // console.log(typeof newPos)
+  
+
+  const onPanChange = (pos) => {
+    const skipToSeconds = mapDuration(pos, 0, 359, 0, currentPlayingTrack.duration);
+    const seconds = Math.round(skipToSeconds)
+    seekTo(seconds)
   };
 
   const changeValue = (val) => {
@@ -53,7 +54,7 @@ const CircleSliderContainer = ({ isPlaying }) => {
     setSliderValue(val);
   };
 
-  const positionValue = mapDuration(position, 0, duration, 0, 359);
+  const positionValue = mapDuration(position, 0, currentPlayingTrack.duration, 0, 359);
 
   useEffect(() => {
     if (positionValue) {
@@ -83,7 +84,7 @@ const CircleSliderContainer = ({ isPlaying }) => {
           strokeColor={primary}
           thumbSize={11}
           strokeWidth={5}
-          
+          panResponderReleased={onPanChange}
           value={sliderValue}
           onValueChange={changeValue}
         />

@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {PanResponder} from 'react-native';
-import Svg, {Path, Circle, G, Text} from 'react-native-svg';
+import React, { Component } from 'react';
+import { PanResponder } from 'react-native';
+import Svg, { Path, Circle, G, Text } from 'react-native-svg';
 
 class CircularSlider extends Component {
   constructor(props) {
@@ -8,12 +8,18 @@ class CircularSlider extends Component {
     this.handlePanResponderMove = this.handlePanResponderMove.bind(this);
     this.cartesianToPolar = this.cartesianToPolar.bind(this);
     this.polarToCartesian = this.polarToCartesian.bind(this);
-    const {width, height} = props;
+    const { width, height, panResponderReleased, onValueChange } = props;
     const smallestSide = Math.min(width, height);
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: this.handlePanResponderMove,
+      onPanResponderRelease: ({ nativeEvent: { locationX, locationY } }) => {
+        const val = this.cartesianToPolar(locationX, locationY);
+
+        panResponderReleased(val);
+       
+      },
     });
     this.state = {
       cx: width / 2,
@@ -22,20 +28,22 @@ class CircularSlider extends Component {
     };
   }
   polarToCartesian(angle) {
-    const {cx, cy, r} = this.state,
+    const { cx, cy, r } = this.state,
       a = ((angle - 270) * Math.PI) / 180.0,
       x = cx + r * Math.cos(a),
       y = cy + r * Math.sin(a);
-    return {x, y};
+    return { x, y };
   }
   cartesianToPolar(x, y) {
-    const {cx, cy} = this.state;
+    const { cx, cy } = this.state;
     return Math.round(
       Math.atan((y - cy) / (x - cx)) / (Math.PI / 180) + (x > cx ? 270 : 90),
     );
   }
-  handlePanResponderMove({nativeEvent: {locationX, locationY}}) {
-    this.props.onValueChange(this.cartesianToPolar(locationX, locationY));
+  handlePanResponderMove({ nativeEvent: { locationX, locationY } }) {
+    const val = this.cartesianToPolar(locationX, locationY);
+    // console.log(val)
+    this.props.onValueChange(val);
   }
   render() {
     const {
@@ -47,9 +55,9 @@ class CircularSlider extends Component {
         onValueChange,
         strokeColor,
         strokeWidth,
-        thumbSize
+        thumbSize,
       } = this.props,
-      {cx, cy, r} = this.state,
+      { cx, cy, r } = this.state,
       startCoord = this.polarToCartesian(0),
       endCoord = this.polarToCartesian(value);
     return (
@@ -73,7 +81,6 @@ class CircularSlider extends Component {
           d={`M${startCoord.x} ${startCoord.y} A ${r} ${r} 0 ${
             value > 180 ? 1 : 0
           } 1 ${endCoord.x} ${endCoord.y}`}
-         
         />
         <G x={endCoord.x - 7.5} y={endCoord.y - 7.5}>
           <Circle cx={7.5} cy={7.5} r={thumbSize} fill={meterColor} />

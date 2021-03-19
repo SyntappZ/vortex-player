@@ -8,7 +8,7 @@ class CircularSlider extends Component {
     this.handlePanResponderMove = this.handlePanResponderMove.bind(this);
     this.cartesianToPolar = this.cartesianToPolar.bind(this);
     this.polarToCartesian = this.polarToCartesian.bind(this);
-    const { width, height, panResponderReleased, onValueChange } = props;
+    const { width, height, panResponderReleased } = props;
     const smallestSide = Math.min(width, height);
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -16,9 +16,7 @@ class CircularSlider extends Component {
       onPanResponderMove: this.handlePanResponderMove,
       onPanResponderRelease: ({ nativeEvent: { locationX, locationY } }) => {
         const val = this.cartesianToPolar(locationX, locationY);
-
         panResponderReleased(val);
-       
       },
     });
     this.state = {
@@ -42,7 +40,6 @@ class CircularSlider extends Component {
   }
   handlePanResponderMove({ nativeEvent: { locationX, locationY } }) {
     const val = this.cartesianToPolar(locationX, locationY);
-    // console.log(val)
     this.props.onValueChange(val);
   }
   render() {

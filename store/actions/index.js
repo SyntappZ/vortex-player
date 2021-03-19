@@ -1,8 +1,11 @@
 import {
-  fetchAlbums,
+  fetchAll,
   updateImage,
   setAppLoaded,
   setPlayerVisibility,
+  fetchFavorites,
+  addFavorite,
+
 } from './globalActions.js';
 
 import {changeTheme, fetchThemeFromStorage, storeTheme} from './themeActions';
@@ -21,7 +24,7 @@ import {
 } from './playerActions';
 
 const AllActions = {
-  fetchAlbums,
+  fetchAll,
   changeTheme,
   fetchThemeFromStorage,
   storeTheme,
@@ -38,7 +41,8 @@ const AllActions = {
   setPlaylist,
   setPlayerData,
   setAllTracks,
-
+  fetchFavorites,
+  addFavorite,
   loadFirstTracks
 };
 

@@ -24,7 +24,7 @@ const AppContainer = () => {
   const getPermissions = async () => {
     const granted = await requestPermission();
     if (granted) {
-      dispatch(AllActions.fetchAlbums());
+      dispatch(AllActions.fetchAll());
     }
   };
 

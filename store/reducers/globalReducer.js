@@ -4,12 +4,13 @@ import {
   ADD_FOLDERS,
   ADD_ALBUM_DATA,
   UPDATE_IMAGE,
-  ADD_FAVORITES,
+  ADD_FAVORITE,
   SET_PLAYER_VISIBILITY,
   APP_LOADED,
+  ADD_STORAGE_FAVORITES,
 } from '../actions/types';
 import { convertListView, createFolders } from '../functions/converters.js';
-
+import { storeData } from '../functions/storageFunctions.js';
 const initialState = {
   albumData: {},
   tracks: [],
@@ -24,6 +25,17 @@ const initialState = {
 const globalReducer = (state = initialState, action) => {
   const { payload } = action;
   switch (action.type) {
+    case ADD_STORAGE_FAVORITES: {
+      const favoritesIds = payload;
+
+      const filterFavorites = state.tracks.filter((track) =>
+        favoritesIds.includes(track.id),
+      );
+      return {
+        ...state,
+        favorites: filterFavorites,
+      };
+    }
     case ADD_TRACKS: {
       const folders = createFolders(payload);
       const folderArray = Object.entries(folders).map((item, index) => ({
@@ -45,19 +57,42 @@ const globalReducer = (state = initialState, action) => {
         folderNames: Object.keys(folders),
       };
     }
+
+    case ADD_FAVORITE: {
+      const id = payload;
+     
+      let favorites = [...state.favorites];
+      const tempIds = favorites.map((track) => track.id);
+      if (tempIds.includes(id)) {
+        const alteredArray = favorites.filter((track) => track.id !== id);
+        favorites = alteredArray;
+      } else {
+        const track = state.tracks.filter((track) => track.id === id)[0]
+
+        favorites.push(track);
+      }
+
+      const ids = favorites.map((track) => track.id);
+
+      storeData('favorites', ids);
+
+      return {
+        ...state,
+        favorites: favorites,
+      };
+    }
     case ADD_ALBUMS: {
       const sortedAlbums = Object.values(payload).sort(
-        (a, b) => parseInt(b.numberOfSongs) - parseInt(a.numberOfSongs));
-
+        (a, b) => parseInt(b.numberOfSongs) - parseInt(a.numberOfSongs),
+      );
 
       const filterFolders = sortedAlbums.filter(
         (album) => !state.folderNames.includes(album.album),
       );
 
-    
       return {
         ...state,
-        albums: convertListView(filterFolders ,'ALBUMS'),
+        albums: convertListView(filterFolders, 'ALBUMS'),
         albumData: payload,
       };
     }
@@ -77,8 +112,6 @@ const globalReducer = (state = initialState, action) => {
     }
 
     case SET_PLAYER_VISIBILITY: {
-      
-
       return {
         ...state,
         sheetSnapPoint: 0,

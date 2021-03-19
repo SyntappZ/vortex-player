@@ -1,4 +1,4 @@
-import { fetchAlbumArt } from '../functions/AlbumArtApi.js';
+import { fetchData } from '../functions/storageFunctions.js';
 import { getMusicTracks, getMusicAlbums } from '../functions/fetchMusic.js';
 import {
   trackConverter,
@@ -13,6 +13,8 @@ import {
   UPDATE_IMAGE,
   APP_LOADED,
   SET_PLAYER_VISIBILITY,
+  ADD_FAVORITE,
+  ADD_STORAGE_FAVORITES
 } from './types';
 
 // const createCoverArtObject = async (arr, objData = {}) => {
@@ -42,53 +44,49 @@ const addTracksToAlbums = async (albums, tracks, output = {}) => {
   });
 
   const artwork = await convertImageToBase64(album.cover);
-  
-// console.log(albumTracks)
- 
-  
+
+  // console.log(albumTracks)
+
   const allDetails = {
     ...album,
     tracks: albumTracks,
     artwork: artwork,
     artist: album.author == '<unknown>' ? null : album.author,
-    
   };
-
-  
 
   output[id] = allDetails;
 
   return addTracksToAlbums(albums, tracks, output);
 };
 
-
-const fetchAlbums = () => {
+const fetchAll = () => {
   return async (dispatch) => {
     const musicAlbums = await getMusicAlbums();
-  
-    const musicTracks = await getMusicTracks()
-   
 
+    const musicTracks = await getMusicTracks();
+   
     musicTracks.forEach((track, i) => {
       const splitPath = track.path.split('/').reverse();
       const folder = splitPath[1];
       const folderPath = splitPath[2];
       track.folder = folder;
       track.folderPath = `/${folderPath}`;
-      track.id = track.id + i
     });
 
+    // console.log(Object.values(count).filter(item => item > 1));
 
     const tracks = trackConverter(musicTracks);
     dispatch(addTracks(tracks));
-  
 
     const albumsObject = await addTracksToAlbums(musicAlbums, tracks);
-   
+
     dispatch(addAlbums(albumsObject));
-   
+    const favorites = await fetchData('favorites');
+    dispatch(addStorageFavorites(favorites));
   };
 };
+
+
 
 const fetchCoverArt = (albums) => {
   return async (dispatch) => {};
@@ -99,8 +97,18 @@ const updateImage = (payload) => ({
   payload: payload,
 });
 
+const addFavorite = (payload) => ({
+  type: ADD_FAVORITE,
+  payload: payload,
+});
+
 const addTracks = (payload) => ({
   type: ADD_TRACKS,
+  payload: payload,
+});
+
+const addStorageFavorites = (payload) => ({
+  type: ADD_STORAGE_FAVORITES,
   payload: payload,
 });
 
@@ -124,4 +132,10 @@ const setPlayerVisibility = (payload) => ({
   payload: payload,
 });
 
-export { fetchAlbums, updateImage, setAppLoaded, setPlayerVisibility };
+export {
+  fetchAll,
+  updateImage,
+  setAppLoaded,
+  setPlayerVisibility,
+  addFavorite
+};

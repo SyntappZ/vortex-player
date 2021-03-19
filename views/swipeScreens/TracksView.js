@@ -9,6 +9,13 @@ import TracksListView from '../../components/TracksListView';
 const TracksView = () => {
   const {tracks} = useSelector((state) => state.globalReducer);
   
+//   const ids = tracks.map(item => item.id)
+
+//   let count = ids.reduce((a, b) => {
+//     a[b] = (a[b] || 0) + 1;
+//     return a;
+// },{});
+// console.log(Object.values(count))
 
   return (
     <View style={styles.container}>

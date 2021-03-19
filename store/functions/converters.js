@@ -77,12 +77,15 @@ const nameConverter = str => {
   }
 
   const convertListView = (items, type) => {
-    return items.map(item => {
+    console.log(items.length)
+   const tracks = items.map(item => {
       return {
         type: type,
         item: item
       }
     })
+
+    return tracks
   }
 
 

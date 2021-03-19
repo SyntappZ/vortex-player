@@ -21,6 +21,7 @@ import CircleSlider from 'react-native-circle-slider';
 const { width, height } = Dimensions.get('window');
 const radius = height / 5.5;
 const CircleSliderContainer = ({ isPlaying }) => {
+  let mounted = false
   const [sliderValue, setSliderValue] = useState(0);
   const { position } = useTrackPlayerProgress(
     100,
@@ -61,6 +62,8 @@ const CircleSliderContainer = ({ isPlaying }) => {
       setSliderValue(positionValue);
     }
   }, [positionValue]);
+
+ 
 
   const sliderRadius = radius *  2.4
 

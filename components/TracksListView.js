@@ -1,26 +1,30 @@
-import React, {Component} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, { Component } from 'react';
+import { View, StyleSheet } from 'react-native';
 import Track from './Track';
-import {RecyclerListView, DataProvider} from 'recyclerlistview';
+import { RecyclerListView, DataProvider } from 'recyclerlistview';
 import LayoutProvider from './LayoutProvider';
-import {convertListView} from '../store/functions/converters.js';
+import { convertListView } from '../store/functions/converters.js';
 import { ThemeProvider } from '@react-navigation/native';
 
 export default class TracksListView extends Component {
   constructor(props) {
     super(props);
+
+    const dataProvider = new DataProvider((r1, r2) => {
+      return r1 !== r2;
+    });
+
+    const tracks = convertListView(this.props.tracks, 'TRACKS');
     this.state = {
-      dataProvider: new DataProvider((r1, r2) => {
-        return r1 !== r2;
-      }).cloneWithRows(convertListView(this.props.tracks, 'TRACKS')),
+      dataProvider: dataProvider.cloneWithRows(tracks),
     };
-    this._layoutProvider = new LayoutProvider(this.state.dataProvider);
+    this._layoutProvider = new LayoutProvider(dataProvider.cloneWithRows(tracks));
     this._renderRow = this._renderRow.bind(this);
-    this.footer = this.footer.bind(this)
+    this.footer = this.footer.bind(this);
   }
 
   _renderRow = (type, data) => {
-    const {title, artist, displayDuration, id} = data.item;
+    const { title, artist, displayDuration, id } = data.item;
 
     return (
       <Track
@@ -37,12 +41,8 @@ export default class TracksListView extends Component {
   };
 
   footer = () => {
-    return (
-      <View style={{padding: 35}}>
-
-      </View>
-    )
-  }
+    return <View style={{ padding: 35 }}></View>;
+  };
 
   render() {
     return (

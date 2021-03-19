@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Heart from '../components/Heart';
 import { useSelector, useDispatch } from 'react-redux';
-import Gradient from '../components/Gradient';
+
 import AllActions from '../store/actions';
 import { Icon } from 'react-native-elements';
 import LottieView from 'lottie-react-native';
@@ -23,6 +23,19 @@ import {
   loadPlaylist,
 } from '../store/functions/playerFunctions.js';
 const NowPlayingView = ({ open, setOpen }) => {
+  return (
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={open}
+      onRequestClose={() => setOpen(!open)}>
+      <NowPlaying />
+    </Modal>
+  );
+};
+
+const NowPlaying = () => {
+  
   const dispatch = useDispatch();
   const [isFavorite, setIsFavorite] = useState(null);
 
@@ -32,123 +45,117 @@ const NowPlayingView = ({ open, setOpen }) => {
   const { currentPlayingTrack, albumData, isPlaying } = useSelector(
     (state) => state.playerReducer,
   );
+  const { favorites } = useSelector((state) => state.globalReducer);
 
   const modalHandler = () => {};
   const shuffleToggle = () => {};
-  const storeFavorite = () => {};
+  const addFavorite = () => {
+    const { id } = currentPlayingTrack;
+    dispatch(AllActions.addFavorite(id));
+  };
 
+  useEffect(() => {
+    let mounted = true;
+    if (mounted) {
+      const { id } = currentPlayingTrack;
+      const ids = favorites.map((track) => track.id);
+      setIsFavorite(ids.includes(id));
+    }
+
+    return () => { 
+      mounted = false
+    }
+
+      
+  }, [favorites.length]);
   return (
-    <Modal
-      animationType="fade"
-      transparent={true}
-      visible={open}
-      onRequestClose={() => setOpen(!open)}>
-      <View style={{ ...styles.container, backgroundColor: background }}>
-        <StatusBar backgroundColor={primary} barStyle={'dark-content'}  animated={true} />
-        <View style={{ ...styles.nowPlaying, backgroundColor: primary }}>
-          <Text style={styles.nowPlayingText}>Now Playing</Text>
-        </View>
-        <View style={{ ...styles.titleContainer }}>
-          <Text numberOfLines={1} style={{ ...styles.author, color: 'white' }}>
-            {currentPlayingTrack.artist}
-          </Text>
-          <Text numberOfLines={1} style={{ ...styles.title, color: subtext }}>
-            {currentPlayingTrack.title}
-          </Text>
-        </View>
-        <View style={{ ...styles.imageContainer }}>
-          <CircleSliderContainer isPlaying={isPlaying} />
-        </View>
+    <View style={{ ...styles.container, backgroundColor: background }}>
+      <StatusBar
+        backgroundColor={primary}
+        barStyle={'dark-content'}
+        animated={true}
+      />
+      <View style={{ ...styles.nowPlaying, backgroundColor: primary }}>
+        <Text style={styles.nowPlayingText}>Now Playing</Text>
+      </View>
+      <View style={{ ...styles.titleContainer }}>
+        <Text numberOfLines={1} style={{ ...styles.author, color: 'white' }}>
+          {currentPlayingTrack.artist}
+        </Text>
+        <Text numberOfLines={1} style={{ ...styles.title, color: subtext }}>
+          {currentPlayingTrack.title}
+        </Text>
+      </View>
+      <View style={{ ...styles.imageContainer }}>
+        <CircleSliderContainer isPlaying={isPlaying} />
+      </View>
 
-        <View style={{ ...styles.favoriteContainer }}>
+      <View style={{ ...styles.favoriteContainer }}>
+        <TouchableOpacity style={styles.lottieWrap} onPress={addFavorite}>
+          <Heart isFavorite={isFavorite} />
+        </TouchableOpacity>
+      </View>
+
+      <View style={{ ...styles.controlsContainer }}>
+        <View style={styles.buttonWrap}>
           <TouchableOpacity
-            style={styles.lottieWrap}
-            onPress={() => setIsFavorite(!isFavorite)}>
-            <Heart isFavorite={isFavorite} />
+            onPress={() => playerControls('shuffle')}
+            style={styles.touchableControl}>
+            <Icon name="shuffle" type="entypo" size={20} color={subtext} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.touchableControl}
+            onPress={() => playerControls('backwards')}>
+            <Icon name="stepbackward" type="antdesign" size={28} color="#fff" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => playerControls(isPlaying ? 'pause' : 'play')}
+            style={{
+              ...styles.touchablePlay,
+              backgroundColor: secondary,
+              paddingLeft: isPlaying ? 0 : 5,
+            }}>
+            {isPlaying ? (
+              <Icon name="pause" type="font-awesome-5" size={28} color="#fff" />
+            ) : (
+              <Icon name="play" type="font-awesome-5" size={28} color="#fff" />
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => playerControls('forwards')}
+            style={styles.touchableControl}>
+            <Icon name="stepforward" type="antdesign" size={28} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => playerControls('forwards')}
+            style={styles.touchableControl}>
+            <Icon
+              name="playlist-music"
+              type="material-community"
+              size={22}
+              color={subtext}
+            />
           </TouchableOpacity>
         </View>
-
-        <View style={{ ...styles.controlsContainer }}>
-          <View style={styles.buttonWrap}>
-            <TouchableOpacity
-              onPress={() => playerControls('shuffle')}
-              style={styles.touchableControl}>
-              <Icon name="shuffle" type="entypo" size={20} color={subtext} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.touchableControl}
-              onPress={() => playerControls('backwards')}>
-              <Icon
-                name="stepbackward"
-                type="antdesign"
-                size={28}
-                color="#fff"
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => playerControls(isPlaying ? 'pause' : 'play')}
-              style={{
-                ...styles.touchablePlay,
-                backgroundColor: secondary,
-                paddingLeft: isPlaying ? 0 : 5,
-              }}>
-              {isPlaying ? (
-                <Icon
-                  name="pause"
-                  type="font-awesome-5"
-                  size={28}
-                  color="#fff"
-                />
-              ) : (
-                <Icon
-                  name="play"
-                  type="font-awesome-5"
-                  size={28}
-                  color="#fff"
-                />
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => playerControls('forwards')}
-              style={styles.touchableControl}>
-              <Icon
-                name="stepforward"
-                type="antdesign"
-                size={28}
-                color="#fff"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => playerControls('forwards')}
-              style={styles.touchableControl}>
-              <Icon
-                name="playlist-music"
-                type="material-community"
-                size={22}
-                color={subtext}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={{ ...styles.lottieContainer }}>
-          {isPlaying ? (
-            <LottieView
-              style={{ width: '100%' }}
-              source={wave}
-              autoPlay={true}
-              loop={true}
-              colorFilters={[
-                { keypath: 'wave', color: secondary },
-                { keypath: 'Shape Layer 1', color: secondary },
-              ]}
-            />
-          ) : (
-            <View style={{ ...styles.line, backgroundColor: line }}></View>
-          )}
-        </View>
       </View>
-    </Modal>
+      <View style={{ ...styles.lottieContainer }}>
+        {isPlaying ? (
+          <LottieView
+            style={{ width: '100%' }}
+            source={wave}
+            autoPlay={true}
+            loop={true}
+            colorFilters={[
+              { keypath: 'wave', color: secondary },
+              { keypath: 'Shape Layer 1', color: secondary },
+            ]}
+          />
+        ) : (
+          <View style={{ ...styles.line, backgroundColor: line }}></View>
+        )}
+      </View>
+    </View>
   );
 };
 

@@ -14,8 +14,8 @@ const storeData = async (storageKey, value) => {
 const fetchData = async (storageKey) => {
   try {
     const jsonValue = await AsyncStorage.getItem(storageKey);
-    const defaultValue = storageKey === "themeStorage" ? null : [];
-    return jsonValue != null ? JSON.parse(jsonValue) : defaultValue;
+    
+    return jsonValue != null ? JSON.parse(jsonValue) : [];
   } catch (e) {
     // error reading value
   }

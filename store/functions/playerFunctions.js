@@ -60,10 +60,8 @@ const playerControls = (control) => {
     await TrackPlayer.skip(id)
   }
 
-  const seekTo = (seconds) => {
-    TrackPlayer.skip(seconds)
-  }
+  
 
   
 
-  export {playerControls, addPlaylstAndPlay, skipAndPlay, loadPlaylist, firstLoad, getQueue, seekTo}
+  export {playerControls, addPlaylstAndPlay, skipAndPlay, loadPlaylist, firstLoad, getQueue}

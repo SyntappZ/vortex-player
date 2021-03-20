@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Icon} from 'react-native-elements';
-// import {clearAllStorage} from '../data/AsyncStorage.js';
+import {removeArrayFromStorage} from '../store/functions/storageFunctions.js'
 import {useSelector} from 'react-redux';
 import {
   StyleSheet,
@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
+
 
 const SwipeHeader = ({navigation}) => {
   const [isSearching, setSearching] = useState(false);
@@ -26,12 +27,7 @@ const SwipeHeader = ({navigation}) => {
   };
 
   const wipeStorage = async () => {
-    // moveImageToFolder('/storage/emulated/0/3733.jpg')
-    //   const checkFolder = await RNFS.readDir('/storage/emulated/0/albumArt');
-    //   const folderImageList = checkFolder.map(item => item.path.match(/[^\/]+(?=\/$|$)/)[0]);
-    // console.log(folderImageList)
-    // const message = await clearAllStorage();
-    // console.log(message);
+    removeArrayFromStorage('favorites')
   };
 
   return (

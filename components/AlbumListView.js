@@ -7,14 +7,33 @@ import LayoutProvider from './LayoutProvider';
 export default class AlbumsListView extends Component {
   constructor(props) {
     super(props);
+    const dataProvider = new DataProvider((r1, r2) => {
+      return r1 !== r2;
+    });
     this.state = {
-      dataProvider: new DataProvider((r1, r2) => {
-        return r1 !== r2;
-      }).cloneWithRows(this.props.albums),
+      dataProvider: dataProvider.cloneWithRows(this.props.albums),
     };
-    this._layoutProvider = new LayoutProvider(this.state.dataProvider);
+    this._layoutProvider = new LayoutProvider( dataProvider.cloneWithRows(this.props.albums));
     this._renderRow = this._renderRow.bind(this);
     this.footer = this.footer.bind(this)
+
+
+  }
+
+  
+  componentDidUpdate(nextProps) {
+    const dataProvider = new DataProvider((r1, r2) => {
+      return r1 !== r2;
+    });
+    const { albums } = this.props;
+    if (nextProps.albums !== albums) {
+    
+      const data = convertListView(albums, 'ALBUMS');
+      this.setState({dataProvider: dataProvider.cloneWithRows(data)})
+      this._layoutProvider = new LayoutProvider(
+        dataProvider.cloneWithRows(data),
+      );
+    }
   }
 
   _renderRow = (type, data) => {

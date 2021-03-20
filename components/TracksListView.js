@@ -18,7 +18,9 @@ export default class TracksListView extends Component {
     this.state = {
       dataProvider: dataProvider.cloneWithRows(tracks),
     };
-    this._layoutProvider = new LayoutProvider(dataProvider.cloneWithRows(tracks));
+    this._layoutProvider = new LayoutProvider(
+      dataProvider.cloneWithRows(tracks),
+    );
     this._renderRow = this._renderRow.bind(this);
     this.footer = this.footer.bind(this);
   }
@@ -40,6 +42,21 @@ export default class TracksListView extends Component {
     );
   };
 
+  componentDidUpdate(nextProps) {
+    const dataProvider = new DataProvider((r1, r2) => {
+      return r1 !== r2;
+    });
+    const { tracks } = this.props;
+    if (nextProps.tracks !== tracks) {
+    
+      const data = convertListView(tracks, 'TRACKS');
+      this.setState({dataProvider: dataProvider.cloneWithRows(data)})
+      this._layoutProvider = new LayoutProvider(
+        dataProvider.cloneWithRows(data),
+      );
+    }
+  }
+
   footer = () => {
     return <View style={{ padding: 35 }}></View>;
   };
@@ -50,6 +67,7 @@ export default class TracksListView extends Component {
         {this.props.tracks.length > 0 ? (
           <View style={styles.listContainer}>
             <RecyclerListView
+              
               rowRenderer={this._renderRow}
               dataProvider={this.state.dataProvider}
               layoutProvider={this._layoutProvider}

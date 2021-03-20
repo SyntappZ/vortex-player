@@ -7,7 +7,7 @@ const favoritesView = () => {
   
   return (
     <View style={styles.container}>
-      <TracksListView tracks={favorites} />
+      <TracksListView tracks={favorites.reverse()} />
     </View>
   );
 };

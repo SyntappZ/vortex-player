@@ -67,7 +67,7 @@ const NowPlaying = () => {
     }
 
       
-  }, [favorites.length]);
+  }, [favorites.length, currentPlayingTrack]);
   return (
     <View style={{ ...styles.container, backgroundColor: background }}>
       <StatusBar
@@ -92,7 +92,7 @@ const NowPlaying = () => {
 
       <View style={{ ...styles.favoriteContainer }}>
         <TouchableOpacity style={styles.lottieWrap} onPress={addFavorite}>
-          <Heart isFavorite={isFavorite} />
+          <Heart isFavorite={isFavorite} size={28} />
         </TouchableOpacity>
       </View>
 

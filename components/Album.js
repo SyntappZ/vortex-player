@@ -6,7 +6,7 @@ import LottieView from 'lottie-react-native';
 import { vw, vh } from 'react-native-viewport-units';
 import searchingLottie from '../images/lottie/search-location.json';
 import Headphones from './Headphones';
-
+import Heart from './Heart'
 const Album = ({
   albumName,
   artist,
@@ -54,7 +54,7 @@ const Album = ({
         </View>
 
         <TouchableOpacity onPress={handleFavorites} style={styles.more}>
-          <Icon type="font-awesome" name="heart-o" size={18} color="#fff" />
+          <Heart isFavorite={false} size={18} />
         </TouchableOpacity>
       </View>
     </View>

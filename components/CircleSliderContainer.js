@@ -23,6 +23,7 @@ const radius = height / 5.5;
 const CircleSliderContainer = ({ isPlaying }) => {
   let mounted = false
   const [sliderValue, setSliderValue] = useState(0);
+  const [panHandlerPressed, setPanHandlerPressed] = useState(false)
   const { position } = useTrackPlayerProgress(
     100,
     null,
@@ -58,11 +59,14 @@ const CircleSliderContainer = ({ isPlaying }) => {
   const positionValue = mapDuration(position, 0, currentPlayingTrack.duration, 0, 359);
 
   useEffect(() => {
-    if (positionValue) {
+    if (positionValue && !panHandlerPressed) {
       setSliderValue(positionValue);
     }
   }, [positionValue]);
 
+  const isTouching = (touching) => {
+
+  }
  
 
   const sliderRadius = radius *  2.4
@@ -90,6 +94,7 @@ const CircleSliderContainer = ({ isPlaying }) => {
           panResponderReleased={onPanChange}
           value={sliderValue}
           onValueChange={changeValue}
+          setPanHandlerPressed={setPanHandlerPressed}
         />
       </View>
 

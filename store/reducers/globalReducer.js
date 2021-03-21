@@ -5,9 +5,11 @@ import {
   ADD_ALBUM_DATA,
   UPDATE_IMAGE,
   ADD_FAVORITE,
+  ADD_FAVORITE_ALBUM,
   SET_PLAYER_VISIBILITY,
   APP_LOADED,
   ADD_STORAGE_FAVORITES,
+  ADD_STORAGE_ALBUM_FAVORITES,
 } from '../actions/types';
 import { convertListView, createFolders } from '../functions/converters.js';
 import { storeData } from '../functions/storageFunctions.js';
@@ -15,12 +17,24 @@ const initialState = {
   albumData: {},
   tracks: [],
   albums: [],
+  freshAlbums: [],
   foldersObject: {},
   folders: [],
   folderNames: [],
   favorites: [],
+  albumFavorites: [],
   appLoaded: false,
   sheetSnapPoint: 0,
+};
+
+const bringFavoritesToFront = (albums, favorites) => {
+  if (favorites.length < 1) return albums;
+  const favoriteAlbums = albums.filter((album) => favorites.includes(album.id));
+  const noneFavoriteAlbums = albums.filter(
+    (album) => !favorites.includes(album.id),
+  );
+
+  return [...favoriteAlbums, ...noneFavoriteAlbums];
 };
 const globalReducer = (state = initialState, action) => {
   const { payload } = action;
@@ -58,18 +72,25 @@ const globalReducer = (state = initialState, action) => {
       };
     }
 
+    case ADD_STORAGE_ALBUM_FAVORITES: {
+      return {
+        ...state,
+        albumFavorites: payload,
+      };
+    }
+
     case ADD_FAVORITE: {
       const id = payload;
-     
+
       let favorites = [...state.favorites];
       const tempIds = favorites.map((track) => track.id);
       if (tempIds.includes(id)) {
         const alteredArray = favorites.filter((track) => track.id !== id);
         favorites = alteredArray;
       } else {
-        const track = state.tracks.filter((track) => track.id === id)[0]
+        const track = state.tracks.filter((track) => track.id === id)[0];
 
-        favorites.push(track);
+        favorites.unshift(track);
       }
 
       const ids = favorites.map((track) => track.id);
@@ -81,18 +102,48 @@ const globalReducer = (state = initialState, action) => {
         favorites: favorites,
       };
     }
-    case ADD_ALBUMS: {
-      const sortedAlbums = Object.values(payload).sort(
-        (a, b) => parseInt(b.numberOfSongs) - parseInt(a.numberOfSongs),
-      );
 
-      const filterFolders = sortedAlbums.filter(
-        (album) => !state.folderNames.includes(album.album),
-      );
+    case ADD_FAVORITE_ALBUM: {
+      const id = payload;
+      let albums = [];
+      let albumFavorites = [...state.albumFavorites];
+
+      if (albumFavorites.includes(id)) {
+        const filterFavoriteAlbum = albumFavorites.filter(
+          (albumId) => albumId !== id,
+        );
+
+        albums = bringFavoritesToFront(state.freshAlbums, filterFavoriteAlbum);
+        albumFavorites = filterFavoriteAlbum;
+      } else {
+        albumFavorites.unshift(id);
+        albums = bringFavoritesToFront(state.freshAlbums, albumFavorites);
+      }
+
+      storeData('albumFavorites', albumFavorites);
 
       return {
         ...state,
-        albums: convertListView(filterFolders, 'ALBUMS'),
+        albums: albums,
+        albumFavorites: albumFavorites,
+      };
+    }
+
+    case ADD_ALBUMS: {
+      const sortAlbums = Object.values(payload).sort(
+        (a, b) => parseInt(b.numberOfSongs) - parseInt(a.numberOfSongs),
+      );
+
+      const filterFolders = sortAlbums.filter(
+        (album) => !state.folderNames.includes(album.album),
+      );
+
+      const albums = bringFavoritesToFront(filterFolders, state.albumFavorites);
+
+      return {
+        ...state,
+        albums: albums,
+        freshAlbums: albums,
         albumData: payload,
       };
     }

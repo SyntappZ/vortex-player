@@ -12,14 +12,21 @@ import {
   setTrackFromId,
   loadPlaylist,
 } from '../store/functions/playerFunctions.js';
-import TrackPlayer, {useTrackPlayerEvents, TrackPlayerEvents, STATE_PLAYING} from 'react-native-track-player';
-import { setCurrentPlaylist, setIsPlaying } from '../store/actions/playerActions';
+import TrackPlayer, {
+  useTrackPlayerEvents,
+  TrackPlayerEvents,
+  STATE_PLAYING,
+} from 'react-native-track-player';
+import {
+  setCurrentPlaylist,
+  setIsPlaying,
+} from '../store/actions/playerActions';
 import { getMusicTracks } from '../store/functions/fetchMusic';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 
 const BottomView = ({ setOpen, open }) => {
   const dispatch = useDispatch();
-  
+
   const { primary, background, bottomPlayer, secondary } = useSelector(
     (state) => state.themeReducer.theme,
   );
@@ -29,16 +36,12 @@ const BottomView = ({ setOpen, open }) => {
     currentPlaylist,
     playerTracks,
     firstTrackLoaded,
-    isPlaying
+    isPlaying,
   } = useSelector((state) => state.playerReducer);
   const { appLoaded } = useSelector((state) => state.globalReducer);
- 
+
   const [cover, setCover] = useState(null);
   const [bottomPosition, setBottomPosition] = useState(-90);
-
-  
-
- 
 
   useEffect(() => {
     let mounted = true;
@@ -65,15 +68,11 @@ const BottomView = ({ setOpen, open }) => {
       'playback-track-changed',
       async (data) => {
         const track = await TrackPlayer.getTrack(data.nextTrack);
-       
-        if (!mounted) return;
-        if(track) {
-         
-          dispatch(AllActions.setCurrentTrack(track))
-        }
-       
 
-        
+        if (!mounted) return;
+        if (track) {
+          dispatch(AllActions.setCurrentTrack(track));
+        }
       },
     );
 
@@ -85,7 +84,6 @@ const BottomView = ({ setOpen, open }) => {
 
   useEffect(() => {
     if (currentPlayingTrack.artwork) {
-     
       setCover(
         <Image
           source={{ uri: currentPlayingTrack.artwork }}
@@ -103,12 +101,9 @@ const BottomView = ({ setOpen, open }) => {
     }
   }, [appLoaded]);
 
-
- 
-
   const events = [
     TrackPlayerEvents.PLAYBACK_STATE,
-    TrackPlayerEvents.PLAYBACK_ERROR
+    TrackPlayerEvents.PLAYBACK_ERROR,
   ];
 
   useTrackPlayerEvents(events, (event) => {
@@ -116,16 +111,10 @@ const BottomView = ({ setOpen, open }) => {
       console.warn('An error occured while playing the current track.');
     }
     if (event.type === TrackPlayerEvents.PLAYBACK_STATE) {
-      
       const playing = event.state === STATE_PLAYING;
-    dispatch(AllActions.setIsPlaying(playing))
+      dispatch(AllActions.setIsPlaying(playing));
     }
   });
-
- 
-
-  
- 
 
   return (
     <View

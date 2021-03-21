@@ -8,6 +8,7 @@ export default class LayoutProvider extends GridLayoutProvider {
     super(
       MAX_SPAN,
       (index) => {
+       
         return props.getDataForIndex(index).type;
       },
       (index) => {

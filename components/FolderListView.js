@@ -44,6 +44,8 @@ export default class FolderListView extends Component {
   }
 
   render() {
+
+    
     return (
       <View style={styles.container}>
         {this.props.folders.length > 0 ? (

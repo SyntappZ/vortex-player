@@ -26,31 +26,45 @@ const Track = ({
   allTracks,
 }) => {
   const dispatch = useDispatch();
-  // const trackId = TrackPlayer.getCurrentTrack();
+  
   const { primary, secondary, text, subtext, currentTrack } = useSelector(
     (state) => state.themeReducer.theme,
   );
+  const { favorites } = useSelector((state) => state.globalReducer);
   const { firstTrackLoaded, currentPlayingTrack } = useSelector(
     (state) => state.playerReducer,
   );
   const [currentPlaying, setCurrentPlaying] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(false);
+
   const setPlaylist = async () => {
-    // console.log(track)
     dispatch(AllActions.setPlaylist(playlist, track, allTracks));
+  };
+  const addFavorite = () => {
+    dispatch(AllActions.addFavorite(id, 'track'));
   };
 
   const titleColor = light ? 'white' : text;
 
-  // useEffect(() => {
-  //   if (currentPlayingTrack) {
-  //     setCurrentPlaying(currentPlayingTrack.id === id);
-  //     console.log(currentPlayingTrack.id)
-  //       console.log(id)
+  const noteColor = light && currentPlaying ? 'white' : primary;
 
-  //   }
-  // }, [currentPlayingTrack.id]);
+  // const getCurrentPlaying = async () => {
+  //   const trackId =await TrackPlayer.getCurrentTrack();
+  // }
+
+ 
 
   const trackBackground = light ? currentTrack : '#fff';
+
+  useEffect(() => {
+    const ids = favorites.map((track) => track.id);
+    setIsFavorite(ids.includes(id));
+  }, [favorites.length, id]);
+
+  useEffect(() => {
+    
+    setCurrentPlaying(currentPlayingTrack.id === id)
+  }, [currentPlayingTrack, id]);
 
   return (
     <View
@@ -59,7 +73,7 @@ const Track = ({
         backgroundColor: currentPlaying ? trackBackground : null,
       }}>
       <View style={styles.iconWrap}>
-        <Icon name="note" size={30} color={primary} type="entypo" />
+        <Icon name="note" size={30} color={noteColor} type="entypo" />
       </View>
 
       <View style={styles.textWrap}>
@@ -73,14 +87,14 @@ const Track = ({
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.moreWrap}>
+      <TouchableOpacity style={styles.moreWrap} onPress={addFavorite}>
         <View style={styles.timeWrap}>
           <Text style={{ ...styles.trackTime, color: subtext }}>
             {displayDuration}
           </Text>
 
-          <View>
-            <Icon size={30} name="more-vert" color={titleColor} />
+          <View style={{paddingTop: 3}}>
+            <Icon size={22} name="heart" type="entypo" color={isFavorite ? secondary : subtext} />
           </View>
         </View>
       </TouchableOpacity>

@@ -26,7 +26,7 @@ const FolderPlaylistView = ({ navigation }) => {
     primary,
     secondary,
   } = useSelector((state) => state.themeReducer.theme);
-  const [totalTime, setTotalTime] = useState(0.0);
+  const [totalTime, setTotalTime] = useState(0.00);
   const [isFavorite, setIsFavorite] = useState(null);
   const [newPlaylistId, setNewPlaylistId] = useState(null);
   const { selectedFolder } = useSelector((state) => state.playerReducer);
@@ -46,13 +46,13 @@ const FolderPlaylistView = ({ navigation }) => {
   const navigateBack = () => navigation.goBack();
 
   const favoriteHandler = () => {
-    setIsFavorite(!isFavorite);
+    
   };
 
   const fabHandler = () => {
-    const playlist = selectedFolder.tracks
-    dispatch(AllActions.setPlaylist(playlist, playlist[0]))
-  }
+    const playlist = selectedFolder.tracks;
+    dispatch(AllActions.setPlaylist(playlist, playlist[0]));
+  };
 
   return (
     <View
@@ -76,14 +76,13 @@ const FolderPlaylistView = ({ navigation }) => {
           <TouchableOpacity
             style={styles.favoriteButton}
             onPress={favoriteHandler}>
-            <Heart isFavorite={isFavorite} />
+            <Heart isFavorite={isFavorite} size={23} color={subtext} />
           </TouchableOpacity>
         </View>
         <View style={styles.albumDetailsContainer}>
-          <View
-            style={{ ...styles.imageWrap, backgroundColor: primary }}>
-              <HeadphonesImage isPlaying={isPlaying} color={secondary} />
-            </View>
+          <View style={{ ...styles.imageWrap, backgroundColor: primary }}>
+            <HeadphonesImage isPlaying={isPlaying} color={secondary} />
+          </View>
           <View style={styles.info}>
             <View style={styles.totalSongsWrap}>
               <Text style={{ ...styles.subtext, color: subtext }}>Folder</Text>
@@ -134,8 +133,7 @@ const FolderPlaylistView = ({ navigation }) => {
       </View>
 
       <View style={{ ...styles.bottom, backgroundColor: background }}>
-      <FabButton fabHandler={fabHandler} newPlaylistId={newPlaylistId} />
-
+        <FabButton fabHandler={fabHandler} newPlaylistId={newPlaylistId} />
 
         <View style={styles.tracksContainer}>
           <TracksListView tracks={selectedFolder.tracks} light={true} />
@@ -144,8 +142,6 @@ const FolderPlaylistView = ({ navigation }) => {
     </View>
   );
 };
-
-
 
 const radius = 40;
 
@@ -164,7 +160,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   backButtonContainer: {
-    height: 30,
+    height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -276,7 +272,7 @@ const styles = StyleSheet.create({
   totalSongsWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 15,
+    height: 25,
   },
   tracksContainer: {
     flex: 1,

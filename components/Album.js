@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
-import { Icon } from 'react-native-elements';
+import AllActions from '../store/actions';
 import { useSelector, useDispatch } from 'react-redux';
-import LottieView from 'lottie-react-native';
 import { vw, vh } from 'react-native-viewport-units';
-import searchingLottie from '../images/lottie/search-location.json';
 import Headphones from './Headphones';
-import Heart from './Heart'
+import Heart from './Heart';
 const Album = ({
   albumName,
   artist,
@@ -16,26 +14,30 @@ const Album = ({
   album,
   openAlbumPlaylist,
 }) => {
-  const searchImage = (
-    <LottieView style={styles.lottie} source={searchingLottie} autoPlay loop />
+  const dispatch = useDispatch();
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const { primary, secondary, albumBackground } = useSelector(
+    (state) => state.themeReducer.theme,
   );
+  const { albumFavorites } = useSelector((state) => state.globalReducer);
 
   const handleFavorites = () => {
-    // console.log(id)
+    dispatch(AllActions.addFavorite(id, 'album'));
   };
 
-  const { primary, secondary, albumBackground } = useSelector((state) => state.themeReducer.theme);
+  useEffect(() => {
+    setIsFavorite(albumFavorites.includes(id));
+  }, [albumFavorites.length, id]);
 
   const grey = '#A2A2A2';
 
   return (
     <View style={styles.album}>
-      <View style={{...styles.imageWrap, backgroundColor: albumBackground}}>
+      <View style={{ ...styles.imageWrap, backgroundColor: albumBackground }}>
         <TouchableOpacity
           style={styles.touchable}
-          onPress={() => openAlbumPlaylist(album)}
-        
-          >
+          onPress={() => openAlbumPlaylist(album)}>
           {artwork ? (
             <Image style={styles.image} source={{ uri: artwork }} />
           ) : (
@@ -54,7 +56,7 @@ const Album = ({
         </View>
 
         <TouchableOpacity onPress={handleFavorites} style={styles.more}>
-          <Heart isFavorite={false} size={18} />
+          <Heart isFavorite={isFavorite} size={18} />
         </TouchableOpacity>
       </View>
     </View>
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     paddingRight: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
 
   albumInfo: {

@@ -2,9 +2,9 @@ import { RNAndroidAudioStore } from 'react-native-get-music-files';
 
 const getMusicTracks = async () => {
   const options = {
-    blured: false, // works only when 'cover' is set to true
+    blured: false, 
     artist: true,
-    duration: true, //default : true
+    duration: true, 
     album: true,
     genre: true,
     title: true,
@@ -18,8 +18,7 @@ const getMusicTracks = async () => {
     if (response === 'Something get wrong with musicCursor') {
       return null;
     } else {
-      
-      return response
+      return response;
     }
   } catch (err) {
     return err;
@@ -40,7 +39,6 @@ const getMusicAlbums = async () => {
     if (response === 'Something get wrong with musicCursor') {
       return null;
     } else {
-  
       return response;
     }
   } catch (err) {

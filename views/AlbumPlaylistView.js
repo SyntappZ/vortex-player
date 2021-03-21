@@ -28,7 +28,7 @@ const AlbumPlaylistView = ({ navigation }) => {
     border,
   } = useSelector((state) => state.themeReducer.theme);
   const [totalTime, setTotalTime] = useState(0.0);
-  const [isFavorite, setIsFavorite] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [newPlaylistId, setNewPlaylistId] = useState(null);
   useEffect(() => {
     const time = totalTimeConverter(selectedAlbum.tracks);
@@ -43,16 +43,31 @@ const AlbumPlaylistView = ({ navigation }) => {
     };
   }, [selectedAlbum]);
 
+  const { albumFavorites } = useSelector((state) => state.globalReducer);
+
+  const handleFavorites = () => {
+    dispatch(AllActions.addFavorite(selectedAlbum.id, 'album'));
+  };
+
   const navigateBack = () => navigation.goBack();
 
-  const favoriteHandler = () => {
-    setIsFavorite(!isFavorite);
-  };
+  // const favoriteHandler = () => {
+  //   setIsFavorite(!isFavorite);
+  // };
 
   const fabHandler = () => {
     const playlist = selectedAlbum.tracks
     dispatch(AllActions.setPlaylist(playlist, playlist[0]))
   }
+
+  useEffect(() => {
+    let mounted = true
+    if(mounted) {
+      setIsFavorite(albumFavorites.includes(selectedAlbum.id));
+    }
+
+    return () => mounted = false
+  }, [albumFavorites.length, selectedAlbum.id]);
 
   return (
     <View
@@ -75,8 +90,8 @@ const AlbumPlaylistView = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.favoriteButton}
-            onPress={favoriteHandler}>
-            <Heart isFavorite={isFavorite} />
+            onPress={handleFavorites}>
+            <Icon size={30} name="heart" type="entypo" color={isFavorite ? primary : subtext} />
           </TouchableOpacity>
         </View>
         <View style={styles.albumDetailsContainer}>
@@ -166,7 +181,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   backButtonContainer: {
-    height: 30,
+    height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -210,12 +225,15 @@ const styles = StyleSheet.create({
   backButton: {
     flex: 2,
     alignItems: 'flex-start',
+   
+
   },
   favoriteButton: {
     width: 50,
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
+    
   },
   infoTopSpace: {
     flex: 2,
@@ -226,6 +244,7 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 1,
+    
   },
   backIcon: {
     paddingVertical: 10,
@@ -277,7 +296,7 @@ const styles = StyleSheet.create({
   totalSongsWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 15,
+    height: 25,
   },
   tracksContainer: {
     flex: 1,

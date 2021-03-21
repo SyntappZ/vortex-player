@@ -4,16 +4,14 @@ import Album from './Album';
 import { RecyclerListView, DataProvider } from 'recyclerlistview';
 import LayoutProvider from './LayoutProvider';
 import { convertListView } from '../store/functions/converters.js';
-export default class AlbumsListView extends Component {
+export default class AlbumFavoriteListView extends Component {
   constructor(props) {
     super(props);
     const dataProvider = new DataProvider((r1, r2) => {
-      return r1 !== r2;
+      return r1.album !== r2.album;
     });
-    const layout = dataProvider.cloneWithRows(
-      convertListView(this.props.albums, 'ALBUMS'),
-    );
-
+    const layout = dataProvider.cloneWithRows(convertListView(this.props.albums, 'ALBUMS'));
+    
     this.state = {
       dataProvider: layout,
     };
@@ -28,14 +26,12 @@ export default class AlbumsListView extends Component {
     });
     const { albums } = this.props;
     if (nextProps.albums !== albums) {
-      setTimeout(() => {
-        const layout = dataProvider.cloneWithRows(
-          convertListView(albums, 'ALBUMS'),
-        );
-
-        this.setState({ dataProvider: layout });
-        this._layoutProvider = new LayoutProvider(layout);
-      }, 100);
+      // setTimeout(() => {
+      //   const layout = dataProvider.cloneWithRows(convertListView(albums, 'ALBUMS'));
+      //   console.log(layout);
+      //   this.setState({ dataProvider: dataProvider.cloneWithRows(albums) });
+      //   this._layoutProvider = new LayoutProvider(layout);
+      // }, 1000);
     }
   }
 

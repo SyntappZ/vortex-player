@@ -20,7 +20,7 @@ const themes = {
     lightBackground: '#eeeeee',
     extraLightBackground: '#ffffff',
     bottomPlayer: "#192240",
-     currentTrack: '#101937',
+    currentTrack: '#223161',
     primary: '#374780',
     secondary: '#9CAADD',
     folderColor: "#151D39",

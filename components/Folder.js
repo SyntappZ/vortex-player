@@ -14,12 +14,16 @@ const Folder = ({
   folder,
   openFolderPlaylist,
 }) => {
-  const { lightBackground, folderColor, primary, subtext, text } = useSelector(
-    (state) => state.themeReducer.theme,
-  );
+  const {
+    lightBackground,
+    folderColor,
+    primary,
+    secondary,
+    subtext,
+    text,
+  } = useSelector((state) => state.themeReducer.theme);
 
   // <EntypoIcon name={'folder-music'} size={35} color="#074DD9" />
-  
 
   const modalHandler = () => {};
   return (
@@ -41,10 +45,12 @@ const Folder = ({
       </View>
       <View style={styles.moreWrap}>
         <TouchableOpacity style={styles.moreTouchable}>
-          <Text numberOfLines={1} style={{...styles.songs, color: subtext}}>
+          <Text numberOfLines={1} style={{ ...styles.songs, color: subtext }}>
             songs: {numberOfSongs}
           </Text>
-          <Icon size={30} name="more-vert" color={text} />
+          <View style={{ paddingTop: 3 }}>
+            <Icon size={22} name="heart" type="entypo" color={subtext} />
+          </View>
         </TouchableOpacity>
       </View>
     </View>
@@ -101,7 +107,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 14,
-   
+
     letterSpacing: 0.4,
     paddingBottom: 2,
   },

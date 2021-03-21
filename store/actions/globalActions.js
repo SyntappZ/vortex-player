@@ -14,26 +14,10 @@ import {
   APP_LOADED,
   SET_PLAYER_VISIBILITY,
   ADD_FAVORITE,
-  ADD_STORAGE_FAVORITES
+  ADD_STORAGE_FAVORITES,
+  ADD_FAVORITE_ALBUM,
+  ADD_STORAGE_ALBUM_FAVORITES
 } from './types';
-
-// const createCoverArtObject = async (arr, objData = {}) => {
-//   if (arr.length < 1) return objData;
-
-//   const album = arr.shift();
-
-//   const author = album[1][0].author;
-
-//   const albumName = album[0];
-//   const tracks = album[1];
-//   objData[albumName] = {
-//     cover: '',
-//     tracks: tracks,
-//     totalTracks: tracks.length,
-//   };
-
-//   return createCoverArtObject(arr, objData);
-// };
 
 const addTracksToAlbums = async (albums, tracks, output = {}) => {
   if (albums.length < 1) return output;
@@ -64,7 +48,10 @@ const fetchAll = () => {
     const musicAlbums = await getMusicAlbums();
 
     const musicTracks = await getMusicTracks();
-   
+
+    const albumFavorites = await fetchData('albumFavorites');
+    dispatch(addStorageAlbumFavorites(albumFavorites));
+
     musicTracks.forEach((track, i) => {
       const splitPath = track.path.split('/').reverse();
       const folder = splitPath[1];
@@ -86,7 +73,16 @@ const fetchAll = () => {
   };
 };
 
-
+const addFavorite = (payload, type) => {
+  // console.log(`album id ${payload}`)
+  return async (dispatch) => {
+    if (type === 'track') {
+      dispatch(addFavoriteTrack(payload));
+    } else {
+      dispatch(addFavoriteAlbum(payload));
+    }
+  };
+};
 
 const fetchCoverArt = (albums) => {
   return async (dispatch) => {};
@@ -97,8 +93,13 @@ const updateImage = (payload) => ({
   payload: payload,
 });
 
-const addFavorite = (payload) => ({
+const addFavoriteTrack = (payload) => ({
   type: ADD_FAVORITE,
+  payload: payload,
+});
+
+const addFavoriteAlbum = (payload) => ({
+  type: ADD_FAVORITE_ALBUM,
   payload: payload,
 });
 
@@ -111,6 +112,11 @@ const addStorageFavorites = (payload) => ({
   type: ADD_STORAGE_FAVORITES,
   payload: payload,
 });
+
+const addStorageAlbumFavorites = (payload) => ({
+  type: ADD_STORAGE_ALBUM_FAVORITES,
+  payload: payload
+})
 
 const addAlbums = (payload) => ({
   type: ADD_ALBUMS,
@@ -137,5 +143,5 @@ export {
   updateImage,
   setAppLoaded,
   setPlayerVisibility,
-  addFavorite
+  addFavorite,
 };

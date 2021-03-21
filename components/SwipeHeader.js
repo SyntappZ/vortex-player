@@ -45,12 +45,12 @@ const SwipeHeader = ({navigation}) => {
 
     </TouchableOpacity>
   
-    <TouchableOpacity
+    {/* <TouchableOpacity
       // onPress={isSearching ? null : showMenu}
       style={styles.more}>
           <Icon size={30} name="more-vert" color="#fff" />
 
-    </TouchableOpacity>
+    </TouchableOpacity> */}
   </View>
   
   );

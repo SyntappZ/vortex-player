@@ -37,7 +37,7 @@ const NowPlayingView = ({ open, setOpen }) => {
 const NowPlaying = () => {
   
   const dispatch = useDispatch();
-  const [isFavorite, setIsFavorite] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const { primary, background, secondary, subtext, line } = useSelector(
     (state) => state.themeReducer.theme,
@@ -51,7 +51,7 @@ const NowPlaying = () => {
   const shuffleToggle = () => {};
   const addFavorite = () => {
     const { id } = currentPlayingTrack;
-    dispatch(AllActions.addFavorite(id));
+    dispatch(AllActions.addFavorite(id, 'track'));
   };
 
   useEffect(() => {

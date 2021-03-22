@@ -23,7 +23,7 @@ const SwipeHeader = ({navigation}) => {
     // navigation.navigate('Settings');
   };
   const search = () => {
-    // navigation.navigate('Search');
+     navigation.navigate('SearchView');
   };
 
   const wipeStorage = async () => {
@@ -35,11 +35,11 @@ const SwipeHeader = ({navigation}) => {
     <TouchableOpacity onPress={openMenu} style={styles.hamburger}>
       <Icon size={32} name="navicon" type="evilicon" color="#fff" />
     </TouchableOpacity>
-    <TouchableOpacity onPress={wipeStorage} style={styles.title}>
+    <View style={styles.title}>
       <Text style={styles.titleText}>
         vortex <Text style={{...styles.blueText, color: secondary}}>player</Text>
       </Text>
-    </TouchableOpacity>
+    </View>
     <TouchableOpacity onPress={search} style={styles.search}>
     <Icon size={34} name="search" type="evilicon" color="#fff" />
 

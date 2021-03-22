@@ -10,7 +10,7 @@ import {useSelector} from 'react-redux'
 import { vw, vh } from 'react-native-viewport-units';
 
 const Tab = createMaterialTopTabNavigator();
-const SwipeNavigator = () => {
+const SwipeNavigator = ({navigation}) => {
 const labelFontSize = 3 * vw;
 
   const {background, lightBackground, primary, secondary} = useSelector(state => state.themeReducer.theme)
@@ -32,7 +32,7 @@ const labelFontSize = 3 * vw;
 
   return (
     <View style={styles.container}>
-      <SwipeHeader />
+      <SwipeHeader navigation={navigation} />
       <View style={styles.screens}>
         <Tab.Navigator initialLayout={{width: Dimensions.get('window').width}} tabBarOptions={options} >
           <Tab.Screen name="Albums" component={AlbumsView} />

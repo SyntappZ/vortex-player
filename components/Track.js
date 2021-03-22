@@ -1,19 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  StyleSheet,
-  ToastAndroid,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import AllActions from '../store/actions';
 import { Icon } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
-import { setFirstTrackLoaded } from '../store/actions/playerActions';
-import TrackPlayer from 'react-native-track-player';
-
-// import { skipToId,  } from "../store/functions/playerFunctions.js";
-const colorBlack = '#0D0D0D';
 
 const Track = ({
   artist,
@@ -26,7 +15,7 @@ const Track = ({
   allTracks,
 }) => {
   const dispatch = useDispatch();
-  
+
   const { primary, secondary, text, subtext, currentTrack } = useSelector(
     (state) => state.themeReducer.theme,
   );
@@ -52,8 +41,6 @@ const Track = ({
   //   const trackId =await TrackPlayer.getCurrentTrack();
   // }
 
- 
-
   const trackBackground = light ? currentTrack : '#fff';
 
   useEffect(() => {
@@ -62,8 +49,7 @@ const Track = ({
   }, [favorites.length, id]);
 
   useEffect(() => {
-    
-    setCurrentPlaying(currentPlayingTrack.id === id)
+    setCurrentPlaying(currentPlayingTrack.id === id);
   }, [currentPlayingTrack, id]);
 
   return (
@@ -93,8 +79,13 @@ const Track = ({
             {displayDuration}
           </Text>
 
-          <View style={{paddingTop: 3}}>
-            <Icon size={22} name="heart" type="entypo" color={isFavorite ? secondary : subtext} />
+          <View>
+            <Icon
+              size={18}
+              name="heart"
+              type="antdesign"
+              color={isFavorite ? secondary : subtext}
+            />
           </View>
         </View>
       </TouchableOpacity>

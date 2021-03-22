@@ -130,10 +130,11 @@ const FolderPlaylistView = ({ navigation }) => {
             </View>
           </View>
         </View>
-      </View>
+      <FabButton fabHandler={fabHandler} newPlaylistId={newPlaylistId} />
 
+      </View>
       <View style={{ ...styles.bottom, backgroundColor: background }}>
-        <FabButton fabHandler={fabHandler} newPlaylistId={newPlaylistId} />
+       
 
         <View style={styles.tracksContainer}>
           <TracksListView tracks={selectedFolder.tracks} light={true} />
@@ -151,6 +152,7 @@ const styles = StyleSheet.create({
   },
   top: {
     padding: 20,
+    position: 'relative',
   },
 
   bottom: {
@@ -158,6 +160,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: radius,
     paddingTop: 10,
     position: 'relative',
+    overflow: 'hidden'
   },
   backButtonContainer: {
     height: 50,

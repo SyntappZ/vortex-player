@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import TracksListView from '../../components/TracksListView';
 const favoritesView = () => {
   const { favorites } = useSelector((state) => state.globalReducer);
+
+
   
   return (
     <View style={styles.container}>

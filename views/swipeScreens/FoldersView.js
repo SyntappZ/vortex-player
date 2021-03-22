@@ -12,6 +12,7 @@ const FolderView = ({navigation}) => {
     dispatch(AllActions.setSelectedFolder(folder))
     navigation.navigate('FolderPlaylist'); 
   };
+  
  
   
   return (

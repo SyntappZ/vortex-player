@@ -56,17 +56,17 @@ const AlbumPlaylistView = ({ navigation }) => {
   // };
 
   const fabHandler = () => {
-    const playlist = selectedAlbum.tracks
-    dispatch(AllActions.setPlaylist(playlist, playlist[0]))
-  }
+    const playlist = selectedAlbum.tracks;
+    dispatch(AllActions.setPlaylist(playlist, playlist[0]));
+  };
 
   useEffect(() => {
-    let mounted = true
-    if(mounted) {
+    let mounted = true;
+    if (mounted) {
       setIsFavorite(albumFavorites.includes(selectedAlbum.id));
     }
 
-    return () => mounted = false
+    return () => (mounted = false);
   }, [albumFavorites.length, selectedAlbum.id]);
 
   return (
@@ -91,7 +91,12 @@ const AlbumPlaylistView = ({ navigation }) => {
           <TouchableOpacity
             style={styles.favoriteButton}
             onPress={handleFavorites}>
-            <Icon size={30} name="heart" type="entypo" color={isFavorite ? primary : subtext} />
+            <Icon
+              size={30}
+              name="heart"
+              type="entypo"
+              color={isFavorite ? primary : subtext}
+            />
           </TouchableOpacity>
         </View>
         <View style={styles.albumDetailsContainer}>
@@ -151,11 +156,10 @@ const AlbumPlaylistView = ({ navigation }) => {
             </View>
           </View>
         </View>
+        <FabButton fabHandler={fabHandler} newPlaylistId={newPlaylistId} />
       </View>
 
       <View style={{ ...styles.bottom, backgroundColor: background }}>
-        <FabButton fabHandler={fabHandler} newPlaylistId={newPlaylistId} />
-
         <View style={styles.tracksContainer}>
           <TracksListView tracks={selectedAlbum.tracks} light={true} />
         </View>
@@ -172,13 +176,14 @@ const styles = StyleSheet.create({
   },
   top: {
     padding: 20,
+    position: 'relative',
   },
 
   bottom: {
     flex: 1,
     borderTopRightRadius: radius,
     paddingTop: 10,
-    position: 'relative',
+    overflow: 'hidden',
   },
   backButtonContainer: {
     height: 50,
@@ -225,15 +230,12 @@ const styles = StyleSheet.create({
   backButton: {
     flex: 2,
     alignItems: 'flex-start',
-   
-
   },
   favoriteButton: {
     width: 50,
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    
   },
   infoTopSpace: {
     flex: 2,
@@ -244,7 +246,6 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 1,
-    
   },
   backIcon: {
     paddingVertical: 10,

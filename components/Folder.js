@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-
+import { useSelector, useDispatch } from 'react-redux';
 import { Icon } from 'react-native-elements';
+import AllActions from '../store/actions';
 
-import { useSelector } from 'react-redux';
-// import { TouchableOpacity } from "react-native-gesture-handler";
 const Folder = ({
   folderName,
   tracks,
@@ -14,18 +13,20 @@ const Folder = ({
   folder,
   openFolderPlaylist,
 }) => {
-  const {
-    lightBackground,
-    folderColor,
-    primary,
-    secondary,
-    subtext,
-    text,
-  } = useSelector((state) => state.themeReducer.theme);
+  const { lightBackground, primary, secondary, subtext, text } = useSelector(
+    (state) => state.themeReducer.theme,
+  );
+  const dispatch = useDispatch();
+  const [isFavorite, setIsFavorite] = useState(false);
+  const { folderFavorites } = useSelector((state) => state.globalReducer);
 
-  // <EntypoIcon name={'folder-music'} size={35} color="#074DD9" />
+  const handleFavorites = () => {
+    dispatch(AllActions.addFavorite(id, 'folder'));
+  };
 
-  const modalHandler = () => {};
+  useEffect(() => {
+    setIsFavorite(folderFavorites.includes(id));
+  }, [folderFavorites.length, id]);
   return (
     <View style={{ ...styles.container, backgroundColor: lightBackground }}>
       <View style={styles.iconWrap}>
@@ -44,12 +45,19 @@ const Folder = ({
         </TouchableOpacity>
       </View>
       <View style={styles.moreWrap}>
-        <TouchableOpacity style={styles.moreTouchable}>
+        <TouchableOpacity
+          style={styles.moreTouchable}
+          onPress={handleFavorites}>
           <Text numberOfLines={1} style={{ ...styles.songs, color: subtext }}>
             songs: {numberOfSongs}
           </Text>
-          <View style={{ paddingTop: 3 }}>
-            <Icon size={22} name="heart" type="entypo" color={subtext} />
+          <View>
+            <Icon
+              size={18}
+              name="heart"
+              type="antdesign"
+              color={isFavorite ? secondary : subtext}
+            />
           </View>
         </TouchableOpacity>
       </View>

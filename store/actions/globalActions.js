@@ -16,7 +16,9 @@ import {
   ADD_FAVORITE,
   ADD_STORAGE_FAVORITES,
   ADD_FAVORITE_ALBUM,
-  ADD_STORAGE_ALBUM_FAVORITES
+  ADD_STORAGE_ALBUM_FAVORITES,
+  ADD_FAVORITE_FOLDER,
+  ADD_STORAGE_FOLDER_FAVORITES
 } from './types';
 
 const addTracksToAlbums = async (albums, tracks, output = {}) => {
@@ -29,7 +31,7 @@ const addTracksToAlbums = async (albums, tracks, output = {}) => {
 
   const artwork = await convertImageToBase64(album.cover);
 
-  // console.log(albumTracks)
+
 
   const allDetails = {
     ...album,
@@ -51,6 +53,8 @@ const fetchAll = () => {
 
     const albumFavorites = await fetchData('albumFavorites');
     dispatch(addStorageAlbumFavorites(albumFavorites));
+    const folderFavorites = await fetchData('folderFavorites');
+    dispatch(addStorageFolderFavorites(folderFavorites));
 
     musicTracks.forEach((track, i) => {
       const splitPath = track.path.split('/').reverse();
@@ -78,8 +82,12 @@ const addFavorite = (payload, type) => {
   return async (dispatch) => {
     if (type === 'track') {
       dispatch(addFavoriteTrack(payload));
-    } else {
+    }
+     else if(type === 'album') {
       dispatch(addFavoriteAlbum(payload));
+    }else{
+      dispatch(addFavoriteFolder(payload));
+
     }
   };
 };
@@ -103,6 +111,11 @@ const addFavoriteAlbum = (payload) => ({
   payload: payload,
 });
 
+const addFavoriteFolder = (payload) => ({
+  type: ADD_FAVORITE_FOLDER,
+  payload: payload
+})
+
 const addTracks = (payload) => ({
   type: ADD_TRACKS,
   payload: payload,
@@ -115,6 +128,10 @@ const addStorageFavorites = (payload) => ({
 
 const addStorageAlbumFavorites = (payload) => ({
   type: ADD_STORAGE_ALBUM_FAVORITES,
+  payload: payload
+})
+const addStorageFolderFavorites = (payload) => ({
+  type: ADD_STORAGE_FOLDER_FAVORITES,
   payload: payload
 })
 

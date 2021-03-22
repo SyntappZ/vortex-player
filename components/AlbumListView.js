@@ -35,7 +35,7 @@ export default class AlbumsListView extends Component {
 
         this.setState({ dataProvider: layout });
         this._layoutProvider = new LayoutProvider(layout);
-      }, 100);
+      }, 50);
     }
   }
 

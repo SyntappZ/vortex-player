@@ -2,8 +2,8 @@
   package="com.vortexplayer">
 
     <uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STOTAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STOTAGE"/>
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"

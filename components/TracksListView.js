@@ -48,7 +48,6 @@ export default class TracksListView extends Component {
     });
     const { tracks } = this.props;
     if (nextProps.tracks !== tracks) {
-    
       const data = convertListView(tracks, 'TRACKS');
       this.setState({dataProvider: dataProvider.cloneWithRows(data)})
       this._layoutProvider = new LayoutProvider(

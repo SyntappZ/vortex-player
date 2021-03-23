@@ -56,6 +56,11 @@ const FolderPlaylistView = ({ navigation }) => {
     dispatch(AllActions.setPlaylist(playlist, playlist[0]));
   };
 
+  const handleShuffle = () => {
+    const playlist = selectedFolder.tracks;
+    dispatch(AllActions.handleShuffleAsync(playlist));
+  }
+
   useEffect(() => {
     let mounted = true;
     if (mounted) {
@@ -140,7 +145,7 @@ const FolderPlaylistView = ({ navigation }) => {
               </Text>
             </View>
             <View style={styles.shuffleButtonWrap}>
-              <TouchableOpacity style={styles.shuffleButton}>
+              <TouchableOpacity style={styles.shuffleButton} onPress={handleShuffle}>
                 <Icon type="entypo" name="shuffle" size={22} color={text} />
               </TouchableOpacity>
             </View>

@@ -37,7 +37,6 @@ export default class TracksListView extends Component {
         light={this.props.light}
         playlist={this.props.tracks}
         track={data.item}
-        allTracks={this.props.allTracks}
       />
     );
   };
@@ -49,7 +48,7 @@ export default class TracksListView extends Component {
     const { tracks } = this.props;
     if (nextProps.tracks !== tracks) {
       const data = convertListView(tracks, 'TRACKS');
-      this.setState({dataProvider: dataProvider.cloneWithRows(data)})
+      this.setState({ dataProvider: dataProvider.cloneWithRows(data) });
       this._layoutProvider = new LayoutProvider(
         dataProvider.cloneWithRows(data),
       );
@@ -66,7 +65,6 @@ export default class TracksListView extends Component {
         {this.props.tracks.length > 0 ? (
           <View style={styles.listContainer}>
             <RecyclerListView
-              
               rowRenderer={this._renderRow}
               dataProvider={this.state.dataProvider}
               layoutProvider={this._layoutProvider}

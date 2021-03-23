@@ -35,7 +35,6 @@ const NowPlayingView = ({ open, setOpen }) => {
 };
 
 const NowPlaying = () => {
-  
   const dispatch = useDispatch();
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -61,13 +60,10 @@ const NowPlaying = () => {
       const ids = favorites.map((track) => track.id);
       setIsFavorite(ids.includes(id));
     }
-    
 
-    return () => { 
-      mounted = false
-    }
-
-      
+    return () => {
+      mounted = false;
+    };
   }, [favorites.length, currentPlayingTrack]);
   return (
     <View style={{ ...styles.container, backgroundColor: background }}>
@@ -76,7 +72,7 @@ const NowPlaying = () => {
         barStyle={'light-content'}
         animated={true}
       />
-     
+
       <View style={{ ...styles.nowPlaying, backgroundColor: primary }}>
         <Text style={styles.nowPlayingText}>Now Playing</Text>
       </View>

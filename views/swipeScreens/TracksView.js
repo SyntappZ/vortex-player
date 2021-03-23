@@ -1,28 +1,33 @@
-import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {useSelector} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import TracksListView from '../../components/TracksListView';
-
-
-
-
+import { Icon } from 'react-native-elements';
+import FAB from 'react-native-fab';
+import AllActions from '../../store/actions';
 const TracksView = () => {
-  const {tracks} = useSelector((state) => state.globalReducer);
-  
-//   const ids = tracks.map(item => item.id)
+  const dispatch = useDispatch();
 
-//   let count = ids.reduce((a, b) => {
-//     a[b] = (a[b] || 0) + 1;
-//     return a;
-// },{});
-// console.log(Object.values(count))
+  const { tracks } = useSelector((state) => state.globalReducer);
+  const { primary } = useSelector((state) => state.themeReducer.theme);
+  const icon = <Icon type="entypo" name="shuffle" size={20} color={'white'} />;
+
+  const handleShuffle = () => {
+    dispatch(AllActions.handleShuffleAsync(tracks));
+  };
 
   return (
     <View style={styles.container}>
-      <TracksListView
-        tracks={tracks}
-        allTracks={true}
-      />
+      <TracksListView tracks={tracks} />
+      {tracks.length > 1 ? (
+        <FAB
+          buttonColor={primary}
+          snackOffset={90}
+          iconTextColor={'white'}
+          onClickAction={handleShuffle}
+          iconTextComponent={icon}
+        />
+      ) : null}
     </View>
   );
 };
@@ -30,6 +35,15 @@ const TracksView = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  fab: {
+    position: 'absolute',
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 20,
+    bottom: 70,
+    right: 0,
   },
 });
 

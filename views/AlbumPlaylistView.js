@@ -2,16 +2,17 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Icon } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
 import { View, StyleSheet, StatusBar, Image, Text } from 'react-native';
-import Heart from '../components/Heart';
+
 import AllActions from '../store/actions';
 import TracksListView from '../components/TracksListView';
 import TextTicker from 'react-native-text-ticker';
 import { totalTimeConverter } from '../store/functions/converters.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import Play from '../components/Play';
+
 import FabButton from '../components/FabButton';
 import HeadphonesImage from '../components/HeadphonesImage';
+
 
 const AlbumPlaylistView = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -52,9 +53,10 @@ const AlbumPlaylistView = ({ navigation }) => {
 
   const navigateBack = () => navigation.goBack();
 
-  // const favoriteHandler = () => {
-  //   setIsFavorite(!isFavorite);
-  // };
+  const handleShuffle = () => {
+    const playlist = selectedAlbum.tracks;
+    dispatch(AllActions.handleShuffleAsync(playlist));
+  }
 
   const fabHandler = () => {
     const playlist = selectedAlbum.tracks;
@@ -151,7 +153,7 @@ const AlbumPlaylistView = ({ navigation }) => {
               </Text>
             </View>
             <View style={styles.shuffleButtonWrap}>
-              <TouchableOpacity style={styles.shuffleButton}>
+              <TouchableOpacity style={styles.shuffleButton} onPress={handleShuffle}>
                 <Icon type="entypo" name="shuffle" size={22} color={text} />
               </TouchableOpacity>
             </View>

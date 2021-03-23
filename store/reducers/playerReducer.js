@@ -10,6 +10,8 @@ import {
   PLAY_SONG,
   SET_ALL_TRACKS,
   LOAD_FIRST_TRACKS,
+  HANDLE_SHUFFLE,
+  PLAY_FIRST_SONG
 } from '../actions/types';
 import defaultImage from '../../images/defaultNote.jpg';
 import TracksView from '../../views/swipeScreens/TracksView';
@@ -18,12 +20,15 @@ import {
   playTrackFromId,
   loadPlaylist,
   addPlaylstAndPlay,
-  skipAndPlay
+  skipAndPlay,
 } from '../functions/playerFunctions.js';
 const initialState = {
   playerTracks: null,
   playerAlbumData: null,
   currentPlaylist: [],
+  cleanPlaylist: [],
+  shuffledPlaylist: [],
+  shuffleOn: false,
   currentPlaylistId: null,
   selectedAlbum: {},
   selectedFolder: {},
@@ -31,6 +36,8 @@ const initialState = {
   currentPlayingTrack: {},
   firstTrackLoaded: false,
 };
+
+const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
 const playerReducer = (state = initialState, action) => {
   const { payload } = action;
   const playlistConverter = (arr) => {
@@ -56,11 +63,14 @@ const playerReducer = (state = initialState, action) => {
         addPlaylstAndPlay(data, track.id);
       }
 
+
       return {
         ...state,
         currentPlaylist: data,
+        cleanPlaylist: data,
         currentPlaylistId: id,
-        // currentPlayingTrack: track
+
+       
       };
     }
     case SET_SELECTED_ALBUM: {
@@ -85,15 +95,16 @@ const playerReducer = (state = initialState, action) => {
       const data = playlistConverter(payload);
       const id = data.map((item) => item.id).join('');
       let track = data[0];
-      
-     
-     
+
+
       return {
         ...state,
         playerTracks: data,
         currentPlaylist: data,
+        cleanPlaylist: data,
         currentPlaylistId: id,
         currentPlayingTrack: track,
+     
       };
     }
 
@@ -106,10 +117,6 @@ const playerReducer = (state = initialState, action) => {
 
     case SET_CURRENT_TRACK: {
       let track = payload;
-
-      // const albumName = track.album;
-      // track.artwork = state.playerAlbumData[albumName].artwork;
-      // track.artist = track.author;
 
       return {
         ...state,
@@ -127,31 +134,31 @@ const playerReducer = (state = initialState, action) => {
       };
     }
 
-    case SET_ALL_TRACKS: {
-      // const playlist = state.playerTracks;
-      // // console.log(playlist)
-      // const id = playlist.map((item) => item.id).join('');
-      // // console.log('add all tracks')
-      // // console.log(state.playerTracks)
-      // if (id === state.currentPlaylistId) {
-  
-      //   skipAndPlay(payload.id);
-      // } else {
-        
-        
-      //   addPlaylstAndPlay(playlist, payload.id);
-      // }
+    case HANDLE_SHUFFLE: {
+      
+      const playlist = [...payload]
+      const data = playlistConverter(playlist);
+      const id = data.map((item) => item.id).join('');
+      const shuffledPlaylist = shuffle(data)
+      
       return {
         ...state,
-        // currentPlaylist: playlist,
-        // currentPlaylistId: id,
-        // currentPlayingTrack: payload
-      };
+        shuffleOn: shuffle,
+        currentPlaylist: shuffledPlaylist,
+        currentPlaylistId: id
+      }
+    }
+
+    case PLAY_FIRST_SONG: {
+      addPlaylstAndPlay(state.currentPlaylist, state.currentPlaylist[0].id);
+      return state
     }
 
     case PLAY_SONG: {
+  
       const { playlist, track } = payload;
       addPlaylstAndPlay(playlist, track.id);
+      return state
     }
 
     default:

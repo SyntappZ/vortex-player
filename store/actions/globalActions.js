@@ -18,7 +18,8 @@ import {
   ADD_FAVORITE_ALBUM,
   ADD_STORAGE_ALBUM_FAVORITES,
   ADD_FAVORITE_FOLDER,
-  ADD_STORAGE_FOLDER_FAVORITES
+  ADD_STORAGE_FOLDER_FAVORITES,
+ 
 } from './types';
 
 const addTracksToAlbums = async (albums, tracks, output = {}) => {
@@ -150,6 +151,8 @@ const setAppLoaded = () => ({
   payload: null,
 });
 
+
+
 const setPlayerVisibility = (payload) => ({
   type: SET_PLAYER_VISIBILITY,
   payload: payload,
@@ -161,4 +164,5 @@ export {
   setAppLoaded,
   setPlayerVisibility,
   addFavorite,
+ 
 };

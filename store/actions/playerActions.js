@@ -8,9 +8,10 @@ import {
   SET_CURRENT_TRACK,
   SET_ALL_TRACKS,
   LOAD_FIRST_TRACKS,
-  PLAY_SONG,
+  HANDLE_SHUFFLE,
+  PLAY_FIRST_SONG,
 } from './types';
-import { loadPlaylist, playTrackFromId } from '../functions/playerFunctions.js';
+
 const setCurrentPlaylist = (payload) => ({
   type: SET_CURRENT_PLAYLIST,
   payload: payload,
@@ -45,26 +46,31 @@ const setCurrentTrack = (payload) => ({
 
 const setAllTracks = (payload) => ({
   type: SET_ALL_TRACKS,
-  payload: payload
+  payload: payload,
 });
 const loadFirstTracks = () => ({
   type: LOAD_FIRST_TRACKS,
 });
-const playSong = (payload) => ({
-  type: PLAY_SONG,
+const playFirstSong = (payload) => ({
+  type: PLAY_FIRST_SONG,
   payload: payload,
 });
 
-const setPlaylist = (playlist, track, allTracks) => {
+const handleShuffle = (payload) => ({
+  type: HANDLE_SHUFFLE,
+  payload: payload,
+});
+
+const setPlaylist = (playlist, track) => {
   return async (dispatch) => {
-    // if (allTracks) {
-  
-    //    await dispatch(setAllTracks(track));
-     
-    // } else {
-      await dispatch(setCurrentPlaylist({playlist: playlist, track: track}));
-     
-    // }
+    await dispatch(setCurrentPlaylist({ playlist: playlist, track: track }));
+  };
+};
+
+const handleShuffleAsync = (playlist) => {
+  return async (dispatch) => {
+    await dispatch(handleShuffle(playlist))
+    dispatch(playFirstSong())
   };
 };
 
@@ -88,4 +94,5 @@ export {
   setPlayerData,
   setAllTracks,
   loadFirstTracks,
+  handleShuffleAsync,
 };

@@ -20,7 +20,8 @@ import {
   setPlaylist,
   setPlayerData,
   setAllTracks,
-  loadFirstTracks
+  loadFirstTracks,
+  handleShuffleAsync
 } from './playerActions';
 
 const AllActions = {
@@ -43,7 +44,8 @@ const AllActions = {
   setAllTracks,
   fetchFavorites,
   addFavorite,
-  loadFirstTracks
+  loadFirstTracks,
+  handleShuffleAsync
 };
 
 export default AllActions;

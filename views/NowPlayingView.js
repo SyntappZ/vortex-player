@@ -61,6 +61,7 @@ const NowPlaying = () => {
       const ids = favorites.map((track) => track.id);
       setIsFavorite(ids.includes(id));
     }
+    
 
     return () => { 
       mounted = false
@@ -72,9 +73,10 @@ const NowPlaying = () => {
     <View style={{ ...styles.container, backgroundColor: background }}>
       <StatusBar
         backgroundColor={primary}
-        barStyle={'dark-content'}
+        barStyle={'light-content'}
         animated={true}
       />
+     
       <View style={{ ...styles.nowPlaying, backgroundColor: primary }}>
         <Text style={styles.nowPlayingText}>Now Playing</Text>
       </View>

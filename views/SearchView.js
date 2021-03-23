@@ -20,9 +20,7 @@ const SearchView = ({ navigation }) => {
   const [search, setSearch] = useState('');
   const [filteredTracks, setFilteredtracks] = useState([]);
   useEffect(() => {
-    return () => {
-        
-    };
+    return () => {};
   }, []);
 
   const matched = (track, searchQuery) => {
@@ -70,8 +68,8 @@ const SearchView = ({ navigation }) => {
         </View>
         <View style={styles.searchBarContainer}>
           <SearchBar
-            inputContainerStyle={{backgroundColor: '#eee', borderRadius: 50 }}
-            containerStyle={{backgroundColor: primary, borderRadius: 50 }}
+            inputContainerStyle={{ backgroundColor: '#eee', borderRadius: 50 }}
+            containerStyle={{ backgroundColor: primary, borderRadius: 50 }}
             placeholder="Track/Artist Name..."
             onChangeText={getSearchResults}
             value={search}
@@ -79,7 +77,7 @@ const SearchView = ({ navigation }) => {
         </View>
       </View>
       <View style={styles.tracksContainer}>
-      <TracksListView tracks={filteredTracks}  />
+        <TracksListView tracks={filteredTracks} />
       </View>
     </View>
   );
@@ -103,8 +101,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: 'bold',
-    fontSize: 25,
-    paddingRight: 20
+    fontSize: 20,
+    paddingRight: 20,
   },
   titleContainer: {
     flex: 1,

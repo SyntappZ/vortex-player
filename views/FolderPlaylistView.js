@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, Dimensions, StatusBar } from 'react-native';
+import { View, StyleSheet, Text, StatusBar } from 'react-native';
 import AllActions from '../store/actions';
 import TracksListView from '../components/TracksListView';
 import TextTicker from 'react-native-text-ticker';
@@ -7,13 +7,13 @@ import { totalTimeConverter } from '../store/functions/converters.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import HeadphonesImage from '../components/HeadphonesImage';
-import Heart from '../components/Heart';
+
 
 import { useSelector, useDispatch } from 'react-redux';
 import { Icon } from 'react-native-elements';
 import FabButton from '../components/FabButton';
 
-// const screenWidth = Dimensions.get('window').width;
+
 const FolderPlaylistView = ({ navigation }) => {
   const dispatch = useDispatch();
   const {
@@ -29,8 +29,9 @@ const FolderPlaylistView = ({ navigation }) => {
   const [totalTime, setTotalTime] = useState(0.00);
   const [isFavorite, setIsFavorite] = useState(null);
   const [newPlaylistId, setNewPlaylistId] = useState(null);
-  const { selectedFolder } = useSelector((state) => state.playerReducer);
-  const { isPlaying } = useSelector((state) => state.playerReducer);
+ 
+  const { isPlaying, selectedFolder } = useSelector((state) => state.playerReducer);
+  const { folderFavorites } = useSelector((state) => state.globalReducer);
   useEffect(() => {
     const time = totalTimeConverter(selectedFolder.tracks);
     setTotalTime(time);
@@ -45,14 +46,24 @@ const FolderPlaylistView = ({ navigation }) => {
 
   const navigateBack = () => navigation.goBack();
 
-  const favoriteHandler = () => {
-    
+ 
+  const handleFavorites = () => {
+    dispatch(AllActions.addFavorite(selectedFolder.id, 'folder'));
   };
 
   const fabHandler = () => {
     const playlist = selectedFolder.tracks;
     dispatch(AllActions.setPlaylist(playlist, playlist[0]));
   };
+
+  useEffect(() => {
+    let mounted = true;
+    if (mounted) {
+      setIsFavorite(folderFavorites.includes(selectedFolder.id));
+    }
+
+    return () => (mounted = false);
+  }, [folderFavorites.length, selectedFolder.id]);
 
   return (
     <View
@@ -75,8 +86,13 @@ const FolderPlaylistView = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.favoriteButton}
-            onPress={favoriteHandler}>
-            <Heart isFavorite={isFavorite} size={23} color={subtext} />
+            onPress={handleFavorites}>
+            <Icon
+              size={30}
+              name="heart"
+              type="entypo"
+              color={isFavorite ? primary : subtext}
+            />
           </TouchableOpacity>
         </View>
         <View style={styles.albumDetailsContainer}>

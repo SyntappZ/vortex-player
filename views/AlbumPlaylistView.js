@@ -27,6 +27,7 @@ const AlbumPlaylistView = ({ navigation }) => {
     text,
     border,
   } = useSelector((state) => state.themeReducer.theme);
+  const { albumFavorites } = useSelector((state) => state.globalReducer);
   const [totalTime, setTotalTime] = useState(0.0);
   const [isFavorite, setIsFavorite] = useState(false);
   const [newPlaylistId, setNewPlaylistId] = useState(null);
@@ -43,7 +44,7 @@ const AlbumPlaylistView = ({ navigation }) => {
     };
   }, [selectedAlbum]);
 
-  const { albumFavorites } = useSelector((state) => state.globalReducer);
+  
 
   const handleFavorites = () => {
     dispatch(AllActions.addFavorite(selectedAlbum.id, 'album'));

@@ -59,4 +59,4 @@ buck-out/
 /ios/Pods/
 
 # gradle passwords
-
+gradle.properties

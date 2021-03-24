@@ -10,7 +10,7 @@ import {
   LOAD_FIRST_TRACKS,
   HANDLE_SHUFFLE,
   PLAY_FIRST_SONG,
-  PLAY_SONG
+  PLAY_SONG,
 } from './types';
 
 const setCurrentPlaylist = (payload) => ({
@@ -64,8 +64,8 @@ const handleShuffle = (payload) => ({
 
 const playSong = (payload) => ({
   type: PLAY_SONG,
-  payload: payload
-})
+  payload: payload,
+});
 
 const setPlaylist = (playlist, track) => {
   return async (dispatch) => {
@@ -73,15 +73,10 @@ const setPlaylist = (playlist, track) => {
   };
 };
 
-const handleShuffleAsync = (playlist, track) => {
+const handleShuffleAsync = (playlist) => {
   return async (dispatch) => {
-    await dispatch(handleShuffle(playlist))
-    if(track) {
-      dispatch(playSong(track.id))
-    }else{
-      dispatch(playFirstSong())
-    }
-    
+    await dispatch(handleShuffle(playlist));
+    dispatch(playFirstSong());
   };
 };
 

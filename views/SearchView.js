@@ -6,15 +6,11 @@ import AllActions from '../store/actions';
 import TracksListView from '../components/TracksListView';
 
 const SearchView = ({ navigation }) => {
+  const dispatch = useDispatch()
   const {
     primary,
-    background,
-    lightBackground,
-    extraLightBackground,
-    secondary,
+
     subtext,
-    text,
-    border,
   } = useSelector((state) => state.themeReducer.theme);
   const { tracks } = useSelector((state) => state.globalReducer);
   const [search, setSearch] = useState('');
@@ -48,6 +44,14 @@ const SearchView = ({ navigation }) => {
       setFilteredtracks([]);
     }
   };
+
+  useEffect(() => {
+    
+    return () => {
+      dispatch(AllActions.setAppLoaded(true))
+    }
+  },[])
+
 
   const goBack = () => navigation.goBack();
 

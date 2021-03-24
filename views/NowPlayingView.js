@@ -62,7 +62,7 @@ const NowPlaying = () => {
       dispatch(AllActions.setPlaylist(cleanPlaylist, currentPlayingTrack));
     } else {
       dispatch(
-        AllActions.handleShuffleAsync(currentPlaylist, currentPlayingTrack),
+        AllActions.handleShuffleAsync(currentPlaylist, currentPlaylist[0]),
       );
     }
   };
@@ -90,6 +90,8 @@ const NowPlaying = () => {
   }, [favorites.length, currentPlayingTrack]);
   const sheetRef = useRef(null);
   const snapPoint = windowHeight + 20;
+
+  const lottiePadding = windowHeight / 10
 
   const renderContent = () => (
     <View
@@ -221,7 +223,7 @@ const NowPlaying = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ ...styles.lottieContainer }}>
+        <View style={{ ...styles.lottieContainer, paddingHorizontal: lottiePadding }}>
           {isPlaying ? (
             <LottieView
               style={{ width: '100%' }}
@@ -237,6 +239,9 @@ const NowPlaying = () => {
             <View style={{ ...styles.line, backgroundColor: line }}></View>
           )}
         </View>
+        {/* <View style={styles.padding}>
+
+        </View> */}
       </View>
       <BottomSheet
         ref={sheetRef}
@@ -293,6 +298,9 @@ const styles = StyleSheet.create({
   tracksContainer: {
     flex: 1,
   },
+  padding: {
+    padding: 10
+  },
 
   lottieWrap: {
     width: 60,
@@ -336,8 +344,7 @@ const styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: "purple",
-    paddingHorizontal: 50,
+ 
   },
   line: {
     width: '100%',

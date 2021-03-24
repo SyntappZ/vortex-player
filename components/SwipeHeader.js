@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {Icon} from 'react-native-elements';
 import {removeArrayFromStorage} from '../store/functions/storageFunctions.js'
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import AllActions from '../store/actions'
 import {
   StyleSheet,
   View,
@@ -13,6 +14,7 @@ import {
 
 
 const SwipeHeader = ({navigation}) => {
+  const dispatch = useDispatch()
   const [isSearching, setSearching] = useState(false);
 
   const {background, primary, secondary} = useSelector(
@@ -23,6 +25,7 @@ const SwipeHeader = ({navigation}) => {
     // navigation.navigate('Settings');
   };
   const search = () => {
+    dispatch(AllActions.setAppLoaded(false))
      navigation.navigate('SearchView');
   };
 

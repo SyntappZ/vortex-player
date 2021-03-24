@@ -70,16 +70,14 @@ const FolderPlaylistView = ({ navigation }) => {
     return () => (mounted = false);
   }, [folderFavorites.length, selectedFolder.id]);
 
-  const barStyle = nowPlayingOpen ? 'light-content' : 'dark-content'
-
-  console.log(barStyle)
+  
 
   return (
     <View
       style={{ ...styles.container, backgroundColor: extraLightBackground }}>
       <StatusBar
         backgroundColor={extraLightBackground}
-        barStyle={barStyle}
+        barStyle={'dark-content'}
         animated={true}
       />
       <View style={styles.top}>
@@ -195,7 +193,7 @@ const styles = StyleSheet.create({
   },
   albumDetailsContainer: {
     flexDirection: 'row',
-    paddingTop: 40,
+    paddingTop: 20,
   },
 
   fab: {

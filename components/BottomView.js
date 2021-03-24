@@ -17,12 +17,6 @@ import TrackPlayer, {
   TrackPlayerEvents,
   STATE_PLAYING,
 } from 'react-native-track-player';
-import {
-  setCurrentPlaylist,
-  setIsPlaying,
-} from '../store/actions/playerActions';
-import { getMusicTracks } from '../store/functions/fetchMusic';
-import { createIconSetFromFontello } from 'react-native-vector-icons';
 
 const BottomView = ({ setOpen, open }) => {
   const dispatch = useDispatch();
@@ -32,13 +26,10 @@ const BottomView = ({ setOpen, open }) => {
   );
   const {
     currentPlayingTrack,
-    playerAlbumData,
-    currentPlaylist,
-    playerTracks,
-    firstTrackLoaded,
+
     isPlaying,
   } = useSelector((state) => state.playerReducer);
-  const { appLoaded } = useSelector((state) => state.globalReducer);
+  const { showBottomPlayer } = useSelector((state) => state.globalReducer);
 
   const [cover, setCover] = useState(null);
   const [bottomPosition, setBottomPosition] = useState(-90);
@@ -96,10 +87,12 @@ const BottomView = ({ setOpen, open }) => {
   }, [currentPlayingTrack.artwork]);
 
   useEffect(() => {
-    if (appLoaded) {
+    if (showBottomPlayer) {
       setBottomPosition(0);
+    } else {
+      setBottomPosition(-90);
     }
-  }, [appLoaded]);
+  }, [showBottomPlayer]);
 
   const events = [
     TrackPlayerEvents.PLAYBACK_STATE,

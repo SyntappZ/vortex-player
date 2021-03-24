@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import 'react-native-gesture-handler';
-import { StatusBar, View, StyleSheet,  } from 'react-native';
+import { StatusBar, View, StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { requestPermission } from '../store/functions/askPermission.js';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
@@ -9,7 +9,7 @@ import AllActions from '../store/actions';
 
 import { setupPlayer } from 'react-native-track-player';
 import BottomView from '../components/BottomView';
-import NowPlayingView from "../views/NowPlayingView"
+import NowPlayingView from '../views/NowPlayingView';
 const AppContainer = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -25,26 +25,21 @@ const AppContainer = () => {
     const granted = await requestPermission();
     if (granted) {
       dispatch(AllActions.fetchAll());
-      
     }
   };
-
-
-  
 
   useEffect(() => {
     getPermissions();
     setupPlayer();
-  }, []);
 
-  
+   
+  }, []);
 
   useEffect(() => {
     if (Object.keys(albumData).length > 0) {
-      dispatch(AllActions.setPlayerData(albumData, tracks));  
+      dispatch(AllActions.setPlayerData(albumData, tracks));
     }
   }, [albumData]);
- 
 
   const navigationRef = useRef(null);
 
@@ -57,19 +52,17 @@ const AppContainer = () => {
     },
   };
 
-  // useEffect(() => {
-    // const Style = nowPlayingOpen ? 'ligh-content' : 'dark-content';
-    // setBarStyle(Style);
-  // }, [nowPlayingOpen]);
-  const Style = nowPlayingOpen ? 'dark-content' : 'light-content';
-  console.log(Style)
   return (
     <View style={{ ...styles.container, backgroundColor: background }}>
-      <StatusBar backgroundColor={background} barStyle={'light-content'} animated={true}  />
+      <StatusBar
+        backgroundColor={background}
+        barStyle={'light-content'}
+        animated={true}
+      />
       <NavigationContainer ref={navigationRef} theme={MyTheme}>
         <StackNavigator />
       </NavigationContainer>
-       <NowPlayingView setOpen={setOpen} open={open} />
+      <NowPlayingView setOpen={setOpen} open={open} />
       <BottomView setOpen={setOpen} open={open} />
     </View>
   );
@@ -79,8 +72,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
- 
- 
 });
 
 export default AppContainer;

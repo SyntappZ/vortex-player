@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   },
   albumDetailsContainer: {
     flexDirection: 'row',
-    paddingTop: 40,
+    paddingTop: 20,
   },
 
   fab: {

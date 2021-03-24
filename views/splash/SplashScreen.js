@@ -1,28 +1,34 @@
-import React, {useEffect} from 'react';
-import {View, StyleSheet, Text, Image} from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Text, Image } from 'react-native';
 import LottieView from 'lottie-react-native';
 import Headphones from '../../images/lottie/headphones.json';
 // import headphones from '../../images/dark-headphones.png'
 import AllActions from '../../store/actions';
-import {useSelector, useDispatch} from 'react-redux';
-const SplashScreen = ({navigation}) => {
-  const {background, primary, subtext, secondary} = useSelector(
+import { useSelector, useDispatch } from 'react-redux';
+const SplashScreen = ({ navigation }) => {
+  const { background, primary, subtext, secondary } = useSelector(
     (state) => state.themeReducer.theme,
   );
+
+  const { appLoaded } = useSelector((state) => state.globalReducer);
 
   const dispatch = useDispatch();
   const changeView = () => {
     navigation.replace('SwipeNavigator');
-    dispatch(AllActions.setAppLoaded());
   };
 
+  useEffect(() => {
+    if (appLoaded) {
+      changeView();
+    }
+  }, [appLoaded]);
+
   return (
-    <View style={{...styles.container, backgroundColor: background}}>
+    <View style={{ ...styles.container, backgroundColor: background }}>
       <View style={styles.lottieWrap}>
         <LottieView
           style={styles.lottie}
           source={Headphones}
-          onAnimationFinish={changeView}
           autoPlay
           loop={false}
           colorFilters={[
@@ -43,7 +49,9 @@ const SplashScreen = ({navigation}) => {
       </View>
 
       <Text style={styles.largeText}>vortex player</Text>
-      <Text style={{...styles.smallText, color: subtext}}>Free Music App</Text>
+      <Text style={{ ...styles.smallText, color: subtext }}>
+        Free Music App
+      </Text>
     </View>
   );
 };
@@ -70,7 +78,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   smallText: {
-    
     letterSpacing: 1,
     paddingTop: 5,
     textAlign: 'center',

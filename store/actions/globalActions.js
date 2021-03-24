@@ -19,7 +19,8 @@ import {
   ADD_STORAGE_ALBUM_FAVORITES,
   ADD_FAVORITE_FOLDER,
   ADD_STORAGE_FOLDER_FAVORITES,
-  SET_NOW_PLAYING_OPEN
+  SET_NOW_PLAYING_OPEN,
+  SHOW_BOTTOM_PLAYER
 } from './types';
 
 const addTracksToAlbums = async (albums, tracks, output = {}) => {
@@ -73,6 +74,8 @@ const fetchAll = () => {
     dispatch(addAlbums(albumsObject));
     const favorites = await fetchData('favorites');
     dispatch(addStorageFavorites(favorites));
+
+    dispatch(setAppLoaded(true))
   };
 };
 
@@ -142,10 +145,15 @@ const addFolders = (payload) => ({
   payload: payload,
 });
 
-const setAppLoaded = () => ({
+const setAppLoaded = (payload) => ({
   type: APP_LOADED,
-  payload: null,
+  payload: payload,
 });
+
+const showBottomPlayer = payload => ({
+  type: SHOW_BOTTOM_PLAYER,
+  payload: payload,
+})
 
 const setPlayerVisibility = (payload) => ({
   type: SET_PLAYER_VISIBILITY,
@@ -163,5 +171,6 @@ export {
   setAppLoaded,
   setPlayerVisibility,
   addFavorite,
-  setNowPlayingOpen
+  setNowPlayingOpen,
+  showBottomPlayer
 };

@@ -1,23 +1,27 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import { View, StyleSheet } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import FolderListView from '../../components/FolderListView';
-import AllActions from '../../store/actions'
+import AllActions from '../../store/actions';
 
-const FolderView = ({navigation}) => {
- const dispatch = useDispatch()
-  const {folders} = useSelector((state) => state.globalReducer);
+const FolderView = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const { folders } = useSelector((state) => state.globalReducer);
 
   const openFolderPlaylist = (folder) => {
-    dispatch(AllActions.setSelectedFolder(folder))
-    navigation.navigate('FolderPlaylist'); 
+    dispatch(AllActions.setSelectedFolder(folder));
+    navigation.navigate('FolderPlaylist');
   };
-  
- 
-  
+
+
   return (
     <View style={styles.container}>
-      <FolderListView folders={folders} openFolderPlaylist={openFolderPlaylist} />
+      {folders.length > 0 ? (
+        <FolderListView
+          folders={folders}
+          openFolderPlaylist={openFolderPlaylist}
+        />
+      ) : null}
     </View>
   );
 };

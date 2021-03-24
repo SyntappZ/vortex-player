@@ -84,8 +84,6 @@ const globalReducer = (state = initialState, action) => {
 
       const addedFavoriteFolders = bringFavoritesToFront(convertedFolders, state.folderFavorites);
 
-      
-
       return {
         ...state,
         tracks: payload,

@@ -60,9 +60,10 @@ export default class TracksListView extends Component {
   };
 
   render() {
+    //  console.log(this.state.dataProvider._data.length)
     return (
       <View style={styles.container}>
-        {this.props.tracks.length > 0 ? (
+        {this.state.dataProvider._data.length > 0 ? (
           <View style={styles.listContainer}>
             <RecyclerListView
               rowRenderer={this._renderRow}

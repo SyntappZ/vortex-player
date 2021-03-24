@@ -18,7 +18,8 @@ const TracksView = () => {
 
   return (
     <View style={styles.container}>
-      <TracksListView tracks={tracks} />
+      {tracks.length > 0 ? <TracksListView tracks={tracks} /> : null}
+
       {tracks.length > 1 ? (
         <FAB
           buttonColor={primary}

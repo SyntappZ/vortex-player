@@ -15,19 +15,20 @@ const favoritesView = () => {
   const handleShuffle = () => {
     dispatch(AllActions.handleShuffleAsync(favorites));
   };
-  
+
   return (
     <View style={styles.container}>
-      <TracksListView tracks={favorites} />
+      {favorites.length > 0 ? <TracksListView tracks={favorites} /> : null}
 
-      {favorites.length > 1 ? (   <FAB
-        buttonColor={primary}
-        snackOffset={90}
-        iconTextColor={'white'}
-        onClickAction={handleShuffle}
-        iconTextComponent={icon}
-      />) : null}
-   
+      {favorites.length > 1 ? (
+        <FAB
+          buttonColor={primary}
+          snackOffset={90}
+          iconTextColor={'white'}
+          onClickAction={handleShuffle}
+          iconTextComponent={icon}
+        />
+      ) : null}
     </View>
   );
 };

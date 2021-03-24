@@ -25,6 +25,7 @@ const AppContainer = () => {
     const granted = await requestPermission();
     if (granted) {
       dispatch(AllActions.fetchAll());
+      
     }
   };
 

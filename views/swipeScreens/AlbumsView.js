@@ -14,13 +14,11 @@ const AlbumView = ({ navigation }) => {
     navigation.navigate('AlbumPlaylist');
   };
 
-  useEffect(() => {
-    // console.log(albums.length)
-  }, [albums.length])
 
   return (
     <View style={styles.container}>
-      <AlbumListView albums={albums} openAlbumPlaylist={openAlbumPlaylist} />
+      {albums.length > 0 ? <AlbumListView albums={albums} openAlbumPlaylist={openAlbumPlaylist} /> : null}
+      
     </View>
   );
 };

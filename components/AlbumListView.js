@@ -28,14 +28,13 @@ export default class AlbumsListView extends Component {
     });
     const { albums } = this.props;
     if (nextProps.albums !== albums) {
-      setTimeout(() => {
+      // setTimeout(() => {
         const layout = dataProvider.cloneWithRows(
           convertListView(albums, 'ALBUMS'),
         );
 
         this.setState({ dataProvider: layout });
-        this._layoutProvider = new LayoutProvider(layout);
-      }, 50);
+      // }, 50);
     }
   }
 
@@ -62,9 +61,10 @@ export default class AlbumsListView extends Component {
   };
 
   render() {
+     
     return (
       <View style={styles.container}>
-        {this.props.albums.length > 0 ? (
+        {this.state.dataProvider._data.length > 0 ? (
           <View style={styles.listContainer}>
             <RecyclerListView
               rowRenderer={this._renderRow}

@@ -16,7 +16,7 @@ const AppContainer = () => {
   const { lightBackground, background } = useSelector(
     (state) => state.themeReducer.theme,
   );
-  const { playerAlbumData, playerTracks } = useSelector((state) => state.playerReducer);
+  const { nowPlayingOpen } = useSelector((state) => state.globalReducer);
   const { appLoaded, tracks, albumData } = useSelector(
     (state) => state.globalReducer,
   );
@@ -56,9 +56,16 @@ const AppContainer = () => {
       background: lightBackground,
     },
   };
+
+  // useEffect(() => {
+    // const Style = nowPlayingOpen ? 'ligh-content' : 'dark-content';
+    // setBarStyle(Style);
+  // }, [nowPlayingOpen]);
+  const Style = nowPlayingOpen ? 'dark-content' : 'light-content';
+  console.log(Style)
   return (
     <View style={{ ...styles.container, backgroundColor: background }}>
-      <StatusBar backgroundColor={background} />
+      <StatusBar backgroundColor={background} barStyle={'light-content'} animated={true}  />
       <NavigationContainer ref={navigationRef} theme={MyTheme}>
         <StackNavigator />
       </NavigationContainer>
@@ -72,13 +79,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  box: {
-    width: '100%',
-    height: 100,
-    backgroundColor: 'red',
-    position: 'absolute',
-    bottom: 0,
-  },
+ 
  
 });
 

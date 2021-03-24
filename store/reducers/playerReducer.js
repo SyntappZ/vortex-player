@@ -26,9 +26,10 @@ const initialState = {
   playerTracks: null,
   playerAlbumData: null,
   currentPlaylist: [],
+  tracksViewPlaylist: [],
   cleanPlaylist: [],
   shuffledPlaylist: [],
-  shuffleOn: false,
+  isShuffleOn: false,
   currentPlaylistId: null,
   selectedAlbum: {},
   selectedFolder: {},
@@ -37,10 +38,12 @@ const initialState = {
   firstTrackLoaded: false,
 };
 
-const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
+const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
 const playerReducer = (state = initialState, action) => {
   const { payload } = action;
   const playlistConverter = (arr) => {
+    if(arr[0].converted) return arr
+
     return arr.map((item) => ({
       id: item.id,
       album: item.album,
@@ -49,11 +52,13 @@ const playerReducer = (state = initialState, action) => {
       duration: item.seconds,
       url: item.path,
       artwork: state.playerAlbumData[item.album].artwork || null,
+      converted: true
     }));
   };
   switch (action.type) {
     case SET_CURRENT_PLAYLIST: {
       const { playlist, track } = payload;
+    
       const data = playlistConverter(playlist);
       const id = data.map((item) => item.id).join('');
 
@@ -68,8 +73,9 @@ const playerReducer = (state = initialState, action) => {
         ...state,
         currentPlaylist: data,
         cleanPlaylist: data,
+        tracksViewPlaylist: playlist,
         currentPlaylistId: id,
-
+        isShuffleOn: false
        
       };
     }
@@ -102,9 +108,10 @@ const playerReducer = (state = initialState, action) => {
         playerTracks: data,
         currentPlaylist: data,
         cleanPlaylist: data,
+        tracksViewPlaylist: payload,
         currentPlaylistId: id,
         currentPlayingTrack: track,
-     
+        
       };
     }
 
@@ -135,16 +142,18 @@ const playerReducer = (state = initialState, action) => {
     }
 
     case HANDLE_SHUFFLE: {
-      
+ 
       const playlist = [...payload]
-      const data = playlistConverter(playlist);
-      const id = data.map((item) => item.id).join('');
-      const shuffledPlaylist = shuffle(data)
+      const shuffledPlaylist = shuffle(playlist)
+      const data = playlistConverter(shuffledPlaylist);
       
+      const id = data.map((item) => item.id).join('');
       return {
         ...state,
-        shuffleOn: shuffle,
-        currentPlaylist: shuffledPlaylist,
+        isShuffleOn: true,
+        cleanPlaylist: playlistConverter(playlist),
+        tracksViewPlaylist: shuffledPlaylist,
+        currentPlaylist: data,
         currentPlaylistId: id
       }
     }
@@ -155,9 +164,8 @@ const playerReducer = (state = initialState, action) => {
     }
 
     case PLAY_SONG: {
-  
-      const { playlist, track } = payload;
-      addPlaylstAndPlay(playlist, track.id);
+      
+      addPlaylstAndPlay(state.currentPlaylist, payload);
       return state
     }
 

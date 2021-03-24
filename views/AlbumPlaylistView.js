@@ -9,10 +9,8 @@ import TextTicker from 'react-native-text-ticker';
 import { totalTimeConverter } from '../store/functions/converters.js';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-
 import FabButton from '../components/FabButton';
 import HeadphonesImage from '../components/HeadphonesImage';
-
 
 const AlbumPlaylistView = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -28,10 +26,13 @@ const AlbumPlaylistView = ({ navigation }) => {
     text,
     border,
   } = useSelector((state) => state.themeReducer.theme);
-  const { albumFavorites } = useSelector((state) => state.globalReducer);
+  const { albumFavorites, nowPlayingOpen } = useSelector(
+    (state) => state.globalReducer,
+  );
   const [totalTime, setTotalTime] = useState(0.0);
   const [isFavorite, setIsFavorite] = useState(false);
   const [newPlaylistId, setNewPlaylistId] = useState(null);
+  const [barStyle, setBarStyle] = useState('dark-content');
   useEffect(() => {
     const time = totalTimeConverter(selectedAlbum.tracks);
     setTotalTime(time);
@@ -45,8 +46,6 @@ const AlbumPlaylistView = ({ navigation }) => {
     };
   }, [selectedAlbum]);
 
-  
-
   const handleFavorites = () => {
     dispatch(AllActions.addFavorite(selectedAlbum.id, 'album'));
   };
@@ -56,7 +55,7 @@ const AlbumPlaylistView = ({ navigation }) => {
   const handleShuffle = () => {
     const playlist = selectedAlbum.tracks;
     dispatch(AllActions.handleShuffleAsync(playlist));
-  }
+  };
 
   const fabHandler = () => {
     const playlist = selectedAlbum.tracks;
@@ -72,14 +71,23 @@ const AlbumPlaylistView = ({ navigation }) => {
     return () => (mounted = false);
   }, [albumFavorites.length, selectedAlbum.id]);
 
+  const isModalOpen = (open) =>{
+    dispatch(AllActions.setNowPlayingOpen(open));
+  }
+
+  useEffect(() => {
+    isModalOpen(true);
+
+    return () => {
+      isModalOpen(false);
+    };
+  }, []);
+
   return (
     <View
       style={{ ...styles.container, backgroundColor: extraLightBackground }}>
-      <StatusBar
-        backgroundColor={extraLightBackground}
-        barStyle={'dark-content'}
-        animated={true}
-      />
+      <StatusBar backgroundColor={extraLightBackground} barStyle={'dark-content'} animated={true} />
+
       <View style={styles.top}>
         <View style={styles.backButtonContainer}>
           <TouchableOpacity onPress={navigateBack}>
@@ -153,7 +161,9 @@ const AlbumPlaylistView = ({ navigation }) => {
               </Text>
             </View>
             <View style={styles.shuffleButtonWrap}>
-              <TouchableOpacity style={styles.shuffleButton} onPress={handleShuffle}>
+              <TouchableOpacity
+                style={styles.shuffleButton}
+                onPress={handleShuffle}>
                 <Icon type="entypo" name="shuffle" size={22} color={text} />
               </TouchableOpacity>
             </View>

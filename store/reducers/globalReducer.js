@@ -12,6 +12,7 @@ import {
   ADD_STORAGE_ALBUM_FAVORITES,
   ADD_FAVORITE_FOLDER,
   ADD_STORAGE_FOLDER_FAVORITES,
+  SET_NOW_PLAYING_OPEN
 } from '../actions/types';
 import { convertListView, createFolders } from '../functions/converters.js';
 import { storeData } from '../functions/storageFunctions.js';
@@ -29,6 +30,7 @@ const initialState = {
   albumFavorites: [],
   appLoaded: false,
   sheetSnapPoint: 0,
+  nowPlayingOpen: false
 };
 
 const sortFavoritesOrdered = (favorites, arr, orderedList = []) => {
@@ -229,6 +231,13 @@ const globalReducer = (state = initialState, action) => {
       return {
         ...state,
         albumData: payload,
+      };
+    }
+
+    case SET_NOW_PLAYING_OPEN: {
+      return {
+        ...state,
+        nowPlayingOpen: payload,
       };
     }
 

@@ -31,7 +31,7 @@ const FolderPlaylistView = ({ navigation }) => {
   const [newPlaylistId, setNewPlaylistId] = useState(null);
  
   const { isPlaying, selectedFolder } = useSelector((state) => state.playerReducer);
-  const { folderFavorites } = useSelector((state) => state.globalReducer);
+  const { folderFavorites, nowPlayingOpen } = useSelector((state) => state.globalReducer);
   useEffect(() => {
     const time = totalTimeConverter(selectedFolder.tracks);
     setTotalTime(time);
@@ -70,12 +70,16 @@ const FolderPlaylistView = ({ navigation }) => {
     return () => (mounted = false);
   }, [folderFavorites.length, selectedFolder.id]);
 
+  const barStyle = nowPlayingOpen ? 'light-content' : 'dark-content'
+
+  console.log(barStyle)
+
   return (
     <View
       style={{ ...styles.container, backgroundColor: extraLightBackground }}>
       <StatusBar
         backgroundColor={extraLightBackground}
-        barStyle={'dark-content'}
+        barStyle={barStyle}
         animated={true}
       />
       <View style={styles.top}>

@@ -12,7 +12,8 @@ const Track = ({
   light,
   playlist,
   track,
-  allTracks,
+  nowPlayingView
+ 
 }) => {
   const dispatch = useDispatch();
 
@@ -27,7 +28,7 @@ const Track = ({
   const [isFavorite, setIsFavorite] = useState(false);
 
   const setPlaylist = async () => {
-    dispatch(AllActions.setPlaylist(playlist, track, allTracks));
+    dispatch(AllActions.setPlaylist(playlist, track));
   };
   const addFavorite = () => {
     dispatch(AllActions.addFavorite(id, 'track'));
@@ -35,7 +36,7 @@ const Track = ({
 
   const titleColor = light ? 'white' : text;
 
-  const noteColor = light && currentPlaying ? 'white' : primary;
+  const noteColor = light && currentPlaying ? 'white' : nowPlayingView ? 'white' : primary;
 
   // const getCurrentPlaying = async () => {
   //   const trackId =await TrackPlayer.getCurrentTrack();

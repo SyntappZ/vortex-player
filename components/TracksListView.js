@@ -35,6 +35,7 @@ export default class TracksListView extends Component {
         id={id}
         displayDuration={displayDuration}
         light={this.props.light}
+        nowPlayingView={this.props.nowPlayingView}
         playlist={this.props.tracks}
         track={data.item}
       />

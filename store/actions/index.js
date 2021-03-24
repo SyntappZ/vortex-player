@@ -5,7 +5,7 @@ import {
   setPlayerVisibility,
   fetchFavorites,
   addFavorite,
-
+  setNowPlayingOpen
 } from './globalActions.js';
 
 import {changeTheme, fetchThemeFromStorage, storeTheme} from './themeActions';
@@ -45,7 +45,8 @@ const AllActions = {
   fetchFavorites,
   addFavorite,
   loadFirstTracks,
-  handleShuffleAsync
+  handleShuffleAsync,
+  setNowPlayingOpen
 };
 
 export default AllActions;

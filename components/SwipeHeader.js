@@ -25,7 +25,7 @@ const SwipeHeader = ({navigation}) => {
     // navigation.navigate('Settings');
   };
   const search = () => {
-    dispatch(AllActions.setAppLoaded(false))
+    dispatch(AllActions.showBottomPlayer(false))
      navigation.navigate('SearchView');
   };
 

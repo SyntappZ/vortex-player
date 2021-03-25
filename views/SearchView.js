@@ -46,9 +46,8 @@ const SearchView = ({ navigation }) => {
   };
 
   useEffect(() => {
-    
     return () => {
-      dispatch(AllActions.setAppLoaded(true))
+      dispatch(AllActions.showBottomPlayer(true))
     }
   },[])
 

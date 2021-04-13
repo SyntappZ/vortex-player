@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
+import { getSongCover } from '../store/functions/fetchMusic.js';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -19,6 +20,8 @@ const radius = height / 5.5;
 const CircleSliderContainer = ({ isPlaying }) => {
   const [sliderValue, setSliderValue] = useState(0);
   const [panHandlerPressed, setPanHandlerPressed] = useState(false);
+  const [artwork, setArtwork] = useState(null);
+  const [isCover, setIsCover] = useState(null);
   const { position } = useTrackPlayerProgress(100, null);
   const { primary, background, secondary, subtext, vinalColor } = useSelector(
     (state) => state.themeReducer.theme,
@@ -33,16 +36,10 @@ const CircleSliderContainer = ({ isPlaying }) => {
     );
   };
 
-  const cover = currentPlayingTrack.artwork;
+  const track = currentPlayingTrack;
 
   const onPanChange = (pos) => {
-    const skipToSeconds = mapDuration(
-      pos,
-      0,
-      359,
-      0,
-      currentPlayingTrack.duration,
-    );
+    const skipToSeconds = mapDuration(pos, 0, 359, 0, track.duration);
     const seconds = Math.round(skipToSeconds);
 
     seekTo(seconds);
@@ -52,13 +49,29 @@ const CircleSliderContainer = ({ isPlaying }) => {
     setSliderValue(val);
   };
 
-  const positionValue = mapDuration(
-    position,
-    0,
-    currentPlayingTrack.duration,
-    0,
-    359,
-  );
+  const positionValue = mapDuration(position, 0, track.duration, 0, 359);
+
+  const setImage = async () => {
+    const path = track.url;
+
+    const cover = await getSongCover(path);
+    setIsCover(cover);
+    if (cover) {
+      setArtwork(<Image source={{ uri: cover }} style={styles.image} />);
+    } else {
+      setArtwork(
+        <HeadphonesImage
+          isPlaying={isPlaying}
+          color={secondary}
+          playAnimation={false}
+        />,
+      );
+    }
+  };
+
+  useEffect(() => {
+    setImage();
+  }, [track]);
 
   useEffect(() => {
     let mounted = true;
@@ -95,18 +108,10 @@ const CircleSliderContainer = ({ isPlaying }) => {
         style={{
           ...styles.imageWrap,
           backgroundColor: vinalColor,
-          padding: cover ? 0 : 40,
-          paddingBottom: cover ? 0 : 50,
+          padding: isCover ? 0 : 40,
+          paddingBottom: isCover ? 0 : 50,
         }}>
-        {cover ? (
-          <Image source={{ uri: cover }} style={styles.image} />
-        ) : (
-          <HeadphonesImage
-            isPlaying={isPlaying}
-            color={secondary}
-            playAnimation={false}
-          />
-        )}
+        {artwork}
       </View>
       {/* <TouchableOpacity
         onPress={changeTom}

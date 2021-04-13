@@ -20,6 +20,7 @@ export default class AlbumsListView extends Component {
     this._layoutProvider = new LayoutProvider(layout);
     this._renderRow = this._renderRow.bind(this);
     this.footer = this.footer.bind(this);
+    
   }
 
   componentDidUpdate(nextProps) {
@@ -38,9 +39,12 @@ export default class AlbumsListView extends Component {
     }
   }
 
-  _renderRow = (type, data) => {
-    const { album, artist, numberOfSongs, artwork, id } = data.item;
+  
+  
 
+  _renderRow = (type, data) => {
+    const { album, artist, numberOfSongs, artwork, id, tracks } = data.item;
+    
     return (
       <View style={styles.containerGrid}>
         <Album
@@ -51,6 +55,8 @@ export default class AlbumsListView extends Component {
           numberOfSongs={numberOfSongs}
           album={data.item}
           openAlbumPlaylist={this.props.openAlbumPlaylist}
+          path={tracks[0].path}
+          
         />
       </View>
     );

@@ -4,6 +4,8 @@ import AllActions from '../store/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { vw, vh } from 'react-native-viewport-units';
 import Headphones from './Headphones';
+import { getSongCover } from '../store/functions/fetchMusic.js';
+
 import Heart from './Heart';
 const Album = ({
   albumName,
@@ -13,18 +15,40 @@ const Album = ({
   numberOfSongs,
   album,
   openAlbumPlaylist,
+ 
+  path,
 }) => {
   const dispatch = useDispatch();
   const [isFavorite, setIsFavorite] = useState(false);
-
+  //  const [artwork, setArtwork] = useState(null)
   const { primary, secondary, albumBackground } = useSelector(
     (state) => state.themeReducer.theme,
   );
-  const { albumFavorites } = useSelector((state) => state.globalReducer);
+  const { albumFavorites, albumData } = useSelector(
+    (state) => state.globalReducer,
+  );
 
   const handleFavorites = () => {
     dispatch(AllActions.addFavorite(id, 'album'));
   };
+
+  // const setImage = async (albumName) => {
+  //   const cover = await getSongCover(path);
+
+  //   const data = [albumName, cover];
+  //   if (cover) {
+  //     dispatch(AllActions.updateImage(data));
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   setImage(albumName);
+  // }, [albumName]);
+
+  // useEffect(() => {
+  //   const image = albumData[albumName].artwork
+  //   setArtwork(image)
+  // }, [albumData[albumName].artwork])
 
   useEffect(() => {
     setIsFavorite(albumFavorites.includes(id));

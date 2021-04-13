@@ -11,7 +11,7 @@ export default class FolderListView extends Component {
       return r1 !== r2;
     });
     const folders = dataProvider.cloneWithRows(convertListView(this.props.folders, 'FOLDERS'),);
-    console.log(this.props.folders.length)
+    
     this.state = {
       dataProvider: folders,
     };

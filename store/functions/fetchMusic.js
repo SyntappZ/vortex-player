@@ -18,6 +18,7 @@ const getMusicTracks = async () => {
     if (response === 'Something get wrong with musicCursor') {
       return null;
     } else {
+      
       return response;
     }
   } catch (err) {
@@ -36,9 +37,11 @@ const getMusicAlbums = async () => {
 
   try {
     const response = await RNAndroidAudioStore.getAlbums();
+
     if (response === 'Something get wrong with musicCursor') {
       return null;
     } else {
+      
       return response;
     }
   } catch (err) {
@@ -46,4 +49,21 @@ const getMusicAlbums = async () => {
   }
 };
 
-export { getMusicTracks, getMusicAlbums };
+const getSongCover = async (path) => {
+
+
+  const options = {
+    songUri: path,
+    cover: true,
+    icon: false
+  }
+  
+  try {
+    const response = await RNAndroidAudioStore.getSongByPath(options);
+    return response[0].cover
+  } catch (err) {
+    return err;
+  }
+}
+
+export { getMusicTracks, getMusicAlbums, getSongCover };

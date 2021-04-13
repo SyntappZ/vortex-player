@@ -13,7 +13,7 @@ import {
   ADD_FAVORITE_FOLDER,
   ADD_STORAGE_FOLDER_FAVORITES,
   SET_NOW_PLAYING_OPEN,
-  SHOW_BOTTOM_PLAYER
+  SHOW_BOTTOM_PLAYER,
 } from '../actions/types';
 import { convertListView, createFolders } from '../functions/converters.js';
 import { storeData } from '../functions/storageFunctions.js';
@@ -32,7 +32,7 @@ const initialState = {
   appLoaded: false,
   sheetSnapPoint: 0,
   nowPlayingOpen: false,
-  showBottomPlayer: false
+  showBottomPlayer: false,
 };
 
 const sortFavoritesOrdered = (favorites, arr, orderedList = []) => {
@@ -86,7 +86,10 @@ const globalReducer = (state = initialState, action) => {
         };
       });
 
-      const addedFavoriteFolders = bringFavoritesToFront(convertedFolders, state.folderFavorites);
+      const addedFavoriteFolders = bringFavoritesToFront(
+        convertedFolders,
+        state.folderFavorites,
+      );
 
       return {
         ...state,
@@ -101,8 +104,8 @@ const globalReducer = (state = initialState, action) => {
     case SHOW_BOTTOM_PLAYER: {
       return {
         ...state,
-        showBottomPlayer: payload
-      }
+        showBottomPlayer: payload,
+      };
     }
 
     case ADD_STORAGE_ALBUM_FAVORITES: {
@@ -118,7 +121,6 @@ const globalReducer = (state = initialState, action) => {
         folderFavorites: payload,
       };
     }
-
 
     case ADD_FAVORITE: {
       const id = payload;
@@ -180,7 +182,10 @@ const globalReducer = (state = initialState, action) => {
           (folderId) => folderId !== id,
         );
 
-        folders = bringFavoritesToFront(state.freshFolders, filterFavoriteFolder);
+        folders = bringFavoritesToFront(
+          state.freshFolders,
+          filterFavoriteFolder,
+        );
         folderFavorites = filterFavoriteFolder;
       } else {
         folderFavorites.unshift(id);
@@ -201,7 +206,7 @@ const globalReducer = (state = initialState, action) => {
         (a, b) => parseInt(b.numberOfSongs) - parseInt(a.numberOfSongs),
       );
 
-      const filterFolders = sortAlbums.filter(
+      const filterFolders = state.freshAlbums.length > 0 ? sortAlbums : sortAlbums.filter(
         (album) => !state.folderNames.includes(album.album),
       );
 
@@ -222,7 +227,6 @@ const globalReducer = (state = initialState, action) => {
     }
 
     case APP_LOADED: {
-     
       return {
         ...state,
         appLoaded: payload,
@@ -238,9 +242,13 @@ const globalReducer = (state = initialState, action) => {
     }
 
     case UPDATE_IMAGE: {
+      const [album, image] = payload;
+
+      state.albumData[album].artwork = image
+    
+     
       return {
         ...state,
-        albumData: payload,
       };
     }
 

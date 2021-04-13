@@ -1,5 +1,5 @@
 import { fetchData } from '../functions/storageFunctions.js';
-import { getMusicTracks, getMusicAlbums } from '../functions/fetchMusic.js';
+import { getMusicTracks, getMusicAlbums, getSongCover } from '../functions/fetchMusic.js';
 import {
   trackConverter,
   createFolders,
@@ -23,6 +23,29 @@ import {
   SHOW_BOTTOM_PLAYER
 } from './types';
 
+
+const addCoversToAlbums = async (albums, output = {}) => {
+  if (albums.length < 1) return output;
+  const album = albums.shift();
+  const id = album.album;
+  const path = album.tracks[0].path;
+
+  
+
+  const artwork = await getSongCover(path)
+
+  const allDetails = {
+    ...album,
+    artwork: artwork,
+  };
+
+  output[id] = allDetails;
+
+  return addCoversToAlbums(albums, output)
+}
+
+
+
 const addTracksToAlbums = async (albums, tracks, output = {}) => {
   if (albums.length < 1) return output;
   const album = albums.shift();
@@ -31,12 +54,24 @@ const addTracksToAlbums = async (albums, tracks, output = {}) => {
     return track.album === album.album;
   });
 
-  const artwork = await convertImageToBase64(album.cover);
+  
+  // const isAlbum = !folderNames.includes(id)
+  
+
+  // const path = albumTracks[0].path
+
+  // console.log(path)
+
+  // const cover = await setImage(path)
+  // console.log(album.cover)
+  
+
+  
+  
 
   const allDetails = {
     ...album,
     tracks: albumTracks,
-    artwork: artwork,
     artist: album.author == '<unknown>' ? null : album.author,
   };
 
@@ -50,7 +85,7 @@ const fetchAll = () => {
     const musicAlbums = await getMusicAlbums();
 
     const musicTracks = await getMusicTracks();
-
+    
     const albumFavorites = await fetchData('albumFavorites');
     dispatch(addStorageAlbumFavorites(albumFavorites));
     const folderFavorites = await fetchData('folderFavorites');
@@ -64,23 +99,39 @@ const fetchAll = () => {
       track.folderPath = `/${folderPath}`;
     });
 
-    // console.log(Object.values(count).filter(item => item > 1));
+    //  console.log(musicTracks)
+   
 
     const tracks = trackConverter(musicTracks);
-    dispatch(addTracks(tracks));
+    dispatch(addTracks(tracks))
 
     const albumsObject = await addTracksToAlbums(musicAlbums, tracks);
 
     dispatch(addAlbums(albumsObject));
     const favorites = await fetchData('favorites');
     dispatch(addStorageFavorites(favorites));
-
     dispatch(setAppLoaded(true))
+    const folders = createFolders(tracks);
+    const arr = Object.values(albumsObject)
+
+    const filterFolders = arr.filter(
+      (album) => !Object.keys(folders).includes(album.album),
+    );
+
+    
+
+    const coversAdded = await addCoversToAlbums(filterFolders)
+   
+    dispatch(addAlbums(coversAdded));
+    
+  
+
+    
   };
 };
 
 const addFavorite = (payload, type) => {
-  // console.log(`album id ${payload}`)
+ 
   return async (dispatch) => {
     if (type === 'track') {
       dispatch(addFavoriteTrack(payload));

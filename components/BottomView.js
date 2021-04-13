@@ -7,6 +7,7 @@ import { Icon } from 'react-native-elements';
 import TextTicker from 'react-native-text-ticker';
 import AllActions from '../store/actions';
 import HeadphonesImage from '../components/HeadphonesImage';
+import { getSongCover } from '../store/functions/fetchMusic.js';
 import {
   playerControls,
   setTrackFromId,
@@ -73,18 +74,21 @@ const BottomView = ({ setOpen, open }) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (currentPlayingTrack.artwork) {
-      setCover(
-        <Image
-          source={{ uri: currentPlayingTrack.artwork }}
-          style={styles.image}
-        />,
-      );
+  const setImage = async () => {
+    const path = currentPlayingTrack.url;
+
+    const cover = await getSongCover(path);
+    if (cover) {
+      setCover(<Image source={{ uri: cover }} style={styles.image} />);
     } else {
       setCover(<HeadphonesImage color={secondary} isPlaying={isPlaying} />);
     }
-  }, [currentPlayingTrack.artwork]);
+  };
+ 
+
+  useEffect(() => {
+    setImage();
+  }, [currentPlayingTrack]);
 
   useEffect(() => {
     if (showBottomPlayer) {

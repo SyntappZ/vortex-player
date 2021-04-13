@@ -17,7 +17,7 @@ const Play = ({playing, color, size}) => {
   useEffect(() => {
     
     if(playing) {
-      console.log('play')
+     
       animation.current.play()
       setTimeout(() => {
       animation.current.pause()
@@ -25,7 +25,7 @@ const Play = ({playing, color, size}) => {
       
      
     }else if(playing === false){
-      console.log('stop')
+      
       animation.current.resume()
       // setTimeout(() => {
       //   animation.current.reset()
